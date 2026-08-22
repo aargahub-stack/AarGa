@@ -1,4 +1,5 @@
 import { getAllProjects } from "@/lib/api/projects";
+import { formatProductCount } from "@/lib/formatters";
 import BentoToolCard from "./BentoToolCard";
 import Link from "next/link";
 
@@ -13,7 +14,7 @@ export default async function EcosystemGrid() {
             The Ecosystem
           </span>
           <h2 className="mt-3 max-w-xl text-3xl font-extrabold tracking-tight text-ink sm:text-4xl text-balance">
-            Six products. One shared platform core.
+            {formatProductCount(tools.length)} One shared platform core.
           </h2>
           <p className="mt-3 max-w-lg text-slate-600">
             Every tile below is a live product built on the same identity,
@@ -29,7 +30,7 @@ export default async function EcosystemGrid() {
         </Link>
       </div>
 
-      <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-3 md:grid-rows-2">
+      <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-3">
         {tools.map((tool) => (
           <BentoToolCard key={tool.id} tool={tool} />
         ))}

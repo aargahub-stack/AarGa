@@ -1,4 +1,5 @@
 import { getAllProjects } from "@/lib/api/projects";
+import { numberToWord } from "@/lib/formatters";
 import { lifecycleStages, platformCapabilities } from "@/data/engineeringLifecycle";
 
 export const metadata = {
@@ -32,7 +33,7 @@ export default async function TechHubPage() {
           Every product, one engineering spine.
         </h1>
         <p className="mt-4 text-lg text-slate-600 leading-relaxed">
-          Six live products, six real deployments, one shared platform core.
+          {tools.length > 0 ? `${numberToWord(tools.length)} live products` : "Live products"}, {tools.length > 0 ? `${numberToWord(tools.length, false)} real deployments` : "real deployments"}, one shared platform core.
           Below is the full capability breakdown and the lifecycle every
           feature moves through before it reaches an NGO partner site or an
           enterprise customer.
