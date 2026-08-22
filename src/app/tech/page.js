@@ -1,4 +1,4 @@
-import { getAllTools } from "@/data/ecosystemTools";
+import { getAllProjects } from "@/lib/api/projects";
 import { lifecycleStages, platformCapabilities } from "@/data/engineeringLifecycle";
 
 export const metadata = {
@@ -19,11 +19,11 @@ const ACCENT_BORDER = {
   gold: "border-gold-400/40",
 };
 
-export default function TechHubPage() {
-  const tools = getAllTools();
+export default async function TechHubPage() {
+  const tools = await getAllProjects();
 
   return (
-    <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
+    <div className="mx-auto max-w-7xl px-6 pt-28 pb-20 lg:px-8">
       <header className="max-w-3xl">
         <span className="text-xs font-bold uppercase tracking-widest text-emerald-600">
           Tech Hub

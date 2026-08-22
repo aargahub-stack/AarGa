@@ -34,7 +34,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${urbanist.variable} ${jetbrainsMono.variable}`}>
+    <html lang="en" className={`${urbanist.variable} ${jetbrainsMono.variable}`} data-scroll-behavior="smooth">
       <body className="font-sans bg-paper text-ink antialiased selection:bg-emerald-200">
         <SiteHeader />
         <main className="min-h-screen">{children}</main>

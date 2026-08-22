@@ -1,6 +1,8 @@
 import Link from "next/link";
 import AargaLogo from "./AargaLogo";
 
+const PORTAL_URL = "https://portal.aarga.org";
+
 const FOOTER_COLUMNS = [
   {
     title: "Ecosystem",
@@ -16,7 +18,7 @@ const FOOTER_COLUMNS = [
     links: [
       { label: "Verified Interns", href: "/interns" },
       { label: "VeriSkill Engine", href: "/tech#veriskill" },
-      { label: "Founder Portal", href: "/portal" },
+      { label: "Founder Portal ↗", href: PORTAL_URL, external: true },
     ],
   },
   {
@@ -56,12 +58,23 @@ export default function SiteFooter() {
               <ul className="mt-4 space-y-3">
                 {col.links.map((link) => (
                   <li key={link.label}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-slate-600 transition-colors hover:text-emerald-700"
-                    >
-                      {link.label}
-                    </Link>
+                    {link.external ? (
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-slate-600 transition-colors hover:text-emerald-700"
+                      >
+                        {link.label}
+                      </a>
+                    ) : (
+                      <Link
+                        href={link.href}
+                        className="text-sm text-slate-600 transition-colors hover:text-emerald-700"
+                      >
+                        {link.label}
+                      </Link>
+                    )}
                   </li>
                 ))}
               </ul>

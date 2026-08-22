@@ -22,9 +22,9 @@ export default function HomePage() {
 
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-600 text-balance animate-fade-up">
             AarGa runs a foundation and a SaaS platform on the same
-            infrastructure — PayCircle, Nexfix, AarFlow, Exora, VeriSkill,
-            and GridPay all trace back to problems first solved in the
-            field.
+            infrastructure — NexFix handles operations &amp; finance, Exora
+            handles analytics &amp; telemetry, and AarVed handles education &amp;
+            student learning.
           </p>
 
           <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row animate-fade-up">

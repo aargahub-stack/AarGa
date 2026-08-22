@@ -1,9 +1,9 @@
-import { getAllTools } from "@/data/ecosystemTools";
+import { getAllProjects } from "@/lib/api/projects";
 import BentoToolCard from "./BentoToolCard";
 import Link from "next/link";
 
-export default function EcosystemGrid() {
-  const tools = getAllTools();
+export default async function EcosystemGrid() {
+  const tools = await getAllProjects();
 
   return (
     <section id="ecosystem" className="mx-auto max-w-7xl px-6 py-24 lg:px-8">

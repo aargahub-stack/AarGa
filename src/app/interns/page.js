@@ -1,4 +1,4 @@
-import { interns, getInternStats } from "@/data/interns";
+import { getAllInterns, getInternStats } from "@/lib/api/interns";
 import InternCard from "@/components/InternCard";
 
 export const metadata = {
@@ -7,11 +7,11 @@ export const metadata = {
     "Dynamic candidate registry powered by the VeriSkill telemetry engine — real skills, real cohorts, real project ships.",
 };
 
-export default function InternsPage() {
-  const stats = getInternStats();
+export default async function InternsPage() {
+  const [interns, stats] = await Promise.all([getAllInterns(), getInternStats()]);
 
   return (
-    <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
+    <div className="mx-auto max-w-7xl px-6 pt-28 pb-20 lg:px-8">
       <header className="max-w-3xl">
         <span className="text-xs font-bold uppercase tracking-widest text-emerald-600">
           Verified Interns Registry

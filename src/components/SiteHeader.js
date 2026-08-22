@@ -4,11 +4,12 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import AargaLogo from "./AargaLogo";
 
+const PORTAL_URL = "https://portal.aarga.org";
+
 const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/tech", label: "Tech Hub" },
   { href: "/interns", label: "Verified Interns" },
-  { href: "/portal", label: "Founder Portal" },
 ];
 
 export default function SiteHeader() {
@@ -16,18 +17,22 @@ export default function SiteHeader() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => {
+      const scrollY = window.scrollY || document.documentElement.scrollTop || 0;
+      setScrolled(scrollY > 8);
+    };
+
     onScroll();
-    window.addEventListener("scroll", onScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
     <header
-      className={`sticky top-0 z-50 transition-all duration-300 ${
+      className={`sticky top-0 z-50 transition-all duration-300 -mb-[72px] ${
         scrolled
-          ? "glass-strong shadow-glass border-b border-slate-200/60"
-          : "bg-transparent border-b border-transparent"
+          ? "bg-white shadow-md border-b border-slate-200"
+          : "bg-transparent border-b border-transparent shadow-none"
       }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
@@ -51,12 +56,15 @@ export default function SiteHeader() {
         </nav>
 
         <div className="hidden md:block">
-          <Link
-            href="/portal"
+          <a
+            href={PORTAL_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-white shadow-glass transition-transform hover:scale-[1.03] hover:bg-moss-800"
           >
             Founder Sign In
-          </Link>
+            <span aria-hidden="true">↗</span>
+          </a>
         </div>
 
         <button
@@ -75,7 +83,7 @@ export default function SiteHeader() {
       </div>
 
       {open && (
-        <div className="glass-strong border-t border-slate-200/60 px-6 py-4 md:hidden">
+        <div className="bg-white border-t border-slate-200 px-6 py-4 md:hidden">
           <nav className="flex flex-col gap-1">
             {NAV_LINKS.map((link) => (
               <Link
@@ -87,13 +95,16 @@ export default function SiteHeader() {
                 {link.label}
               </Link>
             ))}
-            <Link
-              href="/portal"
+            <a
+              href={PORTAL_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => setOpen(false)}
-              className="mt-2 rounded-xl bg-ink px-4 py-3 text-center text-sm font-semibold text-white"
+              className="mt-2 flex items-center justify-center gap-2 rounded-xl bg-ink px-4 py-3 text-center text-sm font-semibold text-white"
             >
               Founder Sign In
-            </Link>
+              <span aria-hidden="true">↗</span>
+            </a>
           </nav>
         </div>
       )}
