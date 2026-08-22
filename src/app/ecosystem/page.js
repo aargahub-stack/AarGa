@@ -9,7 +9,7 @@ export const revalidate = 60;
 export const metadata = {
   title: "Ecosystem Command Center — AarGa",
   description:
-    "Live, unified command center showing AarGa's grassroots NGO foundation work and commercial SaaS platform side-by-side.",
+    "AarGa unifies social impact with enterprise engineering. Live, unified command center showing grassroots NGO foundation operations and commercial SaaS platform side-by-side.",
 };
 
 const CORE_PRODUCT_SLUGS = ["nexfix", "exora", "aarved"];

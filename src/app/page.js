@@ -58,21 +58,20 @@ export default async function HomePage() {
             Ready to see the platform behind the mission?
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-slate-300">
-            Walk through the full engineering lifecycle, or meet the
-            verified interns shipping inside it right now.
+            Walk through the full engineering lifecycle, explore the Ecosystem Command Center, or meet the verified interns shipping inside it right now.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
-              href="/tech"
+              href="/ecosystem"
               className="rounded-full bg-emerald-500 px-7 py-3.5 text-sm font-bold text-ink shadow-glow-emerald transition-transform hover:scale-[1.03]"
             >
-              Explore Tech Hub
+              Explore Ecosystem
             </Link>
             <Link
-              href="/interns"
+              href="/tech"
               className="rounded-full border-2 border-white/30 px-7 py-3.5 text-sm font-bold text-white transition-colors hover:border-white hover:bg-white/10"
             >
-              View Verified Interns
+              Explore Tech Hub
             </Link>
           </div>
         </div>

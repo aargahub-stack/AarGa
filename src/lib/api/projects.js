@@ -1,8 +1,8 @@
 import { supabaseServer, isSupabaseConfigured } from "@/lib/supabase/server";
 
 /**
- * Service layer for the `projects` table (the ecosystem tools: PayCircle,
- * Nexfix, AarFlow, Exora, VeriSkill, GridPay, and anything added later).
+ * Service layer for the `projects` table (the ecosystem tools: NexFix,
+ * Exora, AarVed, and anything added later).
  *
  * Direct Supabase queries. Throws an error if Supabase is not configured
  * or if a query fails.

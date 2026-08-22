@@ -5,7 +5,7 @@ import { lifecycleStages, platformCapabilities } from "@/data/engineeringLifecyc
 export const metadata = {
   title: "Tech Hub — AarGa",
   description:
-    "Detailed capabilities and engineering lifecycle behind the AarGa ecosystem: PayCircle, Nexfix, AarFlow, Exora, VeriSkill, and GridPay.",
+    "Detailed capabilities and engineering lifecycle behind the AarGa ecosystem: NexFix, Exora, and AarVed.",
 };
 
 const ACCENT_TEXT = {

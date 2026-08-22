@@ -1,5 +1,5 @@
 /**
- * Simulated database table: engineering_lifecycle_stages
+ * Static marketing content: engineering_lifecycle_stages
  * Describes how AarGa builds and hardens each product across its ecosystem.
  */
 
@@ -25,7 +25,7 @@ export const lifecycleStages = [
     phase: "Build",
     title: "Shared platform primitives",
     description:
-      "PayCircle, Nexfix, AarFlow, Exora, VeriSkill, and GridPay all consume the same identity, ledger, and telemetry primitives, so a fix in the core propagates across the ecosystem.",
+      "NexFix, Exora, and AarVed all consume the same identity, ledger, and telemetry primitives, so a fix in the core propagates across the ecosystem.",
     signals: ["Shared auth core", "Unified ledger service", "Central telemetry bus"],
   },
   {
@@ -59,24 +59,24 @@ export const platformCapabilities = [
     id: "identity",
     title: "Unified Identity Core",
     detail:
-      "Single sign-on and role-based access spanning every ecosystem tool, from field technician accounts in Nexfix to founder-level access in the Portal.",
+      "Single sign-on and role-based access spanning every ecosystem tool, from field technician accounts in NexFix to founder-level access in the Portal.",
   },
   {
     id: "ledger",
     title: "Composable Ledger Service",
     detail:
-      "A shared double-entry ledger underlies PayCircle and GridPay, giving every transaction a consistent, auditable trail regardless of connectivity.",
+      "A shared double-entry ledger underlies NexFix field operations and enterprise accounting, giving every transaction a consistent, auditable trail.",
   },
   {
     id: "telemetry",
     title: "Central Telemetry Bus",
     detail:
-      "Every product streams structured events into one pipeline, powering Exora's dashboards and VeriSkill's skill-scoring models.",
+      "Every product streams structured events into one pipeline, powering Exora's dashboards and student telemetry models in AarVed.",
   },
   {
-    id: "workflow",
-    title: "Visual Workflow Engine",
+    id: "learning",
+    title: "Interactive Learning Pathways",
     detail:
-      "AarFlow's canvas is embeddable, letting other tools expose approval chains and disbursement logic without rebuilding orchestration from scratch.",
+      "AarVed's engine is embeddable, letting products expose educational modules and skill verification without rebuilding orchestration from scratch.",
   },
 ];

@@ -20,12 +20,12 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata = {
   title: "AarGa — One Ecosystem. Two Missions.",
   description:
-    "AarGa is a multi-product SaaS ecosystem with grassroots NGO roots — powering PayCircle, Nexfix, AarFlow, Exora, VeriSkill, and GridPay from one shared platform core.",
+    "AarGa unifies social impact with enterprise engineering — powering NexFix, Exora, and AarVed from one shared platform core.",
   metadataBase: new URL("https://aarga.org"),
   openGraph: {
     title: "AarGa — One Ecosystem. Two Missions.",
     description:
-      "A multi-product SaaS ecosystem with grassroots NGO roots.",
+      "AarGa unifies social impact with enterprise engineering.",
     url: "https://aarga.org",
     siteName: "AarGa",
     type: "website",

@@ -8,17 +8,15 @@ const FOOTER_COLUMNS = [
     title: "Ecosystem",
     links: [
       { label: "Overview", href: "/ecosystem" },
-      { label: "PayCircle", href: "/tech#paycircle" },
-      { label: "Nexfix", href: "/tech#nexfix" },
-      { label: "AarFlow", href: "/tech#aarflow" },
+      { label: "NexFix", href: "/tech#nexfix" },
       { label: "Exora", href: "/tech#exora" },
+      { label: "AarVed", href: "/tech#aarved" },
     ],
   },
   {
     title: "Programs",
     links: [
       { label: "Verified Interns", href: "/interns" },
-      { label: "VeriSkill Engine", href: "/tech#veriskill" },
       { label: "Founder Portal ↗", href: PORTAL_URL, external: true },
     ],
   },

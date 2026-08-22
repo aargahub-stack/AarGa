@@ -127,72 +127,32 @@ insert into public.projects
   (title, slug, category, tagline, description, tech_stack, live_url, status, accent, size, infrastructure_capacity, metrics)
 values
   (
-    'PayCircle', 'paycircle', 'Payments Infra',
-    'Circular settlement rails for community-owned finance.',
-    'PayCircle powers pooled payments, rotating savings groups, and instant settlement for cooperatives and micro-enterprises operating outside traditional banking rails.',
-    array['Node.js', 'PostgreSQL', 'Kafka', 'gRPC'],
-    'https://paycircle.aarga.org',
-    'GA', 'emerald', 'lg',
-    '{"regionsServed": 12, "nodeType": "multi-tenant cluster"}',
-    '{"uptime": "99.98%", "txPerDay": "1.2M", "latency": "180ms"}'
-  ),
-  (
-    'Nexfix', 'nexfix', 'Field Operations',
+    'NexFix', 'nexfix', 'Operations & Finance',
     'Dispatch and repair-network orchestration for hardware fleets.',
-    'Nexfix coordinates verified field technicians, parts inventory, and SLA tracking across distributed hardware deployments in low-connectivity regions.',
-    array['Next.js', 'Redis', 'PostGIS'],
+    'NexFix coordinates verified field technicians, parts inventory, maintenance accounting, and SLA tracking across distributed hardware deployments.',
+    array['Next.js', 'Redis', 'PostGIS', 'Node.js'],
     'https://nexfix.aarga.org',
-    'GA', 'moss', 'md',
+    'GA', 'moss', 'lg',
     '{"regionsServed": 7, "nodeType": "edge-sync"}',
     '{"uptime": "99.9%", "techsActive": "3,400+", "avgResolve": "6.2h"}'
   ),
   (
-    'AarFlow', 'aarflow', 'Workflow Automation',
-    'No-code process automation built for NGO + SaaS hybrid teams.',
-    'AarFlow lets grant officers and product teams design approval chains, disbursement workflows, and audit trails in a single visual canvas.',
-    array['React Flow', 'Temporal', 'PostgreSQL'],
-    'https://aarflow.aarga.org',
-    'Beta', 'gold', 'md',
-    '{"regionsServed": 9, "nodeType": "workflow-engine"}',
-    '{"uptime": "99.7%", "workflowsLive": "812", "orgsOnboarded": "146"}'
-  ),
-  (
-    'Exora', 'exora', 'Data & Insight',
-    'Impact analytics that speak both to funders and to engineers.',
-    'Exora ingests raw operational telemetry and renders it as funder-ready impact reports and engineering-ready observability dashboards from one pipeline.',
-    array['ClickHouse', 'dbt', 'Next.js'],
+    'Exora', 'exora', 'Secure Examinations & Academic Integrity',
+    'Impact analytics, proctored assessment, and integrity verification.',
+    'Exora ingests raw operational telemetry and renders it as proctored assessment verification, funder-ready impact reports, and observability dashboards.',
+    array['ClickHouse', 'dbt', 'Next.js', 'Python'],
     'https://exora.aarga.org',
-    'GA', 'emerald', 'sm',
+    'GA', 'emerald', 'md',
     '{"regionsServed": 14, "nodeType": "analytics-pipeline"}',
     '{"uptime": "99.95%", "dashboards": "2,100+", "dataPoints": "48M/mo"}'
   ),
   (
-    'VeriSkill', 'veriskill', 'Talent Verification',
-    'Skill telemetry and credentialing engine behind Verified Interns.',
-    'VeriSkill scores real project contributions rather than resumes, producing a portable, verifiable skill graph for every AarGa cohort member.',
-    array['Python', 'PostgreSQL', 'LLM Eval Harness'],
-    'https://veriskill.aarga.org',
-    'Beta', 'moss', 'sm',
-    '{"regionsServed": 5, "nodeType": "eval-harness"}',
-    '{"uptime": "99.8%", "cohorts": "24", "verifiedSkills": "9,300+"}'
-  ),
-  (
-    'GridPay', 'gridpay', 'Payments Infra',
-    'Offline-first micropayment layer for last-mile utility access.',
-    'GridPay queues and reconciles micropayments for solar and water access points that lose connectivity for hours or days at a time.',
-    array['Rust', 'SQLite Sync', 'MQTT'],
-    'https://gridpay.aarga.org',
-    'Alpha', 'gold', 'sm',
-    '{"regionsServed": 4, "nodeType": "offline-sync"}',
-    '{"uptime": "99.4%", "nodesLive": "560", "regions": "4"}'
-  ),
-  (
-    'AarVed', 'aarved', 'Education & Learning',
+    'AarVed', 'aarved', 'Education & Student Learning',
     'Interactive learning pathways, skill tracking, and student telemetry.',
     'AarVed provides interactive learning pathways, automated skill verification, and student telemetry for NGO education programs and vocational academies.',
     array['Next.js', 'PostgreSQL', 'Python', 'Tailwind CSS'],
     'https://aarved.aarga.org',
-    'Beta', 'emerald', 'md',
+    'Beta', 'gold', 'md',
     '{"studentsActive": 1200, "nodeType": "learning-engine"}',
     '{"uptime": "99.8%", "coursesLive": "42", "studentsEnrolled": "1,200+"}'
   );

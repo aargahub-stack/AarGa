@@ -78,21 +78,28 @@ export default async function DualMissionSection() {
         })}
       </div>
 
-      <div className="mt-6 rounded-3xl border border-slate-200 bg-white/70 p-8 shadow-glass md:p-10">
-        <div className="grid gap-8 md:grid-cols-[auto,1fr] md:items-center">
-          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-ink text-2xl font-black text-white">
+      <div className="relative overflow-hidden mt-6 rounded-3xl border border-slate-200 bg-white/70 p-8 shadow-glass md:p-10">
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-2 -top-6 select-none font-serif text-9xl font-black text-slate-100/80"
+        >
+          &ldquo;
+        </span>
+
+        <div className="relative z-10 grid gap-8 md:grid-cols-[auto,1fr] md:items-center">
+          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-ink text-2xl font-black text-white shadow-md">
             AG
           </div>
           <div>
             <span className="text-xs font-bold uppercase tracking-widest text-slate-400">
               Founder Story Snapshot
             </span>
-            <p className="mt-2 max-w-3xl text-lg leading-relaxed text-slate-700 text-balance">
-              &ldquo;We didn&apos;t set out to build a SaaS company. We set
-              out to fix a broken payout cycle for one cooperative. PayCircle
-              was the fix. Everything since — Nexfix, AarFlow, Exora,
-              VeriSkill, GridPay — is the same instinct, applied to the next
-              problem a partner brought to us.&rdquo;
+            <p className="mt-2 max-w-5xl text-lg leading-relaxed text-slate-700">
+              &ldquo;We didn&apos;t set out to build a corporate software
+              company. We set out to help students and communities—starting from
+              grassroots education through AarVedics at age 15. Every platform
+              since—NexFix, Exora, AarVed—is simply that same instinct, applied to
+              the next real-world problem a partner brought to our door.&rdquo;
             </p>
             <p className="mt-4 text-sm font-semibold text-slate-500">
               Founding Team, AarGa
