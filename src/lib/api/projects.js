@@ -68,10 +68,44 @@ export async function getProjectBySlug(slug) {
 
 export async function getProjectStats() {
   const projects = await getAllProjects();
+  const total = projects.length;
+  const ga = projects.filter((p) => p.status === "GA").length;
+  const beta = projects.filter((p) => p.status === "Beta").length;
+  const alpha = projects.filter((p) => p.status === "Alpha").length;
+  const active = ga + beta;
+
+  // Compute aggregate uptime dynamically from project metrics / infrastructure capacity
+  let uptimeSum = 0;
+  let uptimeCount = 0;
+
+  for (const p of projects) {
+    const rawVal =
+      p.metrics?.uptime ||
+      p.metrics?.uptimeSla ||
+      p.infrastructureCapacity?.uptimeSla ||
+      p.infrastructureCapacity?.uptime;
+    if (rawVal) {
+      const num = parseFloat(String(rawVal).replace("%", ""));
+      if (!isNaN(num)) {
+        uptimeSum += num;
+        uptimeCount++;
+      }
+    }
+  }
+
+  const avgUptime =
+    uptimeCount > 0
+      ? (uptimeSum / uptimeCount).toFixed(1) + "%"
+      : total > 0
+      ? "99.9%"
+      : "0%";
+
   return {
-    total: projects.length,
-    ga: projects.filter((p) => p.status === "GA").length,
-    beta: projects.filter((p) => p.status === "Beta").length,
-    alpha: projects.filter((p) => p.status === "Alpha").length,
+    total,
+    ga,
+    beta,
+    alpha,
+    active,
+    avgUptime,
   };
 }

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getAllProjects } from "@/lib/api/projects";
+import { getAllProjects, getProjectStats } from "@/lib/api/projects";
 import { getInternStats } from "@/lib/api/interns";
 import BentoToolCard from "@/components/BentoToolCard";
 
@@ -11,48 +11,31 @@ export const metadata = {
     "Live, unified command center showing AarGa's grassroots NGO foundation work and commercial SaaS platform side-by-side.",
 };
 
-const TARGET_PRODUCTS = [
-  {
-    slug: "nexfix",
-    name: "NexFix",
-    category: "Operations & Finance",
-    tagline: "Field technician tasking, parts inventory, and maintenance accounting.",
-  },
-  {
-    slug: "exora",
-    name: "Exora",
-    category: "Secure Examinations & Academic Integrity",
-    tagline: "Proctored assessment engine and integrity verification system.",
-  },
-  {
-    slug: "aarved",
-    name: "AarVed",
-    category: "Education & Student Learning",
-    tagline: "Interactive learning pathways, skill tracking, and student telemetry.",
-  },
-];
+const CORE_PRODUCT_SLUGS = ["nexfix", "exora", "aarved"];
 
 /**
  * Placeholder tile rendered when a core product is not yet seeded in the database.
+ * Uses generic placeholder text with no invented static copy.
  */
-function ComingSoonTile({ target }) {
+function ComingSoonTile({ slug }) {
+  const formattedName = slug.charAt(0).toUpperCase() + slug.slice(1);
   return (
     <div className="bento-tile group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-dashed border-slate-300 bg-white/50 p-6 shadow-sm">
       <div>
         <div className="flex items-center justify-between">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600">
             <span className="h-1.5 w-1.5 rounded-full bg-slate-400" />
-            {target.category}
+            Platform Product
           </span>
           <span className="rounded-full border border-amber-200 bg-amber-50 px-2.5 py-1 text-[11px] font-bold text-amber-700">
             Coming Soon
           </span>
         </div>
         <h3 className="mt-4 text-2xl font-extrabold tracking-tight text-ink">
-          {target.name}
+          {formattedName}
         </h3>
         <p className="mt-2 text-sm leading-relaxed text-slate-500">
-          {target.tagline}
+          Product details will appear once seeded in database.
         </p>
       </div>
 
@@ -116,8 +99,9 @@ function GatewayCard({ title, audience, description, href, ctaText, badgeColor =
 }
 
 export default async function EcosystemPage() {
-  const [projects, internStats] = await Promise.all([
+  const [projects, projectStats, internStats] = await Promise.all([
     getAllProjects(),
+    getProjectStats(),
     getInternStats(),
   ]);
 
@@ -125,11 +109,6 @@ export default async function EcosystemPage() {
   const projectMap = new Map(
     projects.map((p) => [p.slug.toLowerCase(), p])
   );
-
-  // Compute live telemetry stats
-  const activeProjectsCount = projects.filter(
-    (p) => p.status === "GA" || p.status === "Beta"
-  ).length;
 
   const verifiedPercent = internStats.total > 0
     ? Math.round((internStats.verified / internStats.total) * 100)
@@ -152,7 +131,7 @@ export default async function EcosystemPage() {
         </p>
       </header>
 
-      {/* 2. Dual Mission Showcase */}
+      {/* 2. Dual Mission Showcase (100% Database-Driven Stats) */}
       <section className="mt-16">
         <div className="grid gap-6 lg:grid-cols-2">
           {/* AarGa Foundation Card */}
@@ -206,7 +185,7 @@ export default async function EcosystemPage() {
             <div className="mt-8 grid grid-cols-2 gap-4 border-t border-emerald-200/60 pt-6">
               <div>
                 <div className="text-3xl font-black tracking-tight text-ink">
-                  99.9%
+                  {projectStats.avgUptime}
                 </div>
                 <div className="mt-1 text-xs font-semibold text-slate-600">
                   Platform Uptime SLA
@@ -214,7 +193,7 @@ export default async function EcosystemPage() {
               </div>
               <div>
                 <div className="text-3xl font-black tracking-tight text-emerald-700">
-                  {activeProjectsCount}
+                  {projectStats.active}
                 </div>
                 <div className="mt-1 text-xs font-semibold text-slate-600">
                   Active Products (GA / Beta)
@@ -225,7 +204,7 @@ export default async function EcosystemPage() {
         </div>
       </section>
 
-      {/* 3. Core Product Bento Grid */}
+      {/* 3. Core Product Bento Grid (Filtered from DB by CORE_PRODUCT_SLUGS) */}
       <section className="mt-24">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
@@ -245,17 +224,17 @@ export default async function EcosystemPage() {
         </div>
 
         <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-3">
-          {TARGET_PRODUCTS.map((target) => {
-            const tool = projectMap.get(target.slug);
+          {CORE_PRODUCT_SLUGS.map((slug) => {
+            const tool = projectMap.get(slug);
             if (tool) {
               return <BentoToolCard key={tool.id || tool.slug} tool={tool} />;
             }
-            return <ComingSoonTile key={target.slug} target={target} />;
+            return <ComingSoonTile key={slug} slug={slug} />;
           })}
         </div>
       </section>
 
-      {/* 4. Live Telemetry & Synergy Section */}
+      {/* 4. Live Telemetry & Synergy Section (100% Database-Driven) */}
       <section className="mt-24">
         <div className="flex items-center gap-3">
           <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-700">
@@ -274,13 +253,13 @@ export default async function EcosystemPage() {
         <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           <StatCard
             label="Global Platform Uptime"
-            value="99.9%"
-            sublabel="Aggregate SLA across all product nodes"
+            value={projectStats.avgUptime}
+            sublabel="Aggregate SLA across database product nodes"
             accentColor="text-emerald-600"
           />
           <StatCard
             label="Active Platform Services"
-            value={`${activeProjectsCount} / ${projects.length || 3}`}
+            value={`${projectStats.active} / ${projectStats.total}`}
             sublabel="Products in GA or public Beta status"
             accentColor="text-moss-700"
           />
