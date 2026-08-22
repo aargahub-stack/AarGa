@@ -23,8 +23,8 @@ export default function HomePage() {
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-600 text-balance animate-fade-up">
             AarGa runs a foundation and a SaaS platform on the same
             infrastructure — NexFix handles operations &amp; finance, Exora
-            handles analytics &amp; telemetry, and AarVed handles education &amp;
-            student learning.
+            handles secure examinations &amp; academic integrity, and AarVed
+            handles education &amp; student learning.
           </p>
 
           <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row animate-fade-up">
@@ -43,8 +43,8 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <p className="mt-6 text-xs text-slate-400">
-            Move your cursor across this section to reveal the AarGa grid.
+          <p className="mt-8 text-xs font-bold uppercase tracking-widest text-slate-500">
+            AarGa Foundation &amp; AarGa Private Limited
           </p>
         </div>
       </MatrixHero>
