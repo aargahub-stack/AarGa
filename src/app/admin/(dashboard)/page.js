@@ -1,15 +1,18 @@
+import Link from "next/link";
 import { getAllProjects } from "@/lib/api/projects";
 import { getAllInterns, getInternStats } from "@/lib/api/interns";
+import { getAllMetrics } from "@/lib/api/ecosystemMetrics";
 import { getAdminSession } from "@/lib/supabase/authServer";
 import TaskQueueWidget from "@/components/admin/TaskQueueWidget";
 
 export default async function AdminOverviewPage() {
   const { supabase } = await getAdminSession();
 
-  const [projects, interns, internStats] = await Promise.all([
+  const [projects, interns, internStats, allMetrics] = await Promise.all([
     getAllProjects(),
     getAllInterns(),
     getInternStats(),
+    getAllMetrics(),
   ]);
 
   // Fetch admin tasks via RLS-protected authenticated client
@@ -19,6 +22,14 @@ export default async function AdminOverviewPage() {
     .order("created_at", { ascending: false });
 
   const tasks = tasksData || [];
+
+  const foundationMetricsCount = allMetrics.filter(
+    (m) => m.entityType === "foundation"
+  ).length;
+
+  const commercialMetricsCount = allMetrics.filter(
+    (m) => m.entityType === "commercial"
+  ).length;
 
   const activeProjectsCount = projects.filter(
     (p) => p.status === "GA" || p.status === "Beta"
@@ -58,7 +69,7 @@ export default async function AdminOverviewPage() {
       </div>
 
       {/* Stat Cards Grid */}
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-5">
         <div className="rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-glass">
           <div className="text-xs font-bold uppercase tracking-wider text-slate-400">
             Active Products
@@ -68,6 +79,26 @@ export default async function AdminOverviewPage() {
           </div>
           <div className="mt-1 text-xs font-semibold text-slate-500">
             GA &amp; Beta platform deployments
+          </div>
+        </div>
+
+        <div className="rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-glass">
+          <div className="text-xs font-bold uppercase tracking-wider text-slate-400">
+            Showcase KPIs
+          </div>
+          <div className="mt-2 font-mono text-3xl font-black text-ink">
+            {allMetrics.length}
+          </div>
+          <div className="mt-1 flex items-center justify-between text-xs font-semibold text-slate-500">
+            <span>
+              {foundationMetricsCount} Foundation · {commercialMetricsCount} Commercial
+            </span>
+            <Link
+              href="/admin/ecosystem-metrics"
+              className="font-bold text-emerald-600 hover:underline shrink-0 ml-1"
+            >
+              Manage →
+            </Link>
           </div>
         </div>
 

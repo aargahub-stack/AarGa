@@ -1,7 +1,6 @@
 import Link from "next/link";
-import { getAllProjects, getProjectStats } from "@/lib/api/projects";
-import { getInternStats } from "@/lib/api/interns";
-import { getMetricsByEntity } from "@/lib/api/ecosystemMetrics";
+import { getAllProjects } from "@/lib/api/projects";
+import { getMetricsByEntity, getEcosystemSynergyStats } from "@/lib/api/ecosystemMetrics";
 import BentoToolCard from "@/components/BentoToolCard";
 
 export const revalidate = 60;
@@ -100,11 +99,10 @@ function GatewayCard({ title, audience, description, href, ctaText, badgeColor =
 }
 
 export default async function EcosystemPage() {
-  const [projects, projectStats, internStats, foundationMetrics, commercialMetrics] =
+  const [projects, synergyStats, foundationMetrics, commercialMetrics] =
     await Promise.all([
       getAllProjects(),
-      getProjectStats(),
-      getInternStats(),
+      getEcosystemSynergyStats(),
       getMetricsByEntity("foundation"),
       getMetricsByEntity("commercial"),
     ]);
@@ -113,11 +111,6 @@ export default async function EcosystemPage() {
   const projectMap = new Map(
     projects.map((p) => [p.slug.toLowerCase(), p])
   );
-
-  const verifiedPercent =
-    internStats.total > 0
-      ? Math.round((internStats.verified / internStats.total) * 100)
-      : 0;
 
   // Take top 2 metrics per entity by display_order for 2-column card stat layout
   const foundationKpis =
@@ -263,20 +256,20 @@ export default async function EcosystemPage() {
         <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           <StatCard
             label="Global Platform Uptime"
-            value={projectStats.avgUptime}
+            value={synergyStats.avgUptime}
             sublabel="Aggregate SLA across database product nodes"
             accentColor="text-emerald-600"
           />
           <StatCard
             label="Active Platform Services"
-            value={`${projectStats.active} / ${projectStats.total}`}
+            value={`${synergyStats.activeProjects} / ${synergyStats.totalProjects}`}
             sublabel="Products in GA or public Beta status"
             accentColor="text-moss-700"
           />
           <StatCard
             label="Verified Talent Rate"
-            value={`${verifiedPercent}%`}
-            sublabel={`${internStats.verified} of ${internStats.total} candidates credentialed`}
+            value={`${synergyStats.verifiedPercent}%`}
+            sublabel={`${synergyStats.verifiedInterns} of ${synergyStats.totalInterns} candidates credentialed`}
             accentColor="text-ink"
           />
         </div>

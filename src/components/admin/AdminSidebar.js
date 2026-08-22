@@ -4,11 +4,21 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { createSupabaseBrowserClient } from "@/lib/supabase/browserClient";
 import AargaLogo from "@/components/AargaLogo";
+import {
+  LayoutDashboard,
+  Eye,
+  Package,
+  Activity,
+  GraduationCap,
+  LogOut,
+} from "lucide-react";
 
 const ADMIN_NAV = [
-  { href: "/admin", label: "Overview", icon: "📊" },
-  { href: "/admin/projects", label: "Ecosystem Manager", icon: "📦" },
-  { href: "/admin/interns", label: "Talent Registry", icon: "🎓" },
+  { href: "/admin", label: "Overview", icon: LayoutDashboard },
+  { href: "/admin/ecosystem", label: "Ecosystem Mirror", icon: Eye },
+  { href: "/admin/projects", label: "Ecosystem Manager", icon: Package },
+  { href: "/admin/ecosystem-metrics", label: "Ecosystem Metrics", icon: Activity },
+  { href: "/admin/interns", label: "Talent Registry", icon: GraduationCap },
 ];
 
 export default function AdminSidebar() {
@@ -40,6 +50,7 @@ export default function AdminSidebar() {
         <nav className="mt-8 space-y-1.5">
           {ADMIN_NAV.map((item) => {
             const isActive = pathname === item.href;
+            const IconComponent = item.icon;
             return (
               <Link
                 key={item.href}
@@ -50,7 +61,7 @@ export default function AdminSidebar() {
                     : "text-slate-600 hover:bg-slate-100 hover:text-ink"
                 }`}
               >
-                <span>{item.icon}</span>
+                <IconComponent size={18} strokeWidth={2} className="shrink-0" />
                 <span>{item.label}</span>
               </Link>
             );
@@ -63,7 +74,10 @@ export default function AdminSidebar() {
           onClick={handleSignOut}
           className="flex w-full items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-xs font-bold text-slate-700 hover:bg-red-50 hover:text-red-700 hover:border-red-200 transition-colors"
         >
-          <span>Sign Out</span>
+          <span className="flex items-center gap-2.5">
+            <LogOut size={16} strokeWidth={2} />
+            <span>Sign Out</span>
+          </span>
           <span>→</span>
         </button>
       </div>

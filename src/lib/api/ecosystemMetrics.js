@@ -1,4 +1,6 @@
 import { supabaseServer, isSupabaseConfigured } from "@/lib/supabase/server";
+import { getProjectStats } from "./projects";
+import { getInternStats } from "./interns";
 
 /**
  * Service layer for the `ecosystem_metrics` table.
@@ -63,4 +65,32 @@ export async function getAllEcosystemMetrics() {
   }
 
   return (data || []).map(mapMetricRow);
+}
+
+// Alias for convenience
+export const getAllMetrics = getAllEcosystemMetrics;
+
+/**
+ * Shared calculation helper for Cross-Platform Telemetry & Synergy Stats.
+ * Used by both public /ecosystem page and admin live mirror page to ensure 100% calculation parity.
+ */
+export async function getEcosystemSynergyStats() {
+  const [projectStats, internStats] = await Promise.all([
+    getProjectStats(),
+    getInternStats(),
+  ]);
+
+  const verifiedPercent =
+    internStats.total > 0
+      ? Math.round((internStats.verified / internStats.total) * 100)
+      : 0;
+
+  return {
+    avgUptime: projectStats.avgUptime,
+    activeProjects: projectStats.active,
+    totalProjects: projectStats.total,
+    verifiedPercent,
+    totalInterns: internStats.total,
+    verifiedInterns: internStats.verified,
+  };
 }
