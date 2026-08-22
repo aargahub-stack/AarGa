@@ -185,6 +185,16 @@ values
     'Alpha', 'gold', 'sm',
     '{"regionsServed": 4, "nodeType": "offline-sync"}',
     '{"uptime": "99.4%", "nodesLive": "560", "regions": "4"}'
+  ),
+  (
+    'AarVed', 'aarved', 'Education & Learning',
+    'Interactive learning pathways, skill tracking, and student telemetry.',
+    'AarVed provides interactive learning pathways, automated skill verification, and student telemetry for NGO education programs and vocational academies.',
+    array['Next.js', 'PostgreSQL', 'Python', 'Tailwind CSS'],
+    'https://aarved.aarga.org',
+    'Beta', 'emerald', 'md',
+    '{"studentsActive": 1200, "nodeType": "learning-engine"}',
+    '{"uptime": "99.8%", "coursesLive": "42", "studentsEnrolled": "1,200+"}'
   );
 
 insert into public.interns

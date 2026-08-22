@@ -34,9 +34,11 @@ export async function getMetricsByEntity(entityType) {
     .order("display_order", { ascending: true });
 
   if (error) {
-    console.error(
-      `[getMetricsByEntity] Supabase query notice for entity '${entityType}': ${error.message}`
-    );
+    if (process.env.NODE_ENV !== "production") {
+      console.warn(
+        `[ecosystemMetrics] Table 'ecosystem_metrics' not found in Supabase (${error.message}). Please run supabase_schema.sql in your Supabase SQL Editor to create and seed it.`
+      );
+    }
     return [];
   }
 
@@ -52,7 +54,11 @@ export async function getAllEcosystemMetrics() {
     .order("display_order", { ascending: true });
 
   if (error) {
-    console.error(`[getAllEcosystemMetrics] Supabase notice: ${error.message}`);
+    if (process.env.NODE_ENV !== "production") {
+      console.warn(
+        `[ecosystemMetrics] Table 'ecosystem_metrics' not found in Supabase (${error.message}). Please run supabase_schema.sql in your Supabase SQL Editor to create and seed it.`
+      );
+    }
     return [];
   }
 
