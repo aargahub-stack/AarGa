@@ -7,6 +7,7 @@ const FOOTER_COLUMNS = [
   {
     title: "Ecosystem",
     links: [
+      { label: "Overview", href: "/ecosystem" },
       { label: "PayCircle", href: "/tech#paycircle" },
       { label: "Nexfix", href: "/tech#nexfix" },
       { label: "AarFlow", href: "/tech#aarflow" },

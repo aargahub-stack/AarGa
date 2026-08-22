@@ -36,7 +36,7 @@ export default function HomePage() {
               <span aria-hidden="true">→</span>
             </Link>
             <Link
-              href="/interns"
+              href="/ecosystem"
               className="inline-flex items-center gap-2 rounded-full border-2 border-ink px-7 py-3.5 text-sm font-bold text-ink transition-colors hover:bg-ink hover:text-white"
             >
               Explore Ecosystem

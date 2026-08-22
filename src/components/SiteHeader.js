@@ -8,6 +8,7 @@ const PORTAL_URL = "https://portal.aarga.org";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
+  { href: "/ecosystem", label: "Ecosystem" },
   { href: "/tech", label: "Tech Hub" },
   { href: "/interns", label: "Verified Interns" },
 ];
