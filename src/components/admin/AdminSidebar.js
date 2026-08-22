@@ -10,12 +10,14 @@ import {
   Package,
   Activity,
   GraduationCap,
+  ClipboardCheck,
   LogOut,
 } from "lucide-react";
 
 const ADMIN_NAV = [
   { href: "/admin", label: "Overview", icon: LayoutDashboard },
   { href: "/admin/ecosystem", label: "Ecosystem Mirror", icon: Eye },
+  { href: "/admin/sop", label: "SOP Review Queue", icon: ClipboardCheck },
   { href: "/admin/projects", label: "Ecosystem Manager", icon: Package },
   { href: "/admin/ecosystem-metrics", label: "Ecosystem Metrics", icon: Activity },
   { href: "/admin/interns", label: "Talent Registry", icon: GraduationCap },
