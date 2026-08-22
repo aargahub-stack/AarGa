@@ -1,7 +1,8 @@
-import Link from "next/link";
-import AargaLogo from "./AargaLogo";
+"use client";
 
-const PORTAL_URL = "https://portal.aarga.org";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import AargaLogo from "./AargaLogo";
 
 const FOOTER_COLUMNS = [
   {
@@ -17,7 +18,7 @@ const FOOTER_COLUMNS = [
     title: "Programs",
     links: [
       { label: "Verified Interns", href: "/interns" },
-      { label: "Founder Portal ↗", href: PORTAL_URL, external: true },
+      { label: "Founder Portal ↗", href: "/admin" },
     ],
   },
   {
@@ -31,6 +32,13 @@ const FOOTER_COLUMNS = [
 ];
 
 export default function SiteFooter() {
+  const pathname = usePathname();
+
+  // Hide public site footer completely on all admin routes
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
+
   return (
     <footer className="border-t border-slate-200 bg-white/60">
       <div className="mx-auto max-w-7xl px-6 py-14 lg:px-8">

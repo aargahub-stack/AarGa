@@ -1,0 +1,121 @@
+import { getAllProjects } from "@/lib/api/projects";
+import { getAllInterns, getInternStats } from "@/lib/api/interns";
+import { getAdminSession } from "@/lib/supabase/authServer";
+import TaskQueueWidget from "@/components/admin/TaskQueueWidget";
+
+export default async function AdminOverviewPage() {
+  const { supabase } = await getAdminSession();
+
+  const [projects, interns, internStats] = await Promise.all([
+    getAllProjects(),
+    getAllInterns(),
+    getInternStats(),
+  ]);
+
+  // Fetch admin tasks via RLS-protected authenticated client
+  const { data: tasksData } = await supabase
+    .from("admin_tasks")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  const tasks = tasksData || [];
+
+  const activeProjectsCount = projects.filter(
+    (p) => p.status === "GA" || p.status === "Beta"
+  ).length;
+
+  // Defensive system health check
+  let isDegraded = false;
+  for (const p of projects) {
+    const rawVal =
+      p.metrics?.uptime ||
+      p.metrics?.uptimeSla ||
+      p.infrastructureCapacity?.uptimeSla;
+    if (rawVal) {
+      const num = parseFloat(String(rawVal).replace("%", ""));
+      if (!isNaN(num) && num < 99.0) {
+        isDegraded = true;
+        break;
+      }
+    }
+  }
+
+  const systemHealth = isDegraded ? "Degraded" : "Healthy";
+  const healthBadge = isDegraded
+    ? "bg-amber-100 text-amber-800 border-amber-200"
+    : "bg-emerald-100 text-emerald-800 border-emerald-200";
+
+  return (
+    <div className="space-y-8">
+      {/* Page Header */}
+      <div>
+        <span className="text-xs font-bold uppercase tracking-widest text-emerald-600">
+          Executive Dashboard
+        </span>
+        <h1 className="mt-1 text-3xl font-black tracking-tight text-ink">
+          Ecosystem Overview &amp; Control
+        </h1>
+      </div>
+
+      {/* Stat Cards Grid */}
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-glass">
+          <div className="text-xs font-bold uppercase tracking-wider text-slate-400">
+            Active Products
+          </div>
+          <div className="mt-2 font-mono text-3xl font-black text-emerald-700">
+            {activeProjectsCount} / {projects.length}
+          </div>
+          <div className="mt-1 text-xs font-semibold text-slate-500">
+            GA &amp; Beta platform deployments
+          </div>
+        </div>
+
+        <div className="rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-glass">
+          <div className="text-xs font-bold uppercase tracking-wider text-slate-400">
+            Total Interns
+          </div>
+          <div className="mt-2 font-mono text-3xl font-black text-ink">
+            {interns.length}
+          </div>
+          <div className="mt-1 text-xs font-semibold text-slate-500">
+            Candidates in telemetry engine
+          </div>
+        </div>
+
+        <div className="rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-glass">
+          <div className="text-xs font-bold uppercase tracking-wider text-slate-400">
+            Verified Candidates
+          </div>
+          <div className="mt-2 font-mono text-3xl font-black text-moss-700">
+            {internStats.verified}
+          </div>
+          <div className="mt-1 text-xs font-semibold text-slate-500">
+            Credentialed skill graphs
+          </div>
+        </div>
+
+        <div className="rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-glass">
+          <div className="text-xs font-bold uppercase tracking-wider text-slate-400">
+            System Health
+          </div>
+          <div className="mt-2 flex items-center gap-2">
+            <span
+              className={`inline-block rounded-full border px-3 py-1 text-sm font-black uppercase tracking-wider ${healthBadge}`}
+            >
+              {systemHealth}
+            </span>
+          </div>
+          <div className="mt-2 text-xs font-semibold text-slate-500">
+            Aggregate SLA threshold: &gt; 99.0%
+          </div>
+        </div>
+      </div>
+
+      {/* Pending Tasks Queue Widget */}
+      <section className="max-w-3xl">
+        <TaskQueueWidget initialTasks={tasks} />
+      </section>
+    </div>
+  );
+}

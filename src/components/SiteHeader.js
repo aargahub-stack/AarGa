@@ -2,9 +2,8 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import AargaLogo from "./AargaLogo";
-
-const PORTAL_URL = "https://portal.aarga.org";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -14,6 +13,7 @@ const NAV_LINKS = [
 ];
 
 export default function SiteHeader() {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -27,6 +27,11 @@ export default function SiteHeader() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Hide public site header completely on all admin routes
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
 
   return (
     <header
@@ -57,15 +62,13 @@ export default function SiteHeader() {
         </nav>
 
         <div className="hidden md:block">
-          <a
-            href={PORTAL_URL}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/admin"
             className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-white shadow-glass transition-transform hover:scale-[1.03] hover:bg-moss-800"
           >
             Founder Sign In
             <span aria-hidden="true">↗</span>
-          </a>
+          </Link>
         </div>
 
         <button
@@ -96,16 +99,14 @@ export default function SiteHeader() {
                 {link.label}
               </Link>
             ))}
-            <a
-              href={PORTAL_URL}
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href="/admin"
               onClick={() => setOpen(false)}
               className="mt-2 flex items-center justify-center gap-2 rounded-xl bg-ink px-4 py-3 text-center text-sm font-semibold text-white"
             >
               Founder Sign In
               <span aria-hidden="true">↗</span>
-            </a>
+            </Link>
           </nav>
         </div>
       )}
