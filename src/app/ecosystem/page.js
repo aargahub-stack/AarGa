@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getAllProjects, getProjectStats } from "@/lib/api/projects";
 import { getInternStats } from "@/lib/api/interns";
+import { getMetricsByEntity } from "@/lib/api/ecosystemMetrics";
 import BentoToolCard from "@/components/BentoToolCard";
 
 export const revalidate = 60;
@@ -99,20 +100,41 @@ function GatewayCard({ title, audience, description, href, ctaText, badgeColor =
 }
 
 export default async function EcosystemPage() {
-  const [projects, projectStats, internStats] = await Promise.all([
-    getAllProjects(),
-    getProjectStats(),
-    getInternStats(),
-  ]);
+  const [projects, projectStats, internStats, foundationMetrics, commercialMetrics] =
+    await Promise.all([
+      getAllProjects(),
+      getProjectStats(),
+      getInternStats(),
+      getMetricsByEntity("foundation"),
+      getMetricsByEntity("commercial"),
+    ]);
 
   // Map database projects by lowercase slug for fast lookup
   const projectMap = new Map(
     projects.map((p) => [p.slug.toLowerCase(), p])
   );
 
-  const verifiedPercent = internStats.total > 0
-    ? Math.round((internStats.verified / internStats.total) * 100)
-    : 0;
+  const verifiedPercent =
+    internStats.total > 0
+      ? Math.round((internStats.verified / internStats.total) * 100)
+      : 0;
+
+  // Take top 2 metrics per entity by display_order for 2-column card stat layout
+  const foundationKpis =
+    foundationMetrics.length > 0
+      ? foundationMetrics.slice(0, 2)
+      : [
+          { id: "f1", value: "0", label: "Partner organizations onboarded" },
+          { id: "f2", value: "0", label: "Active field deployments" },
+        ];
+
+  const commercialKpis =
+    commercialMetrics.length > 0
+      ? commercialMetrics.slice(0, 2)
+      : [
+          { id: "c1", value: "0%", label: "Platform-wide uptime SLA" },
+          { id: "c2", value: "0", label: "Products in GA" },
+        ];
 
   return (
     <div className="mx-auto max-w-7xl px-6 pt-28 pb-24 lg:px-8">
@@ -131,7 +153,7 @@ export default async function EcosystemPage() {
         </p>
       </header>
 
-      {/* 2. Dual Mission Showcase (100% Database-Driven Stats) */}
+      {/* 2. Dual Mission Showcase (Sourced 100% from ecosystem_metrics table) */}
       <section className="mt-16">
         <div className="grid gap-6 lg:grid-cols-2">
           {/* AarGa Foundation Card */}
@@ -149,22 +171,16 @@ export default async function EcosystemPage() {
             </p>
 
             <div className="mt-8 grid grid-cols-2 gap-4 border-t border-moss-200/60 pt-6">
-              <div>
-                <div className="text-3xl font-black tracking-tight text-ink">
-                  {internStats.total}
+              {foundationKpis.map((m) => (
+                <div key={m.id || m.key}>
+                  <div className="text-3xl font-black tracking-tight text-ink">
+                    {m.value}
+                  </div>
+                  <div className="mt-1 text-xs font-semibold text-slate-600">
+                    {m.label}
+                  </div>
                 </div>
-                <div className="mt-1 text-xs font-semibold text-slate-600">
-                  Registered Interns
-                </div>
-              </div>
-              <div>
-                <div className="text-3xl font-black tracking-tight text-moss-700">
-                  {internStats.verified}
-                </div>
-                <div className="mt-1 text-xs font-semibold text-slate-600">
-                  Verified Skill Credentials
-                </div>
-              </div>
+              ))}
             </div>
           </div>
 
@@ -183,28 +199,22 @@ export default async function EcosystemPage() {
             </p>
 
             <div className="mt-8 grid grid-cols-2 gap-4 border-t border-emerald-200/60 pt-6">
-              <div>
-                <div className="text-3xl font-black tracking-tight text-ink">
-                  {projectStats.avgUptime}
+              {commercialKpis.map((m) => (
+                <div key={m.id || m.key}>
+                  <div className="text-3xl font-black tracking-tight text-ink">
+                    {m.value}
+                  </div>
+                  <div className="mt-1 text-xs font-semibold text-slate-600">
+                    {m.label}
+                  </div>
                 </div>
-                <div className="mt-1 text-xs font-semibold text-slate-600">
-                  Platform Uptime SLA
-                </div>
-              </div>
-              <div>
-                <div className="text-3xl font-black tracking-tight text-emerald-700">
-                  {projectStats.active}
-                </div>
-                <div className="mt-1 text-xs font-semibold text-slate-600">
-                  Active Products (GA / Beta)
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* 3. Core Product Bento Grid (Filtered from DB by CORE_PRODUCT_SLUGS) */}
+      {/* 3. Core Product Bento Grid */}
       <section className="mt-24">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
@@ -234,7 +244,7 @@ export default async function EcosystemPage() {
         </div>
       </section>
 
-      {/* 4. Live Telemetry & Synergy Section (100% Database-Driven) */}
+      {/* 4. Live Telemetry & Synergy Section (100% Live-Computed System Metrics) */}
       <section className="mt-24">
         <div className="flex items-center gap-3">
           <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-700">

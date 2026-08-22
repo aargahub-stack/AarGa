@@ -12,6 +12,7 @@ create extension if not exists pgcrypto;
 -- -----------------------------------------------------------------------------
 drop table if exists public.interns cascade;
 drop table if exists public.projects cascade;
+drop table if exists public.ecosystem_metrics cascade;
 
 -- -----------------------------------------------------------------------------
 -- projects  (the ecosystem tools: PayCircle, Nexfix, AarFlow, Exora, ...)
@@ -71,16 +72,29 @@ comment on table public.interns is
 create index interns_status_idx on public.interns (verified_status);
 
 -- -----------------------------------------------------------------------------
+-- ecosystem_metrics  (KPI rows for foundation & commercial entities)
+-- -----------------------------------------------------------------------------
+create table public.ecosystem_metrics (
+  id             uuid primary key default gen_random_uuid(),
+  entity_type    text not null check (entity_type in ('foundation', 'commercial')),
+  metric_key     text not null unique,
+  metric_label   text not null,
+  metric_value   text not null,
+  display_order  integer not null default 0,
+  created_at     timestamptz not null default now()
+);
+
+comment on table public.ecosystem_metrics is
+  'Ecosystem-level KPIs for foundation and commercial SaaS arms.';
+
+create index ecosystem_metrics_entity_idx on public.ecosystem_metrics (entity_type, display_order);
+
+-- -----------------------------------------------------------------------------
 -- Row Level Security
---
--- The Next.js app reads through the SERVICE ROLE key on the server, which
--- bypasses RLS entirely — these policies exist so the tables can *also* be
--- queried safely with the public anon key (e.g. directly from a client, or
--- from Supabase's auto-generated REST/GraphQL APIs) without exposing write
--- access to anonymous users.
 -- -----------------------------------------------------------------------------
 alter table public.projects enable row level security;
 alter table public.interns  enable row level security;
+alter table public.ecosystem_metrics enable row level security;
 
 drop policy if exists "Public read access" on public.projects;
 create policy "Public read access"
@@ -91,6 +105,12 @@ create policy "Public read access"
 drop policy if exists "Public read access" on public.interns;
 create policy "Public read access"
   on public.interns
+  for select
+  using (true);
+
+drop policy if exists "Public read access" on public.ecosystem_metrics;
+create policy "Public read access"
+  on public.ecosystem_metrics
   for select
   using (true);
 
@@ -219,8 +239,17 @@ values
     'Migrating shared identity core services onto the new multi-tenant cluster topology.'
   );
 
+insert into public.ecosystem_metrics
+  (entity_type, metric_key, metric_label, metric_value, display_order)
+values
+  ('foundation', 'partner_organizations', 'Partner organizations onboarded', '146', 1),
+  ('foundation', 'communities_served', 'Active field deployments', '40+', 2),
+  ('commercial', 'uptime_sla', 'Platform-wide uptime SLA', '99.9%', 1),
+  ('commercial', 'ga_products', 'Products in GA', '3', 2);
+
 -- =============================================================================
 -- Done. Verify with:
 --   select count(*) from public.projects;
 --   select count(*) from public.interns;
+--   select count(*) from public.ecosystem_metrics;
 -- =============================================================================

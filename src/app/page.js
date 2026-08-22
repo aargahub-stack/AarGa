@@ -3,7 +3,7 @@ import MatrixHero from "@/components/MatrixHero";
 import DualMissionSection from "@/components/DualMissionSection";
 import EcosystemGrid from "@/components/EcosystemGrid";
 
-export default function HomePage() {
+export default async function HomePage() {
   return (
     <>
       <MatrixHero>
