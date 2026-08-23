@@ -11,16 +11,19 @@ export default async function AdminDashboardLayout({ children }) {
   const { user, role } = await getAdminSession();
 
   return (
-    <div className="flex min-h-screen bg-paper font-sans text-ink antialiased">
+    <div className="flex h-screen w-full overflow-hidden bg-paper font-sans text-ink antialiased">
+      {/* Sidebar Navigation */}
       <AdminSidebar />
 
-      <div className="flex-1 flex flex-col min-w-0">
-        <header className="flex items-center justify-between border-b border-slate-200 bg-white/70 px-8 py-4 shadow-glass">
+      {/* Main Content Workspace */}
+      <div className="flex flex-1 flex-col min-w-0 h-full overflow-hidden">
+        {/* Top Management Header */}
+        <header className="flex h-16 shrink-0 items-center justify-between border-b border-slate-200 bg-white/80 px-8 backdrop-blur-md shadow-sm">
           <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+            <span className="text-[10px] font-extrabold uppercase tracking-widest text-slate-400">
               Admin Portal
             </span>
-            <h2 className="text-lg font-black tracking-tight text-ink">
+            <h2 className="text-sm font-black tracking-tight text-ink">
               System Management Console
             </h2>
           </div>
@@ -32,13 +35,14 @@ export default async function AdminDashboardLayout({ children }) {
                 User ID: {user.id.slice(0, 8)}...
               </div>
             </div>
-            <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-extrabold uppercase tracking-wide text-emerald-800 border border-emerald-200">
+            <span className="rounded-full bg-emerald-100 px-3 py-0.5 text-xs font-extrabold uppercase tracking-wide text-emerald-800 border border-emerald-200">
               {role}
             </span>
           </div>
         </header>
 
-        <main className="flex-1 p-8 overflow-y-auto no-scrollbar">{children}</main>
+        {/* Scrollable Page Body */}
+        <div className="flex-1 overflow-y-auto p-8 no-scrollbar">{children}</div>
       </div>
     </div>
   );

@@ -37,7 +37,7 @@ export default function RootLayout({ children }) {
     <html lang="en" className={`${urbanist.variable} ${jetbrainsMono.variable}`} data-scroll-behavior="smooth">
       <body className="font-sans bg-paper text-ink antialiased selection:bg-emerald-200">
         <SiteHeader />
-        <main className="min-h-screen">{children}</main>
+        <div className="min-h-screen">{children}</div>
         <SiteFooter />
       </body>
     </html>

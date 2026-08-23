@@ -28,8 +28,8 @@ export default function SiteHeader() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Hide public site header completely on all admin routes
-  if (pathname?.startsWith("/admin")) {
+  // Hide public site header completely on all admin and workspace routes
+  if (pathname?.startsWith("/admin") || pathname?.startsWith("/workspace")) {
     return null;
   }
 

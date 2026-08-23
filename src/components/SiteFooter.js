@@ -34,8 +34,8 @@ const FOOTER_COLUMNS = [
 export default function SiteFooter() {
   const pathname = usePathname();
 
-  // Hide public site footer completely on all admin routes
-  if (pathname?.startsWith("/admin")) {
+  // Hide public site footer completely on all admin and workspace routes
+  if (pathname?.startsWith("/admin") || pathname?.startsWith("/workspace")) {
     return null;
   }
 

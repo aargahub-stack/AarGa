@@ -6,6 +6,7 @@ import { createSupabaseBrowserClient } from "@/lib/supabase/browserClient";
 import AargaLogo from "@/components/AargaLogo";
 import {
   LayoutDashboard,
+  Building2,
   Eye,
   Package,
   Activity,
@@ -16,6 +17,7 @@ import {
 
 const ADMIN_NAV = [
   { href: "/admin", label: "Overview", icon: LayoutDashboard },
+  { href: "/admin/clients", label: "Clients & Onboarding", icon: Building2 },
   { href: "/admin/ecosystem", label: "Ecosystem Mirror", icon: Eye },
   { href: "/admin/sop", label: "SOP Review Queue", icon: ClipboardCheck },
   { href: "/admin/projects", label: "Ecosystem Manager", icon: Package },

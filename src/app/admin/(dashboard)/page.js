@@ -15,13 +15,23 @@ export default async function AdminOverviewPage() {
     getAllMetrics(),
   ]);
 
-  // Fetch admin tasks via RLS-protected authenticated client
-  const { data: tasksData } = await supabase
-    .from("admin_tasks")
-    .select("*")
-    .order("created_at", { ascending: false });
+  // Fetch admin tasks and client projects via RLS-protected authenticated client
+  const [{ data: tasksData }, { data: clientProjectsData }, { data: clientsData }] =
+    await Promise.all([
+      supabase
+        .from("admin_tasks")
+        .select("*")
+        .order("created_at", { ascending: false }),
+      supabase.from("client_projects").select("id, status"),
+      supabase.from("clients").select("id"),
+    ]);
 
   const tasks = tasksData || [];
+  const clientProjects = clientProjectsData || [];
+  const clients = clientsData || [];
+  const activeClientProjectsCount = clientProjects.filter(
+    (cp) => cp.status === "active" || cp.status === "onboarding"
+  ).length;
 
   const foundationMetricsCount = allMetrics.filter(
     (m) => m.entityType === "foundation"
@@ -72,9 +82,27 @@ export default async function AdminOverviewPage() {
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-5">
         <div className="rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-glass">
           <div className="text-xs font-bold uppercase tracking-wider text-slate-400">
-            Active Products
+            Client Engagements
           </div>
           <div className="mt-2 font-mono text-3xl font-black text-emerald-700">
+            {activeClientProjectsCount} Active
+          </div>
+          <div className="mt-1 flex items-center justify-between text-xs font-semibold text-slate-500">
+            <span>{clients.length} registered clients</span>
+            <Link
+              href="/admin/clients"
+              className="font-bold text-emerald-600 hover:underline shrink-0 ml-1"
+            >
+              View Clients →
+            </Link>
+          </div>
+        </div>
+
+        <div className="rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-glass">
+          <div className="text-xs font-bold uppercase tracking-wider text-slate-400">
+            Active Products
+          </div>
+          <div className="mt-2 font-mono text-3xl font-black text-ink">
             {activeProjectsCount} / {projects.length}
           </div>
           <div className="mt-1 text-xs font-semibold text-slate-500">
@@ -99,18 +127,6 @@ export default async function AdminOverviewPage() {
             >
               Manage →
             </Link>
-          </div>
-        </div>
-
-        <div className="rounded-2xl border border-slate-200 bg-white/70 p-6 shadow-glass">
-          <div className="text-xs font-bold uppercase tracking-wider text-slate-400">
-            Total Interns
-          </div>
-          <div className="mt-2 font-mono text-3xl font-black text-ink">
-            {interns.length}
-          </div>
-          <div className="mt-1 text-xs font-semibold text-slate-500">
-            Candidates in telemetry engine
           </div>
         </div>
 
