@@ -36,7 +36,7 @@ export default function NewClientPage() {
   };
 
   return (
-    <div className="max-w-2xl space-y-6">
+    <div className="w-full space-y-6">
       <Link
         href="/admin/clients"
         className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-ink transition-colors"

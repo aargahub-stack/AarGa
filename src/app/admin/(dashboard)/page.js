@@ -160,7 +160,7 @@ export default async function AdminOverviewPage() {
       </div>
 
       {/* Pending Tasks Queue Widget */}
-      <section className="max-w-3xl">
+      <section className="w-full">
         <TaskQueueWidget initialTasks={tasks} />
       </section>
     </div>
