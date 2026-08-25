@@ -4,8 +4,7 @@ import { supabaseServer, isSupabaseConfigured } from "@/lib/supabase/server";
  * Service layer for the `interns` table (Verified Interns Registry,
  * scored by the VeriSkill telemetry engine).
  *
- * Direct Supabase queries. Throws an error if Supabase is not configured
- * or if a query fails.
+ * Direct Supabase queries with safe fallback handling.
  */
 
 function mapInternRow(row) {
@@ -35,43 +34,52 @@ function mapInternRow(row) {
   };
 }
 
-function ensureSupabase() {
-  if (!isSupabaseConfigured || !supabaseServer) {
-    throw new Error(
-      "[interns api] Supabase is not configured. Please set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY."
-    );
-  }
-}
-
 export async function getAllInterns() {
-  ensureSupabase();
-
-  const { data, error } = await supabaseServer
-    .from("interns")
-    .select("*")
-    .order("created_at", { ascending: true });
-
-  if (error) {
-    throw new Error(`[getAllInterns] Supabase error: ${error.message}`);
+  if (!isSupabaseConfigured || !supabaseServer) {
+    console.warn("[interns api] Supabase is not configured.");
+    return [];
   }
 
-  return (data || []).map(mapInternRow);
+  try {
+    const { data, error } = await supabaseServer
+      .from("interns")
+      .select("*")
+      .order("created_at", { ascending: true });
+
+    if (error) {
+      console.warn(`[getAllInterns] Supabase error: ${error.message}`);
+      return [];
+    }
+
+    return (data || []).map(mapInternRow);
+  } catch (err) {
+    console.error("[getAllInterns] Exception:", err);
+    return [];
+  }
 }
 
 export async function getInternBySlug(slug) {
-  ensureSupabase();
-
-  const { data, error } = await supabaseServer
-    .from("interns")
-    .select("*")
-    .eq("profile_slug", slug)
-    .maybeSingle();
-
-  if (error) {
-    throw new Error(`[getInternBySlug] Supabase error: ${error.message}`);
+  if (!isSupabaseConfigured || !supabaseServer) {
+    return null;
   }
 
-  return data ? mapInternRow(data) : null;
+  try {
+    const { data, error } = await supabaseServer
+      .from("interns")
+      .select("*")
+      .eq("profile_slug", slug)
+      .maybeSingle();
+
+    if (error) {
+      console.warn(`[getInternBySlug] Supabase error: ${error.message}`);
+      return null;
+    }
+
+    return data ? mapInternRow(data) : null;
+  } catch (err) {
+    console.error("[getInternBySlug] Exception:", err);
+    return null;
+  }
 }
 
 export async function getInternStats() {

@@ -18,53 +18,49 @@ function mapMetricRow(row) {
   };
 }
 
-function ensureSupabase() {
-  if (!isSupabaseConfigured || !supabaseServer) {
-    throw new Error(
-      "[ecosystemMetrics api] Supabase is not configured. Please set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY."
-    );
-  }
-}
-
 export async function getMetricsByEntity(entityType) {
-  ensureSupabase();
-
-  const { data, error } = await supabaseServer
-    .from("ecosystem_metrics")
-    .select("*")
-    .eq("entity_type", entityType)
-    .order("display_order", { ascending: true });
-
-  if (error) {
-    if (process.env.NODE_ENV !== "production") {
-      console.warn(
-        `[ecosystemMetrics] Table 'ecosystem_metrics' not found in Supabase (${error.message}). Please run supabase_schema.sql in your Supabase SQL Editor to create and seed it.`
-      );
-    }
+  if (!isSupabaseConfigured || !supabaseServer) {
     return [];
   }
 
-  return (data || []).map(mapMetricRow);
+  try {
+    const { data, error } = await supabaseServer
+      .from("ecosystem_metrics")
+      .select("*")
+      .eq("entity_type", entityType)
+      .order("display_order", { ascending: true });
+
+    if (error) {
+      return [];
+    }
+
+    return (data || []).map(mapMetricRow);
+  } catch (err) {
+    console.error("[getMetricsByEntity] Exception:", err);
+    return [];
+  }
 }
 
 export async function getAllEcosystemMetrics() {
-  ensureSupabase();
-
-  const { data, error } = await supabaseServer
-    .from("ecosystem_metrics")
-    .select("*")
-    .order("display_order", { ascending: true });
-
-  if (error) {
-    if (process.env.NODE_ENV !== "production") {
-      console.warn(
-        `[ecosystemMetrics] Table 'ecosystem_metrics' not found in Supabase (${error.message}). Please run supabase_schema.sql in your Supabase SQL Editor to create and seed it.`
-      );
-    }
+  if (!isSupabaseConfigured || !supabaseServer) {
     return [];
   }
 
-  return (data || []).map(mapMetricRow);
+  try {
+    const { data, error } = await supabaseServer
+      .from("ecosystem_metrics")
+      .select("*")
+      .order("display_order", { ascending: true });
+
+    if (error) {
+      return [];
+    }
+
+    return (data || []).map(mapMetricRow);
+  } catch (err) {
+    console.error("[getAllEcosystemMetrics] Exception:", err);
+    return [];
+  }
 }
 
 // Alias for convenience

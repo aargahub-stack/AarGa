@@ -4,8 +4,7 @@ import { supabaseServer, isSupabaseConfigured } from "@/lib/supabase/server";
  * Service layer for the `projects` table (the ecosystem tools: NexFix,
  * Exora, AarVed, and anything added later).
  *
- * Direct Supabase queries. Throws an error if Supabase is not configured
- * or if a query fails.
+ * Direct Supabase queries with safe fallback handling.
  */
 
 function mapProjectRow(row) {
@@ -27,43 +26,52 @@ function mapProjectRow(row) {
   };
 }
 
-function ensureSupabase() {
-  if (!isSupabaseConfigured || !supabaseServer) {
-    throw new Error(
-      "[projects api] Supabase is not configured. Please set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY."
-    );
-  }
-}
-
 export async function getAllProjects() {
-  ensureSupabase();
-
-  const { data, error } = await supabaseServer
-    .from("projects")
-    .select("*")
-    .order("created_at", { ascending: true });
-
-  if (error) {
-    throw new Error(`[getAllProjects] Supabase error: ${error.message}`);
+  if (!isSupabaseConfigured || !supabaseServer) {
+    console.warn("[projects api] Supabase is not configured.");
+    return [];
   }
 
-  return (data || []).map(mapProjectRow);
+  try {
+    const { data, error } = await supabaseServer
+      .from("projects")
+      .select("*")
+      .order("created_at", { ascending: true });
+
+    if (error) {
+      console.warn(`[getAllProjects] Supabase query notice: ${error.message}`);
+      return [];
+    }
+
+    return (data || []).map(mapProjectRow);
+  } catch (err) {
+    console.error("[getAllProjects] Error fetching projects:", err);
+    return [];
+  }
 }
 
 export async function getProjectBySlug(slug) {
-  ensureSupabase();
-
-  const { data, error } = await supabaseServer
-    .from("projects")
-    .select("*")
-    .eq("slug", slug)
-    .maybeSingle();
-
-  if (error) {
-    throw new Error(`[getProjectBySlug] Supabase error: ${error.message}`);
+  if (!isSupabaseConfigured || !supabaseServer) {
+    return null;
   }
 
-  return data ? mapProjectRow(data) : null;
+  try {
+    const { data, error } = await supabaseServer
+      .from("projects")
+      .select("*")
+      .eq("slug", slug)
+      .maybeSingle();
+
+    if (error) {
+      console.warn(`[getProjectBySlug] Supabase query notice: ${error.message}`);
+      return null;
+    }
+
+    return data ? mapProjectRow(data) : null;
+  } catch (err) {
+    console.error("[getProjectBySlug] Error fetching project by slug:", err);
+    return null;
+  }
 }
 
 export async function getProjectStats() {

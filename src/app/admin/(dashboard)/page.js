@@ -8,16 +8,28 @@ import TaskQueueWidget from "@/components/admin/TaskQueueWidget";
 export default async function AdminOverviewPage() {
   const { supabase } = await getAdminSession();
 
-  const [projects, interns, internStats, allMetrics] = await Promise.all([
-    getAllProjects(),
-    getAllInterns(),
-    getInternStats(),
-    getAllMetrics(),
-  ]);
+  let projects = [];
+  let interns = [];
+  let internStats = { total: 0, verified: 0, avgScore: 0 };
+  let allMetrics = [];
+  let tasks = [];
+  let clientProjects = [];
+  let clients = [];
 
-  // Fetch admin tasks and client projects via RLS-protected authenticated client
-  const [{ data: tasksData }, { data: clientProjectsData }, { data: clientsData }] =
-    await Promise.all([
+  try {
+    const [pRes, iRes, iStatsRes, mRes] = await Promise.all([
+      getAllProjects(),
+      getAllInterns(),
+      getInternStats(),
+      getAllMetrics(),
+    ]);
+
+    projects = pRes || [];
+    interns = iRes || [];
+    internStats = iStatsRes || { total: 0, verified: 0, avgScore: 0 };
+    allMetrics = mRes || [];
+
+    const [tasksRes, clientProjectsRes, clientsRes] = await Promise.all([
       supabase
         .from("admin_tasks")
         .select("*")
@@ -26,28 +38,33 @@ export default async function AdminOverviewPage() {
       supabase.from("clients").select("id"),
     ]);
 
-  const tasks = tasksData || [];
-  const clientProjects = clientProjectsData || [];
-  const clients = clientsData || [];
-  const activeClientProjectsCount = clientProjects.filter(
-    (cp) => cp.status === "active" || cp.status === "onboarding"
+    tasks = tasksRes?.data || [];
+    clientProjects = clientProjectsRes?.data || [];
+    clients = clientsRes?.data || [];
+  } catch (err) {
+    console.error("[AdminOverviewPage] Error loading dashboard data:", err);
+  }
+
+  const activeClientProjectsCount = (clientProjects || []).filter(
+    (cp) => cp && (cp.status === "active" || cp.status === "onboarding")
   ).length;
 
-  const foundationMetricsCount = allMetrics.filter(
-    (m) => m.entityType === "foundation"
+  const foundationMetricsCount = (allMetrics || []).filter(
+    (m) => m && m.entityType === "foundation"
   ).length;
 
-  const commercialMetricsCount = allMetrics.filter(
-    (m) => m.entityType === "commercial"
+  const commercialMetricsCount = (allMetrics || []).filter(
+    (m) => m && m.entityType === "commercial"
   ).length;
 
-  const activeProjectsCount = projects.filter(
-    (p) => p.status === "GA" || p.status === "Beta"
+  const activeProjectsCount = (projects || []).filter(
+    (p) => p && (p.status === "GA" || p.status === "Beta")
   ).length;
 
   // Defensive system health check
   let isDegraded = false;
   for (const p of projects) {
+    if (!p) continue;
     const rawVal =
       p.metrics?.uptime ||
       p.metrics?.uptimeSla ||

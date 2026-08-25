@@ -7,19 +7,23 @@ import AargaLogo from "@/components/AargaLogo";
 import {
   LayoutDashboard,
   Building2,
+  ListTree,
+  ClipboardCheck,
+  Users,
   Eye,
   Package,
   Activity,
   GraduationCap,
-  ClipboardCheck,
   LogOut,
 } from "lucide-react";
 
 const ADMIN_NAV = [
   { href: "/admin", label: "Overview", icon: LayoutDashboard },
   { href: "/admin/clients", label: "Clients & Onboarding", icon: Building2 },
-  { href: "/admin/ecosystem", label: "Ecosystem Mirror", icon: Eye },
+  { href: "/admin/sop-templates", label: "SOP Templates", icon: ListTree },
   { href: "/admin/sop", label: "SOP Review Queue", icon: ClipboardCheck },
+  { href: "/admin/team", label: "Team Workload", icon: Users },
+  { href: "/admin/ecosystem", label: "Ecosystem Mirror", icon: Eye },
   { href: "/admin/projects", label: "Ecosystem Manager", icon: Package },
   { href: "/admin/ecosystem-metrics", label: "Ecosystem Metrics", icon: Activity },
   { href: "/admin/interns", label: "Talent Registry", icon: GraduationCap },
