@@ -143,12 +143,22 @@ export default function OnboardWizardView({ client }) {
                 </p>
               </div>
             </div>
-            <Link
-              href="/admin/sop"
-              className="rounded-xl bg-ink px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-moss-800"
-            >
-              Go to SOP Review Queue →
-            </Link>
+            <div className="flex items-center gap-2">
+              {spawnedResult.project?.id && (
+                <Link
+                  href={`/admin/clients/${client.id}/projects/${spawnedResult.project.id}`}
+                  className="rounded-xl bg-emerald-600 px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-emerald-700"
+                >
+                  Manage Live Project Roadmap →
+                </Link>
+              )}
+              <Link
+                href="/admin/sop"
+                className="rounded-xl bg-ink px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-moss-800"
+              >
+                Go to SOP Review Queue →
+              </Link>
+            </div>
           </div>
 
           <div className="space-y-4">

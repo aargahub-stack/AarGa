@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Building2, Plus, ArrowRight, Layers } from "lucide-react";
+import { Building2, Plus, ArrowRight, Layers, ExternalLink } from "lucide-react";
 
 export default function ClientsView({ clients }) {
   return (
@@ -37,7 +37,7 @@ export default function ClientsView({ clients }) {
               <tr>
                 <th className="px-6 py-4">Organization / Contact</th>
                 <th className="px-6 py-4">Email</th>
-                <th className="px-6 py-4">Active Engagements</th>
+                <th className="px-6 py-4">Active Engagements (Manage Roadmap)</th>
                 <th className="px-6 py-4 text-right">Actions</th>
               </tr>
             </thead>
@@ -81,19 +81,19 @@ export default function ClientsView({ clients }) {
                             No Active Projects
                           </span>
                         ) : (
-                          <div className="space-y-1">
+                          <div className="flex flex-wrap gap-2">
                             {projects.map((p) => (
-                              <div
+                              <Link
                                 key={p.id}
-                                className="flex items-center gap-2 text-[11px]"
+                                href={`/admin/clients/${c.id}/projects/${p.id}`}
+                                className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-extrabold text-slate-800 hover:bg-emerald-50 hover:border-emerald-300 hover:text-emerald-900 transition-colors shadow-sm"
+                                title="Open Live Phase Control Panel & Task Allotment"
                               >
-                                <span className="font-bold text-ink uppercase">
-                                  {p.project_type}
+                                <span className="uppercase">{p.project_type.replace(/_/g, " ")}</span>
+                                <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[9px] font-black text-emerald-800 border border-emerald-200 flex items-center gap-1">
+                                  {p.status} <ExternalLink size={10} />
                                 </span>
-                                <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-extrabold text-emerald-800">
-                                  {p.status}
-                                </span>
-                              </div>
+                              </Link>
                             ))}
                           </div>
                         )}
