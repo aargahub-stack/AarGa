@@ -30,7 +30,7 @@ export async function suggestAssigneesForTask(sopTaskId) {
   // 2. Fetch active team members with skills and assigned tasks
   const { data: members, error: memErr } = await supabase
     .from("team_members")
-    .select("*, team_member_skills(*, skills(name)), sop_tasks(*)")
+    .select("*, team_member_skills(*, skills(name)), sop_tasks:sop_tasks!sop_tasks_assigned_to_fkey(*)")
     .eq("active", true);
 
   if (memErr || !members) return [];

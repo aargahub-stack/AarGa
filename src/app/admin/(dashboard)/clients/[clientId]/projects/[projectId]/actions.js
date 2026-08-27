@@ -138,7 +138,7 @@ export async function getAllTeamMembersAction() {
 
   const { data: members } = await supabase
     .from("team_members")
-    .select("*, team_member_skills(*, skills(name)), sop_tasks(*)")
+    .select("*, team_member_skills(*, skills(name)), sop_tasks:sop_tasks!sop_tasks_assigned_to_fkey(*)")
     .eq("active", true)
     .order("name", { ascending: true });
 

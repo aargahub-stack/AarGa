@@ -12,7 +12,7 @@ export default async function AdminProjectPhaseControlPage({ params }) {
       supabase.from("clients").select("*").eq("id", clientId).single(),
       supabase
         .from("project_phases")
-        .select("*, sop_tasks(*, team_members(id, name, role)))")
+        .select("*, sop_tasks(*, team_members:team_members!sop_tasks_assigned_to_fkey(id, name, role)))")
         .eq("client_project_id", projectId)
         .order("phase_order", { ascending: true }),
       supabase
