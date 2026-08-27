@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { startTaskAction, submitTaskForReviewAction } from "./actions";
 import Toast from "@/components/admin/Toast";
-import { AlertCircle, CheckCircle2, Clock, Send, Play } from "lucide-react";
+import { AlertCircle, CheckCircle2, Clock, Send, Play, MessageSquare, CheckSquare } from "lucide-react";
 
 export default function WorkspaceTaskView({ teamMember, activeTasks, completedTasks, notifications = [] }) {
   const [tasks, setTasks] = useState(activeTasks);
@@ -120,6 +120,12 @@ export default function WorkspaceTaskView({ teamMember, activeTasks, completedTa
                   const isSubmitted = task.status === "submitted_for_review";
                   const isReturned = Boolean(task.rejection_reason);
 
+                  // Extract key points from founder's rejection reason
+                  const pointsList = (task.rejection_reason || "")
+                    .split(/[\n,;]|\.\s+/)
+                    .map((p) => p.trim())
+                    .filter((p) => p.length > 2);
+
                   return (
                     <div
                       key={task.id}
@@ -130,7 +136,7 @@ export default function WorkspaceTaskView({ teamMember, activeTasks, completedTa
                       }`}
                     >
                       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                        <div className="space-y-1">
+                        <div className="space-y-2 flex-1">
                           <div className="flex items-center gap-2">
                             <span
                               className={`inline-block rounded-full px-2.5 py-0.5 text-[10px] font-extrabold ${
@@ -175,18 +181,48 @@ export default function WorkspaceTaskView({ teamMember, activeTasks, completedTa
                             </p>
                           )}
 
-                          {/* Founder Rejection Feedback Banner */}
+                          {/* Founder Rejection Feedback & Key Revision Points Card */}
                           {task.rejection_reason && isInProgress && (
-                            <div className="mt-3 rounded-2xl border border-red-200 bg-red-50/90 p-4 text-xs space-y-1.5">
-                              <div className="flex items-center gap-1.5 font-extrabold text-red-950">
-                                <AlertCircle size={16} className="text-red-600 shrink-0" />
-                                <span>Founder Rejection Feedback — Revisions Required</span>
+                            <div className="mt-3 rounded-2xl border border-red-200 bg-red-50/90 p-4 text-xs space-y-3">
+                              <div className="flex items-center justify-between border-b border-red-200/80 pb-2">
+                                <div className="flex items-center gap-1.5 font-black text-red-950">
+                                  <AlertCircle size={16} className="text-red-600 shrink-0" />
+                                  <span>Founder Rejection Notes &amp; Actionable Feedback</span>
+                                </div>
+                                <span className="rounded-full bg-red-100 px-2.5 py-0.5 text-[10px] font-black uppercase text-red-800 border border-red-200">
+                                  Action Required
+                                </span>
                               </div>
-                              <p className="text-slate-800 font-bold pl-5 leading-relaxed bg-white/70 p-2.5 rounded-xl border border-red-100">
-                                &quot;{task.rejection_reason}&quot;
-                              </p>
-                              <p className="text-[10px] text-red-700 pl-5 font-semibold">
-                                Please revise your deliverable per the founder notes above and click &quot;Submit for Review&quot; when ready.
+
+                              {/* Exact Founder Message */}
+                              <div className="bg-white rounded-xl p-3.5 border border-red-200/90 text-slate-800 font-semibold whitespace-pre-wrap leading-relaxed shadow-sm">
+                                <div className="flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-red-600 mb-1">
+                                  <MessageSquare size={12} />
+                                  <span>Founder Message Notes:</span>
+                                </div>
+                                {task.rejection_reason}
+                              </div>
+
+                              {/* Key Revision Points Breakdown */}
+                              {pointsList.length > 0 && (
+                                <div className="pl-1 space-y-1.5">
+                                  <div className="flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-slate-500">
+                                    <CheckSquare size={12} className="text-red-600" />
+                                    <span>Key Points to Fix:</span>
+                                  </div>
+                                  <div className="space-y-1">
+                                    {pointsList.map((point, idx) => (
+                                      <div key={idx} className="flex items-start gap-2 text-[11px] text-slate-800 bg-white/60 p-2 rounded-lg border border-red-100">
+                                        <span className="text-red-600 font-extrabold shrink-0">•</span>
+                                        <span className="font-bold leading-tight">{point}</span>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+
+                              <p className="text-[10px] text-red-700 font-bold pt-1">
+                                Please revise your work addressing the founder feedback above, then click &quot;Resubmit for Review&quot;.
                               </p>
                             </div>
                           )}

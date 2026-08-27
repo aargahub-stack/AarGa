@@ -4,8 +4,8 @@ import WorkspaceTaskView from "./WorkspaceTaskView";
 export default async function WorkspaceDashboardPage() {
   const { teamMember, supabase } = await getWorkspaceSession();
 
-  // Query assigned tasks, notifications, and rejection activity logs concurrently
-  const [{ data: allAssignedTasks }, { data: notifications }, { data: rejectionLogs }] =
+  // Query assigned tasks and notifications concurrently
+  const [{ data: allAssignedTasks }, { data: notifications }] =
     await Promise.all([
       supabase
         .from("sop_tasks")
@@ -17,27 +17,35 @@ export default async function WorkspaceDashboardPage() {
         .select("*")
         .eq("team_member_id", teamMember.id)
         .order("created_at", { ascending: false }),
-      supabase
-        .from("sop_activity_logs")
-        .select("*")
-        .eq("event_type", "task_rejected")
-        .order("created_at", { ascending: false }),
     ]);
 
   const tasksList = allAssignedTasks || [];
 
-  // Map rejection logs to tasks if rejection_reason column isn't directly populated
-  const rejectionMap = new Map();
-  (rejectionLogs || []).forEach((log) => {
-    if (log.sop_task_id && !rejectionMap.has(log.sop_task_id)) {
-      rejectionMap.set(log.sop_task_id, log.event_detail?.reason);
+  // Parse rejection reasons from sop_notifications ("Task 'Title' returned for revisions: <Reason>")
+  const notifRejectionMap = new Map();
+  (notifications || []).forEach((n) => {
+    if (n.message && n.message.includes("returned for revisions:")) {
+      const parts = n.message.split("returned for revisions:");
+      if (parts[1]) {
+        const reason = parts[1].trim();
+        const match = parts[0].match(/Task ['"](.*?)['"]/);
+        if (match && match[1]) {
+          const taskTitle = match[1].trim();
+          if (!notifRejectionMap.has(taskTitle)) {
+            notifRejectionMap.set(taskTitle, reason);
+          }
+        }
+      }
     }
   });
 
-  const enrichedTasks = tasksList.map((t) => ({
-    ...t,
-    rejection_reason: t.rejection_reason || rejectionMap.get(t.id) || null,
-  }));
+  const enrichedTasks = tasksList.map((t) => {
+    const reasonFromNotif = notifRejectionMap.get(t.title?.trim());
+    return {
+      ...t,
+      rejection_reason: t.rejection_reason || reasonFromNotif || null,
+    };
+  });
 
   // Actionable tasks MUST belong to an active phase
   const activeTasks = enrichedTasks.filter(
