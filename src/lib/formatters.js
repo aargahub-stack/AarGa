@@ -28,7 +28,7 @@ export function formatProductCount(count) {
     return `${SMALL_WORDS[count]} products.`;
   }
 
-  return `${count.toLocaleString()} products.`;
+  return `${count.toLocaleString("en-US")}`;
 }
 
 /**
@@ -43,5 +43,21 @@ export function numberToWord(num, capitalize = true) {
     return capitalize ? word : word.toLowerCase();
   }
 
-  return num.toLocaleString();
+  return num.toLocaleString("en-US");
+}
+
+/**
+ * Formats a date string deterministically across SSR and Client to eliminate React hydration mismatches.
+ * Example: "2026-08-23T03:00:00.000Z" -> "Aug 23, 2026"
+ */
+export function formatDate(dateString) {
+  if (!dateString) return "";
+  const d = new Date(dateString);
+  if (isNaN(d.getTime())) return "";
+  return d.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    timeZone: "UTC",
+  });
 }

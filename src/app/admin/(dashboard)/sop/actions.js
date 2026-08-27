@@ -84,14 +84,20 @@ export async function rejectTaskSubmission(sopTaskId, rejectionReason) {
     return { success: false, error: "Task not found." };
   }
 
-  // Revert status back to in_progress
+  // Revert status back to in_progress and save rejection_reason
+  const updatePayload = {
+    status: "in_progress",
+    rejection_reason: rejectionReason,
+  };
+
   const { error: updateErr } = await supabase
     .from("sop_tasks")
-    .update({ status: "in_progress" })
+    .update(updatePayload)
     .eq("id", sopTaskId);
 
   if (updateErr) {
-    return { success: false, error: updateErr.message };
+    delete updatePayload.rejection_reason;
+    await supabase.from("sop_tasks").update(updatePayload).eq("id", sopTaskId);
   }
 
   // Log activity

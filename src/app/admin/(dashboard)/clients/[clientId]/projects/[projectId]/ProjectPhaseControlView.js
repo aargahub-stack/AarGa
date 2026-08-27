@@ -8,6 +8,7 @@ import {
   reopenPhaseAction,
 } from "./actions";
 import { verifyTaskCompletion, rejectTaskSubmission } from "@/app/admin/(dashboard)/sop/actions";
+import { formatDate } from "@/lib/formatters";
 import AssignTaskPanel from "@/components/admin/AssignTaskPanel";
 import Toast from "@/components/admin/Toast";
 import {
@@ -180,7 +181,7 @@ export default function ProjectPhaseControlView({ project, client, phases, activ
               <AlertTriangle className="text-amber-600 shrink-0 mt-0.5" size={18} />
               <div>
                 <span className="font-bold">
-                  Phase {log.event_detail?.phase_order}: {log.event_detail?.phase_name} was manually force-unlocked on {new Date(log.created_at).toLocaleDateString()}
+                  Phase {log.event_detail?.phase_order}: {log.event_detail?.phase_name} was manually force-unlocked on {formatDate(log.created_at)}
                 </span>
                 <p className="mt-0.5 font-mono text-[11px] text-amber-800">
                   Reason: &quot;{log.event_detail?.reason}&quot; — Normal completion gating was bypassed.
@@ -245,7 +246,7 @@ export default function ProjectPhaseControlView({ project, client, phases, activ
 
                     {phase.unlocked_at && (
                       <span className="text-[11px] font-mono text-slate-500">
-                        Unlocked: {new Date(phase.unlocked_at).toLocaleDateString()}
+                        Unlocked: {formatDate(phase.unlocked_at)}
                       </span>
                     )}
                   </div>

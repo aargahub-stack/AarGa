@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { startTaskAction, submitTaskForReviewAction } from "./actions";
 import Toast from "@/components/admin/Toast";
+import { AlertCircle, CheckCircle2, Clock, Send, Play } from "lucide-react";
 
-export default function WorkspaceTaskView({ teamMember, activeTasks, completedTasks }) {
+export default function WorkspaceTaskView({ teamMember, activeTasks, completedTasks, notifications = [] }) {
   const [tasks, setTasks] = useState(activeTasks);
   const [doneTasks, setDoneTasks] = useState(completedTasks);
   const [submittingTaskId, setSubmittingTaskId] = useState(null);
@@ -43,7 +44,7 @@ export default function WorkspaceTaskView({ teamMember, activeTasks, completedTa
       setTasks((prev) =>
         prev.map((t) =>
           t.id === submittingTaskId
-            ? { ...t, status: "submitted_for_review", submission_note: submissionNote }
+            ? { ...t, status: "submitted_for_review", submission_note: submissionNote, rejection_reason: null }
             : t
         )
       );
@@ -117,18 +118,25 @@ export default function WorkspaceTaskView({ teamMember, activeTasks, completedTa
                   const isAssigned = task.status === "assigned";
                   const isInProgress = task.status === "in_progress";
                   const isSubmitted = task.status === "submitted_for_review";
+                  const isReturned = Boolean(task.rejection_reason);
 
                   return (
                     <div
                       key={task.id}
-                      className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-md transition-shadow"
+                      className={`rounded-2xl border bg-white p-6 shadow-sm hover:shadow-md transition-all ${
+                        isReturned && isInProgress
+                          ? "border-red-300 ring-2 ring-red-500/10"
+                          : "border-slate-200"
+                      }`}
                     >
                       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                         <div className="space-y-1">
                           <div className="flex items-center gap-2">
                             <span
                               className={`inline-block rounded-full px-2.5 py-0.5 text-[10px] font-extrabold ${
-                                isAssigned
+                                isReturned && isInProgress
+                                  ? "bg-red-100 text-red-800 border border-red-200"
+                                  : isAssigned
                                   ? "bg-slate-100 text-slate-700 border border-slate-200"
                                   : isInProgress
                                   ? "bg-amber-100 text-amber-800 border border-amber-200"
@@ -137,7 +145,9 @@ export default function WorkspaceTaskView({ teamMember, activeTasks, completedTa
                                   : "bg-slate-100 text-slate-600"
                               }`}
                             >
-                              {isAssigned
+                              {isReturned && isInProgress
+                                ? "Returned for Revisions"
+                                : isAssigned
                                 ? "Assigned"
                                 : isInProgress
                                 ? "In Progress"
@@ -154,13 +164,31 @@ export default function WorkspaceTaskView({ teamMember, activeTasks, completedTa
                               </span>
                             ))}
                           </div>
+
                           <h4 className="text-base font-extrabold text-ink">
                             {task.title}
                           </h4>
+
                           {task.description && (
                             <p className="text-xs text-slate-600 leading-relaxed max-w-2xl">
                               {task.description}
                             </p>
+                          )}
+
+                          {/* Founder Rejection Feedback Banner */}
+                          {task.rejection_reason && isInProgress && (
+                            <div className="mt-3 rounded-2xl border border-red-200 bg-red-50/90 p-4 text-xs space-y-1.5">
+                              <div className="flex items-center gap-1.5 font-extrabold text-red-950">
+                                <AlertCircle size={16} className="text-red-600 shrink-0" />
+                                <span>Founder Rejection Feedback — Revisions Required</span>
+                              </div>
+                              <p className="text-slate-800 font-bold pl-5 leading-relaxed bg-white/70 p-2.5 rounded-xl border border-red-100">
+                                &quot;{task.rejection_reason}&quot;
+                              </p>
+                              <p className="text-[10px] text-red-700 pl-5 font-semibold">
+                                Please revise your deliverable per the founder notes above and click &quot;Submit for Review&quot; when ready.
+                              </p>
+                            </div>
                           )}
                         </div>
 
@@ -170,9 +198,10 @@ export default function WorkspaceTaskView({ teamMember, activeTasks, completedTa
                             <button
                               onClick={() => handleStartTask(task)}
                               disabled={loadingId === task.id}
-                              className="rounded-xl bg-ink px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-moss-800 transition-colors disabled:opacity-50"
+                              className="inline-flex items-center gap-1.5 rounded-xl bg-ink px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-moss-800 transition-colors disabled:opacity-50"
                             >
-                              {loadingId === task.id ? "Starting..." : "Start Task →"}
+                              <Play size={14} />
+                              <span>{loadingId === task.id ? "Starting..." : "Start Task →"}</span>
                             </button>
                           )}
 
@@ -180,18 +209,19 @@ export default function WorkspaceTaskView({ teamMember, activeTasks, completedTa
                             <button
                               onClick={() => {
                                 setSubmittingTaskId(task.id);
-                                setSubmissionNote("");
+                                setSubmissionNote(task.submission_note || "");
                               }}
-                              className="rounded-xl bg-emerald-600 px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-emerald-700 transition-colors"
+                              className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-emerald-700 transition-colors"
                             >
-                              Submit for Review
+                              <Send size={14} />
+                              <span>{isReturned ? "Resubmit for Review" : "Submit for Review"}</span>
                             </button>
                           )}
 
                           {isSubmitted && (
                             <span className="inline-flex items-center gap-1.5 rounded-xl border border-amber-200 bg-amber-50 px-3 py-1.5 text-xs font-bold text-amber-800">
-                              <span className="h-1.5 w-1.5 rounded-full bg-amber-500 animate-pulse" />
-                              Awaiting Lead Review
+                              <Clock size={14} className="text-amber-600 animate-pulse" />
+                              <span>Awaiting Founder Review</span>
                             </span>
                           )}
                         </div>
@@ -211,7 +241,7 @@ export default function WorkspaceTaskView({ teamMember, activeTasks, completedTa
           <div className="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-6 shadow-glass">
             <h3 className="text-lg font-black text-ink">Submit Task for Review</h3>
             <p className="mt-1 text-xs text-slate-500">
-              Provide any optional submission notes or PR links for your lead reviewer.
+              Provide optional submission notes or PR / deliverable links for your reviewer.
             </p>
 
             <form onSubmit={handleSubmitTask} className="mt-4 space-y-4">
@@ -223,7 +253,7 @@ export default function WorkspaceTaskView({ teamMember, activeTasks, completedTa
                   rows={3}
                   value={submissionNote}
                   onChange={(e) => setSubmissionNote(e.target.value)}
-                  placeholder="e.g. PR #42 merged into staging, RLS policies verified..."
+                  placeholder="e.g. PR #42 merged, updated schema per feedback..."
                   className="mt-1 w-full rounded-xl border border-slate-200 bg-white p-3 text-xs text-ink focus:border-emerald-600 focus:outline-none"
                 />
               </div>
@@ -268,8 +298,9 @@ export default function WorkspaceTaskView({ teamMember, activeTasks, completedTa
                     Phase: {task.project_phases?.name || "Phase"}
                   </div>
                 </div>
-                <span className="rounded-full border border-emerald-200 bg-emerald-100 px-3 py-1 font-bold text-emerald-800">
-                  Verified Complete ✓
+                <span className="rounded-full border border-emerald-200 bg-emerald-100 px-3 py-1 font-bold text-emerald-800 flex items-center gap-1">
+                  <CheckCircle2 size={12} />
+                  <span>Verified Complete</span>
                 </span>
               </div>
             ))}

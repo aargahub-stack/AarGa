@@ -4,10 +4,10 @@ import SopReviewView from "./SopReviewView";
 export default async function AdminSopReviewPage() {
   const { supabase } = await getAdminSession();
 
-  // Query tasks submitted for review
+  // Query tasks submitted for review with explicit FK relationship hint
   const { data: reviewTasks } = await supabase
     .from("sop_tasks")
-    .select("*, team_members(name, role), project_phases(*, client_projects(*, clients(*)))")
+    .select("*, team_members:team_members!sop_tasks_assigned_to_fkey(name, role), project_phases(*, client_projects(*, clients(*)))")
     .eq("status", "submitted_for_review")
     .order("created_at", { ascending: false });
 
