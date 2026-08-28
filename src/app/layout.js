@@ -22,12 +22,25 @@ export const metadata = {
   description:
     "AarGa unifies social impact with enterprise engineering — powering NexFix, Exora, and AarVed from one shared platform core.",
   metadataBase: new URL("https://aarga.org"),
+  icons: {
+    icon: "/aarga-logo.png",
+    shortcut: "/aarga-logo.png",
+    apple: "/aarga-logo.png",
+  },
   openGraph: {
     title: "AarGa — One Ecosystem. Two Missions.",
     description:
       "AarGa unifies social impact with enterprise engineering.",
     url: "https://aarga.org",
     siteName: "AarGa",
+    images: [
+      {
+        url: "/aarga-logo.png",
+        width: 1200,
+        height: 630,
+        alt: "AarGa Ecosystem Logo",
+      },
+    ],
     type: "website",
   },
 };
