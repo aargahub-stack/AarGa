@@ -185,3 +185,215 @@ export async function assignTaskAction(sopTaskId, teamMemberId, method = "manual
 export async function reopenPhaseAction(projectPhaseId, reason) {
   return reopenPhase(projectPhaseId, reason);
 }
+
+export async function markProjectCompleted(projectId) {
+  const { user, supabase } = await getAdminSession();
+
+  if (!projectId) {
+    return { success: false, error: "Project ID is required." };
+  }
+
+  // Check project & phases
+  const { data: project, error: pErr } = await supabase
+    .from("client_projects")
+    .select("*, clients(id, org_name, name)")
+    .eq("id", projectId)
+    .single();
+
+  if (pErr || !project) {
+    return { success: false, error: "Client project not found." };
+  }
+
+  // Fetch all phases for project ordered by phase_order ascending
+  const { data: phases } = await supabase
+    .from("project_phases")
+    .select("*")
+    .eq("client_project_id", projectId)
+    .order("phase_order", { ascending: true });
+
+  if (!phases || phases.length === 0) {
+    return { success: false, error: "Project has no initialized phases." };
+  }
+
+  const finalPhase = phases[phases.length - 1];
+
+  if (finalPhase.status !== "completed") {
+    return {
+      success: false,
+      error: `Final phase '${finalPhase.name}' must be completed first before marking the project completed.`,
+    };
+  }
+
+  const nowIso = new Date().toISOString();
+
+  // Update status to completed
+  const { error: updateErr } = await supabase
+    .from("client_projects")
+    .update({ status: "completed" })
+    .eq("id", projectId);
+
+  if (updateErr) {
+    return { success: false, error: updateErr.message };
+  }
+
+  // Log activity
+  await supabase.from("sop_activity_logs").insert([
+    {
+      client_project_id: projectId,
+      actor_user_id: user.id,
+      event_type: "project_completed",
+      event_detail: {
+        completed_at: nowIso,
+        client_name: project.clients?.org_name || project.clients?.name,
+        project_type: project.project_type,
+      },
+    },
+  ]);
+
+  revalidatePath(`/admin/clients/${project.client_id}/projects/${projectId}`);
+  revalidatePath(`/admin/clients/${project.client_id}`);
+  revalidatePath("/admin/clients");
+  revalidatePath("/admin/sop");
+  revalidatePath("/workspace");
+
+  return { success: true };
+}
+
+export async function cancelClientProject(projectId) {
+  const { user, supabase } = await getAdminSession();
+
+  if (!projectId) {
+    return { success: false, error: "Project ID is required." };
+  }
+
+  const { data: project, error: pErr } = await supabase
+    .from("client_projects")
+    .select("*, clients(id, org_name, name)")
+    .eq("id", projectId)
+    .single();
+
+  if (pErr || !project) {
+    return { success: false, error: "Client project not found." };
+  }
+
+  const nowIso = new Date().toISOString();
+
+  const { error: updateErr } = await supabase
+    .from("client_projects")
+    .update({ status: "cancelled" })
+    .eq("id", projectId);
+
+  if (updateErr) {
+    return { success: false, error: updateErr.message };
+  }
+
+  // Log activity
+  await supabase.from("sop_activity_logs").insert([
+    {
+      client_project_id: projectId,
+      actor_user_id: user.id,
+      event_type: "project_cancelled",
+      event_detail: {
+        cancelled_at: nowIso,
+        client_name: project.clients?.org_name || project.clients?.name,
+        project_type: project.project_type,
+      },
+    },
+  ]);
+
+  revalidatePath(`/admin/clients/${project.client_id}/projects/${projectId}`);
+  revalidatePath(`/admin/clients/${project.client_id}`);
+  revalidatePath("/admin/clients");
+  revalidatePath("/admin/sop");
+  revalidatePath("/workspace");
+
+  return { success: true };
+}
+
+export async function deleteClientProject(projectId) {
+  const { user, supabase } = await getAdminSession();
+
+  if (!projectId) {
+    return { success: false, error: "Project ID is required." };
+  }
+
+  // Fetch project and client details
+  const { data: project, error: pErr } = await supabase
+    .from("client_projects")
+    .select("*, clients(id, org_name, name)")
+    .eq("id", projectId)
+    .single();
+
+  if (pErr || !project) {
+    return { success: false, error: "Client project not found." };
+  }
+
+  // Get project phases
+  const { data: phases } = await supabase
+    .from("project_phases")
+    .select("id")
+    .eq("client_project_id", projectId);
+
+  const phaseIds = (phases || []).map((p) => p.id);
+
+  // Check for in-flight tasks (in_progress or submitted_for_review)
+  if (phaseIds.length > 0) {
+    const { data: activeTasks } = await supabase
+      .from("sop_tasks")
+      .select("id, title, status")
+      .in("project_phase_id", phaseIds)
+      .in("status", ["in_progress", "submitted_for_review"]);
+
+    if (activeTasks && activeTasks.length > 0) {
+      return {
+        success: false,
+        error: `This project has ${activeTasks.length} task(s) currently in progress or awaiting review. Mark the project as completed or cancelled instead of deleting, or resolve those tasks first.`,
+      };
+    }
+  }
+
+  const nowIso = new Date().toISOString();
+
+  // Log activity BEFORE deletion
+  await supabase.from("sop_activity_logs").insert([
+    {
+      client_project_id: null,
+      actor_user_id: user.id,
+      event_type: "project_deleted",
+      event_detail: {
+        project_id: projectId,
+        project_type: project.project_type,
+        client_id: project.client_id,
+        client_name: project.clients?.org_name || project.clients?.name,
+        deleted_at: nowIso,
+      },
+    },
+  ]);
+
+  // Execute explicit FK-respecting deletion sequence:
+  // 1. Delete sop_tasks
+  if (phaseIds.length > 0) {
+    await supabase.from("sop_tasks").delete().in("project_phase_id", phaseIds);
+  }
+
+  // 2. Unlink current_phase_id from project
+  await supabase.from("client_projects").update({ current_phase_id: null }).eq("id", projectId);
+
+  // 3. Delete project_phases
+  await supabase.from("project_phases").delete().eq("client_project_id", projectId);
+
+  // 4. Delete client_projects
+  const { error: delErr } = await supabase.from("client_projects").delete().eq("id", projectId);
+
+  if (delErr) {
+    return { success: false, error: delErr.message };
+  }
+
+  revalidatePath(`/admin/clients/${project.client_id}`);
+  revalidatePath("/admin/clients");
+  revalidatePath("/admin/sop");
+  revalidatePath("/workspace");
+
+  return { success: true, clientId: project.client_id };
+}
+

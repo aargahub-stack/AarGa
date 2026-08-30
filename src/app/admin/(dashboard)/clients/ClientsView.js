@@ -1,11 +1,66 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { Building2, Plus, ArrowRight, Layers, ExternalLink } from "lucide-react";
+import { Building2, Plus, ArrowRight, Layers, ExternalLink, Trash2 } from "lucide-react";
+import { deleteClientAction } from "./actions";
+import DeleteConfirmationModal from "@/components/admin/DeleteConfirmationModal";
+import Toast from "@/components/admin/Toast";
 
 export default function ClientsView({ clients }) {
+  const [deletingClient, setDeletingClient] = useState(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
+  const [toast, setToast] = useState(null);
+
+  const showToast = (type, message) => setToast({ type, message });
+
+  const handleDeleteClient = async () => {
+    if (!deletingClient) return;
+
+    setDeleteLoading(true);
+    setDeleteError("");
+
+    const res = await deleteClientAction(deletingClient.id);
+    setDeleteLoading(false);
+
+    if (res.success) {
+      showToast("success", `Client '${deletingClient.org_name || deletingClient.name}' deleted.`);
+      setDeletingClient(null);
+      window.location.reload();
+    } else {
+      setDeleteError(res.error || "Failed to delete client.");
+    }
+  };
+
   return (
     <div className="space-y-6">
+      {toast && (
+        <Toast
+          type={toast.type}
+          message={toast.message}
+          onClose={() => setToast(null)}
+        />
+      )}
+
+      {/* Delete Client Modal */}
+      {deletingClient && (
+        <DeleteConfirmationModal
+          isOpen={Boolean(deletingClient)}
+          onClose={() => {
+            setDeletingClient(null);
+            setDeleteError("");
+          }}
+          onConfirm={handleDeleteClient}
+          title="Delete Client Record"
+          description={`Are you sure you want to delete ${deletingClient.org_name || deletingClient.name}? This client must have zero active/on_hold projects.`}
+          confirmMatchText={deletingClient.org_name || deletingClient.name}
+          confirmButtonText="Delete Client Record"
+          loading={deleteLoading}
+          errorMessage={deleteError}
+        />
+      )}
+
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
@@ -90,7 +145,13 @@ export default function ClientsView({ clients }) {
                                 title="Open Live Phase Control Panel & Task Allotment"
                               >
                                 <span className="uppercase">{p.project_type.replace(/_/g, " ")}</span>
-                                <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[9px] font-black text-emerald-800 border border-emerald-200 flex items-center gap-1">
+                                <span className={`rounded-full px-2 py-0.5 text-[9px] font-black border flex items-center gap-1 ${
+                                  p.status === "completed"
+                                    ? "bg-emerald-100 text-emerald-800 border-emerald-300"
+                                    : p.status === "cancelled"
+                                    ? "bg-slate-200 text-slate-700 border-slate-300"
+                                    : "bg-emerald-50 text-emerald-700 border-emerald-200"
+                                }`}>
                                   {p.status} <ExternalLink size={10} />
                                 </span>
                               </Link>
@@ -99,14 +160,28 @@ export default function ClientsView({ clients }) {
                         )}
                       </td>
                       <td className="px-6 py-4 text-right">
-                        <Link
-                          href={`/admin/clients/${c.id}/onboard`}
-                          className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-3.5 py-2 text-xs font-bold text-white shadow-sm hover:bg-emerald-700 transition-colors"
-                        >
-                          <Layers size={14} strokeWidth={2} />
-                          <span>Onboard New Project</span>
-                          <ArrowRight size={14} strokeWidth={2} />
-                        </Link>
+                        <div className="flex items-center justify-end gap-2">
+                          <Link
+                            href={`/admin/clients/${c.id}/onboard`}
+                            className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-3.5 py-2 text-xs font-bold text-white shadow-sm hover:bg-emerald-700 transition-colors"
+                          >
+                            <Layers size={14} strokeWidth={2} />
+                            <span>Onboard New Project</span>
+                            <ArrowRight size={14} strokeWidth={2} />
+                          </Link>
+
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setDeletingClient(c);
+                              setDeleteError("");
+                            }}
+                            title="Delete Client Record"
+                            className="inline-flex items-center gap-1 rounded-xl border border-red-200 bg-red-50 p-2 text-red-600 hover:bg-red-100 hover:border-red-300 transition-colors"
+                          >
+                            <Trash2 size={15} />
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   );
