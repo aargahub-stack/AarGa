@@ -18,12 +18,12 @@
   ],
   "routes": [
     {
-      "pattern": "aarga.org",
-      "custom_domain": true
+      "pattern": "aarga.org/*",
+      "zone_name": "aarga.org"
     },
     {
-      "pattern": "portal.aarga.org",
-      "custom_domain": true
+      "pattern": "portal.aarga.org/*",
+      "zone_name": "aarga.org"
     }
   ],
   "vars": {
