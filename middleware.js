@@ -25,7 +25,7 @@ export async function middleware(request) {
     } = await supabase.auth.getUser();
 
     if (authError || !user) {
-      const loginUrl = new URL("/admin/login", request.url);
+      const loginUrl = new URL("/workspace/login", request.url);
       return NextResponse.redirect(loginUrl);
     }
 
@@ -36,7 +36,7 @@ export async function middleware(request) {
       .maybeSingle();
 
     if (adminError || !adminRecord) {
-      const unauthorizedUrl = new URL("/admin/login", request.url);
+      const unauthorizedUrl = new URL("/workspace/login", request.url);
       unauthorizedUrl.searchParams.set("error", "unauthorized");
       return NextResponse.redirect(unauthorizedUrl);
     }

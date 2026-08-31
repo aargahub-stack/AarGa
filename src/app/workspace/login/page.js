@@ -62,39 +62,41 @@ function WorkspaceLoginFormContent() {
         return;
       }
 
-      // Verify team_members OR admin_users table membership
+      // Check if user is an Admin
+      const { data: adminRecord } = await supabase
+        .from("admin_users")
+        .select("role")
+        .eq("user_id", data.user.id)
+        .maybeSingle();
+
+      if (adminRecord) {
+        setFailedAttempts(0);
+        router.push("/admin");
+        router.refresh();
+        return;
+      }
+
+      // Check if user is an Employee / Team Member
       const { data: teamMember } = await supabase
         .from("team_members")
         .select("id, name")
         .eq("user_id", data.user.id)
         .maybeSingle();
 
-      let isAllowed = Boolean(teamMember);
-
-      if (!isAllowed) {
-        const { data: adminRecord } = await supabase
-          .from("admin_users")
-          .select("role")
-          .eq("user_id", data.user.id)
-          .maybeSingle();
-
-        if (adminRecord) {
-          isAllowed = true;
-        }
-      }
-
-      if (!isAllowed) {
-        await supabase.auth.signOut();
-        setErrorMsg(
-          `Access denied. User UID '${data.user.id}' is not linked to any row in team_members or admin_users.`
-        );
-        setLoading(false);
+      if (teamMember) {
+        setFailedAttempts(0);
+        router.push("/workspace");
+        router.refresh();
         return;
       }
 
-      setFailedAttempts(0);
-      router.push("/workspace");
-      router.refresh();
+      // Neither admin nor team member
+      await supabase.auth.signOut();
+      setErrorMsg(
+        "Access denied. Your account is not registered as an Admin or Active Team Member."
+      );
+      setLoading(false);
+      return;
     } catch (err) {
       setErrorMsg(err.message || "An unexpected error occurred during login.");
       setLoading(false);
@@ -109,10 +111,10 @@ function WorkspaceLoginFormContent() {
             <AargaLogo className="h-8 w-8 text-white" />
           </div>
           <h1 className="mt-4 text-2xl font-extrabold tracking-tight text-ink">
-            Employee Workspace Sign In
+            Unified AarGa OS Sign In
           </h1>
           <p className="mt-1 text-xs font-semibold text-slate-500 uppercase tracking-widest">
-            AarGa SOP Execution Engine
+            AarGa Portal Command & Execution Engine
           </p>
         </div>
 
