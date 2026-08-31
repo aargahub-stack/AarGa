@@ -15,5 +15,15 @@
       "binding": "WORKER_SELF_REFERENCE",
       "service": "aarga"
     }
+  ],
+  "routes": [
+    {
+      "pattern": "aarga.org",
+      "custom_domain": true
+    },
+    {
+      "pattern": "portal.aarga.org",
+      "custom_domain": true
+    }
   ]
 }
