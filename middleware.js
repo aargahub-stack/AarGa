@@ -3,13 +3,45 @@ import { createMiddlewareSupabaseClient } from "@/lib/supabase/middlewareClient"
 
 export async function middleware(request) {
   const { pathname } = request.nextUrl;
+  const hostname = request.headers.get("host") || "";
+
+  const isMainDomain =
+    hostname === "aarga.org" ||
+    hostname === "www.aarga.org" ||
+    hostname.endsWith(".aarga.org") && !hostname.startsWith("portal.");
+
+  // -------------------------------------------------------------
+  // 1. STRICT MAIN DOMAIN (aarga.org) ACCESS RESTRICTION
+  // Prevent any /admin, /workspace, /interns or login access on main domain
+  // Redirect to main public landing (/) or to portal.aarga.org if requesting portal features
+  // -------------------------------------------------------------
+  if (isMainDomain) {
+    if (
+      pathname.startsWith("/admin") ||
+      pathname.startsWith("/workspace") ||
+      pathname.startsWith("/interns")
+    ) {
+      // Redirect portal attempts on main domain straight to portal.aarga.org
+      const portalUrl = new URL(pathname, "https://portal.aarga.org");
+      return NextResponse.redirect(portalUrl, 301);
+    }
+    return NextResponse.next();
+  }
+
+  // -------------------------------------------------------------
+  // 2. PORTAL DOMAIN (portal.aarga.org) ROUTING & AUTH
+  // -------------------------------------------------------------
+  // If user hits root of portal (portal.aarga.org/), rewrite to unified login /workspace/login
+  if (pathname === "/") {
+    return NextResponse.redirect(new URL("/workspace/login", request.url));
+  }
 
   // Allow login pages without redirect loops
   if (pathname === "/admin/login" || pathname === "/workspace/login") {
     return NextResponse.next();
   }
 
-  // Intercept all /admin routes
+  // Intercept all /admin routes on portal
   if (pathname.startsWith("/admin")) {
     let response = NextResponse.next({
       request: {
@@ -44,7 +76,7 @@ export async function middleware(request) {
     return response;
   }
 
-  // Intercept all /workspace routes
+  // Intercept all /workspace routes on portal
   if (pathname.startsWith("/workspace")) {
     let response = NextResponse.next({
       request: {
@@ -92,5 +124,7 @@ export async function middleware(request) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/workspace/:path*"],
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+  ],
 };
