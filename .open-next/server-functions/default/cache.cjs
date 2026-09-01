@@ -1,4 +1,4 @@
-globalThis.disableIncrementalCache = false;globalThis.disableDynamoDBCache = false;globalThis.openNextDebug = false;globalThis.openNextVersion = "4.1.2";globalThis.nextVersion = "16.3.1";
+globalThis.disableIncrementalCache = false;globalThis.disableDynamoDBCache = false;globalThis.openNextDebug = false;globalThis.openNextVersion = "4.1.2";globalThis.nextVersion = "16.3.3";
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
@@ -17,7 +17,7 @@ var __copyProps = (to, from, except, desc) => {
 };
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/adapters/cache.js
+// node_modules/@opennextjs/aws/dist/adapters/cache.js
 var cache_exports = {};
 __export(cache_exports, {
   SOFT_TAG_PREFIX: () => SOFT_TAG_PREFIX,
@@ -25,7 +25,7 @@ __export(cache_exports, {
 });
 module.exports = __toCommonJS(cache_exports);
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/utils/error.js
+// node_modules/@opennextjs/aws/dist/utils/error.js
 function isOpenNextError(e) {
   try {
     return "__openNextInternal" in e;
@@ -34,7 +34,7 @@ function isOpenNextError(e) {
   }
 }
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/adapters/logger.js
+// node_modules/@opennextjs/aws/dist/adapters/logger.js
 function debug(...args) {
   if (globalThis.openNextDebug) {
     console.log(...args);
@@ -84,10 +84,10 @@ function getOpenNextErrorLogLevel() {
   }
 }
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/utils/cacheHeaders.js
+// node_modules/@opennextjs/aws/dist/utils/cacheHeaders.js
 var CACHE_TAGS_HEADER = "x-next-cache-tags";
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/utils/semver.js
+// node_modules/@opennextjs/aws/dist/utils/semver.js
 function compareSemver(v1, operator, v2) {
   let versionDiff = 0;
   if (v1 === "latest") {
@@ -128,7 +128,7 @@ function compareSemver(v1, operator, v2) {
   }
 }
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/utils/cache.js
+// node_modules/@opennextjs/aws/dist/utils/cache.js
 async function isStale(key, tags, lastModified) {
   if (!compareSemver(globalThis.nextVersion, ">=", "16.0.0")) {
     return false;
@@ -212,7 +212,7 @@ async function writeTags(tags) {
   await globalThis.tagCache.writeTags(tagsToWrite);
 }
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/utils/binary.js
+// node_modules/@opennextjs/aws/dist/utils/binary.js
 var commonBinaryMimeTypes = /* @__PURE__ */ new Set([
   "application/octet-stream",
   // Docs
@@ -280,7 +280,7 @@ function isBinaryContentType(contentType) {
   return commonBinaryMimeTypes.has(value);
 }
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/adapters/cache.js
+// node_modules/@opennextjs/aws/dist/adapters/cache.js
 var SOFT_TAG_PREFIX = "_N_T_/";
 function isFetchCache(options) {
   if (typeof options === "boolean") {

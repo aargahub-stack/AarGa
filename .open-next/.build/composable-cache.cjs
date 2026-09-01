@@ -1,4 +1,4 @@
-globalThis.disableIncrementalCache = false;globalThis.disableDynamoDBCache = false;globalThis.openNextDebug = false;globalThis.openNextVersion = "4.1.2";globalThis.nextVersion = "16.3.1";
+globalThis.disableIncrementalCache = false;globalThis.disableDynamoDBCache = false;globalThis.openNextDebug = false;globalThis.openNextVersion = "4.1.2";globalThis.nextVersion = "16.3.3";
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
@@ -17,21 +17,21 @@ var __copyProps = (to, from, except, desc) => {
 };
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/adapters/composable-cache.js
+// node_modules/@opennextjs/aws/dist/adapters/composable-cache.js
 var composable_cache_exports = {};
 __export(composable_cache_exports, {
   default: () => composable_cache_default
 });
 module.exports = __toCommonJS(composable_cache_exports);
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/adapters/logger.js
+// node_modules/@opennextjs/aws/dist/adapters/logger.js
 function debug(...args) {
   if (globalThis.openNextDebug) {
     console.log(...args);
   }
 }
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/utils/semver.js
+// node_modules/@opennextjs/aws/dist/utils/semver.js
 function compareSemver(v1, operator, v2) {
   let versionDiff = 0;
   if (v1 === "latest") {
@@ -72,7 +72,7 @@ function compareSemver(v1, operator, v2) {
   }
 }
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/utils/cache.js
+// node_modules/@opennextjs/aws/dist/utils/cache.js
 async function isStale(key, tags, lastModified) {
   if (!compareSemver(globalThis.nextVersion, ">=", "16.0.0")) {
     return false;
@@ -117,7 +117,7 @@ async function writeTags(tags) {
   await globalThis.tagCache.writeTags(tagsToWrite);
 }
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/utils/stream.js
+// node_modules/@opennextjs/aws/dist/utils/stream.js
 var import_web = require("node:stream/web");
 async function fromReadableStream(stream, base64) {
   const chunks = [];
@@ -149,7 +149,7 @@ function toReadableStream(value, isBase64) {
   }, { highWaterMark: 0 });
 }
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/adapters/composable-cache.js
+// node_modules/@opennextjs/aws/dist/adapters/composable-cache.js
 var pendingWritePromiseMap = /* @__PURE__ */ new Map();
 var composable_cache_default = {
   async get(cacheKey) {

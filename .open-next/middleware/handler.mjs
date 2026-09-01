@@ -16,7 +16,7 @@ Object.defineProperty = function(o, p, a) {
 
   
   
-  globalThis.openNextDebug = false;globalThis.openNextVersion = "4.1.2";globalThis.nextVersion = "16.3.1";
+  globalThis.openNextDebug = false;globalThis.openNextVersion = "4.1.2";globalThis.nextVersion = "16.3.3";
 var __create = Object.create;
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
@@ -58,7 +58,7 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 ));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/utils/error.js
+// node_modules/@opennextjs/aws/dist/utils/error.js
 function isOpenNextError(e) {
   try {
     return "__openNextInternal" in e;
@@ -67,11 +67,11 @@ function isOpenNextError(e) {
   }
 }
 var init_error = __esm({
-  "C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/utils/error.js"() {
+  "node_modules/@opennextjs/aws/dist/utils/error.js"() {
   }
 });
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/adapters/logger.js
+// node_modules/@opennextjs/aws/dist/adapters/logger.js
 function debug(...args) {
   if (globalThis.openNextDebug) {
     console.log(...args);
@@ -114,7 +114,7 @@ function getOpenNextErrorLogLevel() {
 }
 var DOWNPLAYED_ERROR_LOGS, isDownplayedErrorLog;
 var init_logger = __esm({
-  "C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/adapters/logger.js"() {
+  "node_modules/@opennextjs/aws/dist/adapters/logger.js"() {
     init_error();
     DOWNPLAYED_ERROR_LOGS = [
       {
@@ -127,9 +127,9 @@ var init_logger = __esm({
   }
 });
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/cookie/dist/index.js
+// node_modules/cookie/dist/index.js
 var require_dist = __commonJS({
-  "C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/cookie/dist/index.js"(exports) {
+  "node_modules/cookie/dist/index.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.parseCookie = parseCookie;
@@ -376,7 +376,7 @@ var require_dist = __commonJS({
   }
 });
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/http/util.js
+// node_modules/@opennextjs/aws/dist/http/util.js
 function parseSetCookieHeader(cookies) {
   if (!cookies) {
     return [];
@@ -402,22 +402,22 @@ function getQueryFromIterator(it) {
   return query;
 }
 var init_util = __esm({
-  "C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/http/util.js"() {
+  "node_modules/@opennextjs/aws/dist/http/util.js"() {
     init_logger();
   }
 });
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/overrides/converters/utils.js
+// node_modules/@opennextjs/aws/dist/overrides/converters/utils.js
 function getQueryFromSearchParams(searchParams) {
   return getQueryFromIterator(searchParams.entries());
 }
 var init_utils = __esm({
-  "C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/overrides/converters/utils.js"() {
+  "node_modules/@opennextjs/aws/dist/overrides/converters/utils.js"() {
     init_util();
   }
 });
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/overrides/converters/edge.js
+// node_modules/@opennextjs/aws/dist/overrides/converters/edge.js
 var edge_exports = {};
 __export(edge_exports, {
   default: () => edge_default
@@ -425,7 +425,7 @@ __export(edge_exports, {
 import { Buffer as Buffer2 } from "node:buffer";
 var import_cookie, NULL_BODY_STATUSES, converter, edge_default;
 var init_edge = __esm({
-  "C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/overrides/converters/edge.js"() {
+  "node_modules/@opennextjs/aws/dist/overrides/converters/edge.js"() {
     import_cookie = __toESM(require_dist(), 1);
     init_util();
     init_utils();
@@ -507,14 +507,14 @@ var init_edge = __esm({
   }
 });
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/overrides/wrappers/cloudflare-edge.js
+// node_modules/@opennextjs/aws/dist/overrides/wrappers/cloudflare-edge.js
 var cloudflare_edge_exports = {};
 __export(cloudflare_edge_exports, {
   default: () => cloudflare_edge_default
 });
 var cfPropNameMapping, handler, cloudflare_edge_default;
 var init_cloudflare_edge = __esm({
-  "C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/overrides/wrappers/cloudflare-edge.js"() {
+  "node_modules/@opennextjs/aws/dist/overrides/wrappers/cloudflare-edge.js"() {
     cfPropNameMapping = {
       // The city name is percent-encoded.
       // See https://github.com/vercel/vercel/blob/4cb6143/packages/functions/src/headers.ts#L94C19-L94C37
@@ -555,7 +555,7 @@ var init_cloudflare_edge = __esm({
   }
 });
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/overrides/originResolver/pattern-env.js
+// node_modules/@opennextjs/aws/dist/overrides/originResolver/pattern-env.js
 var pattern_env_exports = {};
 __export(pattern_env_exports, {
   default: () => pattern_env_default
@@ -584,7 +584,7 @@ function initializeOnce() {
 }
 var cachedOrigins, cachedPatterns, initialized, envLoader, pattern_env_default;
 var init_pattern_env = __esm({
-  "C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/overrides/originResolver/pattern-env.js"() {
+  "node_modules/@opennextjs/aws/dist/overrides/originResolver/pattern-env.js"() {
     init_logger();
     cachedPatterns = [];
     initialized = false;
@@ -620,14 +620,14 @@ var init_pattern_env = __esm({
   }
 });
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/overrides/assetResolver/dummy.js
+// node_modules/@opennextjs/aws/dist/overrides/assetResolver/dummy.js
 var dummy_exports = {};
 __export(dummy_exports, {
   default: () => dummy_default
 });
 var resolver, dummy_default;
 var init_dummy = __esm({
-  "C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/overrides/assetResolver/dummy.js"() {
+  "node_modules/@opennextjs/aws/dist/overrides/assetResolver/dummy.js"() {
     resolver = {
       name: "dummy"
     };
@@ -635,7 +635,7 @@ var init_dummy = __esm({
   }
 });
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/utils/stream.js
+// node_modules/@opennextjs/aws/dist/utils/stream.js
 import { ReadableStream as ReadableStream2 } from "node:stream/web";
 function toReadableStream(value, isBase64) {
   return new ReadableStream2({
@@ -663,18 +663,18 @@ function emptyReadableStream() {
 }
 var maybeSomethingBuffer;
 var init_stream = __esm({
-  "C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/utils/stream.js"() {
+  "node_modules/@opennextjs/aws/dist/utils/stream.js"() {
   }
 });
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/overrides/proxyExternalRequest/fetch.js
+// node_modules/@opennextjs/aws/dist/overrides/proxyExternalRequest/fetch.js
 var fetch_exports = {};
 __export(fetch_exports, {
   default: () => fetch_default
 });
 var fetchProxy, fetch_default;
 var init_fetch = __esm({
-  "C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/overrides/proxyExternalRequest/fetch.js"() {
+  "node_modules/@opennextjs/aws/dist/overrides/proxyExternalRequest/fetch.js"() {
     init_stream();
     fetchProxy = {
       name: "fetch-proxy",
@@ -4471,18 +4471,25 @@ Learn More: https://nextjs.org/docs/messages/node-module-in-edge-runtime`;
           await s10.wait();
         }
         getFilePath(e10, t10) {
+          let r10;
           switch (t10) {
             case t8.FETCH:
-              return rm.default.join(this.serverDistDir, "..", "cache", "fetch-cache", e10);
+              r10 = rm.default.join(this.serverDistDir, "..", "cache", "fetch-cache");
+              break;
             case t8.PAGES:
-              return rm.default.join(this.serverDistDir, "pages", e10);
+              r10 = rm.default.join(this.serverDistDir, "pages");
+              break;
             case t8.IMAGE:
             case t8.APP_PAGE:
             case t8.APP_ROUTE:
-              return rm.default.join(this.serverDistDir, "app", e10);
+              r10 = rm.default.join(this.serverDistDir, "app");
+              break;
             default:
               throw Object.defineProperty(Error(`Unexpected file path kind: ${t10}`), "__NEXT_ERROR_CODE", { value: "E479", enumerable: false, configurable: true });
           }
+          let n10 = rm.default.join(r10, e10);
+          if (!(n10.startsWith(r10 + rm.default.sep) || n10 === r10)) throw Object.defineProperty(Error(`Invalid file path: ${n10}`), "__NEXT_ERROR_CODE", { value: "E1468", enumerable: false, configurable: true });
+          return n10;
         }
       }
       let rS = ["(..)(..)", "(.)", "(..)", "(...)"], rk = /\/[^/]*\[[^/]+\][^/]*(?=\/|$)/, rT = /\/\[[^/]+\](?=\/|$)/;
@@ -10246,7 +10253,7 @@ var require_turbopack_node_modules_next_dist_esm_build_templates_edge_wrapper_0a
         } : /* @__PURE__ */ Object.create(null);
       }
       function b(e2) {
-        let t2 = A(e2, this.m);
+        let t2 = K(e2, this.m);
         if (t2.namespaceObject) return t2.namespaceObject;
         let r2 = t2.exports;
         return t2.namespaceObject = m(r2, y(r2), r2 && r2.__esModule);
@@ -10257,7 +10264,7 @@ var require_turbopack_node_modules_next_dist_esm_build_templates_edge_wrapper_0a
         let r2 = e2.indexOf("?");
         return -1 !== r2 && (e2 = e2.substring(0, r2)), e2;
       }
-      function w(e2) {
+      function _(e2) {
         return "string" == typeof e2 ? e2 : e2.path;
       }
       u.i = b, u.A = function(e2) {
@@ -10265,7 +10272,7 @@ var require_turbopack_node_modules_next_dist_esm_build_templates_edge_wrapper_0a
       }, u.t = "function" == typeof __require ? __require : function() {
         throw Error("Unexpected use of runtime require");
       }, u.r = function(e2) {
-        return A(e2, this.m).exports;
+        return K(e2, this.m).exports;
       }, u.f = function(e2) {
         function t2(t3) {
           if (t3 = g(t3), l.call(e2, t3)) return e2[t3].module();
@@ -10278,38 +10285,38 @@ var require_turbopack_node_modules_next_dist_esm_build_templates_edge_wrapper_0a
           throw r2.code = "MODULE_NOT_FOUND", r2;
         }, t2.import = async (e3) => await t2(e3), t2;
       };
-      let O = function(e2) {
+      let w = function(e2) {
         let t2 = new URL(e2, "x:/"), r2 = {};
         for (let e3 in t2) r2[e3] = t2[e3];
         for (let t3 in r2.href = e2, r2.pathname = e2.replace(/[?#].*/, ""), r2.origin = r2.protocol = "", r2.toString = r2.toJSON = (...t4) => e2, r2) Object.defineProperty(this, t3, { enumerable: true, configurable: true, value: r2[t3] });
       };
-      function _(e2, t2) {
+      function O(e2, t2) {
         throw Error(`Invariant: ${t2(e2)}`);
       }
-      O.prototype = URL.prototype, u.U = O, u.z = function(e2) {
+      w.prototype = URL.prototype, u.U = w, u.z = function(e2) {
         throw Error("dynamic usage of require is not supported");
       }, u.g = globalThis;
-      let k = o.prototype, R = /* @__PURE__ */ new Map();
+      let k = o.prototype, P = "string" == typeof TURBOPACK_CHUNK_BASE_PATH ? TURBOPACK_CHUNK_BASE_PATH : "", R = /* @__PURE__ */ new Map();
       u.M = R;
-      let j = /* @__PURE__ */ new Map(), P = /* @__PURE__ */ new Map(), C = /* @__PURE__ */ new Map();
+      let C = /* @__PURE__ */ new Map(), U = /* @__PURE__ */ new Map(), j = /* @__PURE__ */ new Map();
       async function v(e2, t2, r2) {
         let n2;
         if ("string" == typeof r2) return function(e3, t3, r3) {
-          return M(e3, t3, r3);
-        }(e2, t2, T(r2));
-        let o2 = r2.included || [], u2 = o2.map((e3) => !!R.has(e3) || j.get(e3));
+          return $(e3, t3, r3);
+        }(e2, t2, E(r2));
+        let o2 = r2.included || [], u2 = o2.map((e3) => !!R.has(e3) || C.get(e3));
         if (u2.length > 0 && u2.every((e3) => e3)) return void await Promise.all(u2);
-        for (let u3 of (n2 = M(e2, t2, T(r2.path)), o2)) j.has(u3) || j.set(u3, n2);
+        for (let u3 of (n2 = $(e2, t2, E(r2.path)), o2)) C.has(u3) || C.set(u3, n2);
         await n2;
       }
       k.l = function(e2) {
         return v(r.Parent, this.m.id, e2);
       };
-      let U = Promise.resolve(void 0), x = /* @__PURE__ */ new WeakMap();
-      function M(t2, n2, o2) {
-        let u2 = e.loadChunkCached(t2, o2), l2 = x.get(u2);
+      let x = Promise.resolve(void 0), M = /* @__PURE__ */ new WeakMap();
+      function $(t2, n2, o2) {
+        let u2 = e.loadChunkCached(t2, o2), l2 = M.get(u2);
         if (void 0 === l2) {
-          let e2 = x.set.bind(x, u2, U);
+          let e2 = M.set.bind(M, u2, x);
           l2 = u2.then(e2).catch((e3) => {
             let u3;
             switch (t2) {
@@ -10323,17 +10330,17 @@ var require_turbopack_node_modules_next_dist_esm_build_templates_edge_wrapper_0a
                 u3 = "from an HMR update";
                 break;
               default:
-                _(t2, (e4) => `Unknown source type: ${e4}`);
+                O(t2, (e4) => `Unknown source type: ${e4}`);
             }
             let l3 = Error(`Failed to load chunk ${o2} ${u3}${e3 ? `: ${e3}` : ""}`, e3 ? { cause: e3 } : void 0);
             throw l3.name = "ChunkLoadError", l3;
-          }), x.set(u2, l2);
+          }), M.set(u2, l2);
         }
         return l2;
       }
       k.L = function(e2) {
         var t2, n2;
-        return t2 = r.Parent, n2 = this.m.id, M(t2, n2, e2);
+        return t2 = r.Parent, n2 = this.m.id, $(t2, n2, e2);
       };
       k.R = function(e2) {
         let t2 = this.r(e2);
@@ -10345,23 +10352,23 @@ var require_turbopack_node_modules_next_dist_esm_build_templates_edge_wrapper_0a
       }, k.q = function(e2, t2) {
         d.call(this, `${e2}`, t2);
       };
-      let $ = /[^A-Za-z0-9\-_.!~*'()/]/;
-      function T(e2, t2 = "") {
-        let r2 = $.test(e2) ? e2.split("/").map(encodeURIComponent).join("/") : e2;
+      let T = /[^A-Za-z0-9\-_.!~*'()/]/;
+      function E(e2, t2 = P) {
+        let r2 = T.test(e2) ? e2.split("/").map(encodeURIComponent).join("/") : e2;
         return `${t2}${r2}`;
       }
-      k.b = "", k.X = "", k.h = T;
-      let E = {};
-      u.c = E;
-      let A = (e2, t2) => {
-        let n2 = E[e2];
+      k.b = P, k.X = "", k.h = E;
+      let A = {};
+      u.c = A;
+      let K = (e2, t2) => {
+        let n2 = A[e2];
         if (n2) {
           if (n2.error) throw n2.error;
           return n2;
         }
-        return K(e2, r.Parent, t2.id);
+        return N(e2, r.Parent, t2.id);
       };
-      function K(e2, t2, r2) {
+      function N(e2, t2, r2) {
         let n2 = R.get(e2);
         if ("function" != typeof n2) throw Error(function(e3, t3, r3) {
           let n3;
@@ -10376,12 +10383,12 @@ var require_turbopack_node_modules_next_dist_esm_build_templates_edge_wrapper_0a
               n3 = "because of an HMR update";
               break;
             default:
-              _(t3, (e4) => `Unknown source type: ${e4}`);
+              O(t3, (e4) => `Unknown source type: ${e4}`);
           }
           return `Module ${e3} was instantiated ${n3}, but the module factory is not available.`;
         }(e2, t2, r2));
         let u2 = f(e2), l2 = u2.exports;
-        E[e2] = u2;
+        A[e2] = u2;
         let i2 = new o(u2, l2);
         try {
           n2(i2, u2, l2);
@@ -10390,7 +10397,7 @@ var require_turbopack_node_modules_next_dist_esm_build_templates_edge_wrapper_0a
         }
         return u2.namespaceObject && u2.exports !== u2.namespaceObject && m(u2.exports, u2.namespaceObject), u2;
       }
-      function q(t2) {
+      function S(t2) {
         let r2;
         if (!Array.isArray(t2)) return e.registerChunk(void 0, t2);
         let n2 = function(e2) {
@@ -10422,7 +10429,7 @@ var require_turbopack_node_modules_next_dist_esm_build_templates_edge_wrapper_0a
           }
         }(t2, R)), e.registerChunk(n2, r2);
       }
-      function N(e2, t2, r2 = false) {
+      function q(e2, t2, r2 = false) {
         let n2;
         try {
           n2 = t2();
@@ -10439,29 +10446,29 @@ var require_turbopack_node_modules_next_dist_esm_build_templates_edge_wrapper_0a
           throw Error(`Failed to load external module ${e2}: ${t3}`);
         }
         return t2 && t2.__esModule && t2.default && "default" in t2.default ? m(t2.default, y(t2), true) : t2;
-      }, N.resolve = (e2, t2) => __require.resolve(e2, t2), u.x = N, e = { registerChunk(e2, t2) {
+      }, q.resolve = (e2, t2) => __require.resolve(e2, t2), u.x = q, e = { registerChunk(e2, t2) {
         if (null == e2) throw Error("inline entry registration is not supported");
         let r2 = function(e3) {
           if ("string" == typeof e3) return e3;
           let t3 = decodeURIComponent(e3.src.replace(/[?#].*$/, ""));
-          return t3.startsWith("") ? t3.slice(0) : t3;
+          return t3.startsWith(P) ? t3.slice(P.length) : t3;
         }(e2);
-        S.add(r2), function(e3) {
+        B.add(r2), function(e3) {
           let t3 = I.get(e3);
           if (null != t3) {
-            for (let r3 of t3) r3.requiredChunks.delete(e3), 0 === r3.requiredChunks.size && L(r3.runtimeModuleIds, r3.chunkPath);
+            for (let r3 of t3) r3.requiredChunks.delete(e3), 0 === r3.requiredChunks.size && H(r3.runtimeModuleIds, r3.chunkPath);
             I.delete(e3);
           }
-        }(r2), null != t2 && (0 === t2.otherChunks.length ? L(t2.runtimeModuleIds, r2) : function(e3, t3, r3) {
+        }(r2), null != t2 && (0 === t2.otherChunks.length ? H(t2.runtimeModuleIds, r2) : function(e3, t3, r3) {
           let n2 = /* @__PURE__ */ new Set(), o2 = { runtimeModuleIds: r3, chunkPath: e3, requiredChunks: n2 };
           for (let e4 of t3) {
-            let t4 = w(e4);
-            if (S.has(t4)) continue;
+            let t4 = _(e4);
+            if (B.has(t4)) continue;
             n2.add(t4);
             let r4 = I.get(t4);
             null == r4 && (r4 = /* @__PURE__ */ new Set(), I.set(t4, r4)), r4.add(o2);
           }
-          0 === o2.requiredChunks.size && L(o2.runtimeModuleIds, o2.chunkPath);
+          0 === o2.requiredChunks.size && H(o2.runtimeModuleIds, o2.chunkPath);
         }(r2, t2.otherChunks.filter((e3) => function(e4) {
           let t3, r3 = e4.indexOf("?");
           if (-1 !== r3) t3 = r3;
@@ -10470,28 +10477,28 @@ var require_turbopack_node_modules_next_dist_esm_build_templates_edge_wrapper_0a
             t3 = -1 !== r4 ? r4 : e4.length;
           }
           return t3 >= 3 && e4.startsWith(".js", t3 - 3);
-        }(w(e3))), t2.runtimeModuleIds));
+        }(_(e3))), t2.runtimeModuleIds));
       }, loadChunkCached(e2, t2) {
         throw Error("chunk loading is not supported");
       } };
-      let S = /* @__PURE__ */ new Set(), I = /* @__PURE__ */ new Map();
-      function L(e2, t2) {
+      let B = /* @__PURE__ */ new Set(), I = /* @__PURE__ */ new Map();
+      function H(e2, t2) {
         for (let n2 of e2) !function(e3, t3) {
-          let n3 = E[t3];
+          let n3 = A[t3];
           if (n3) {
             if (n3.error) throw n3.error;
             return;
           }
-          K(t3, r.Runtime, e3);
+          N(t3, r.Runtime, e3);
         }(t2, n2);
       }
-      var B = globalThis.TURBOPACK;
-      globalThis.TURBOPACK = { push: q }, B.forEach(q);
+      var L = globalThis.TURBOPACK;
+      globalThis.TURBOPACK = { push: S }, L.forEach(S);
     })();
   }
 });
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/core/edgeFunctionHandler.js
+// node_modules/@opennextjs/aws/dist/core/edgeFunctionHandler.js
 var edgeFunctionHandler_exports = {};
 __export(edgeFunctionHandler_exports, {
   default: () => edgeFunctionHandler
@@ -10526,7 +10533,7 @@ async function edgeFunctionHandler(request) {
   return response;
 }
 var init_edgeFunctionHandler = __esm({
-  "C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/core/edgeFunctionHandler.js"() {
+  "node_modules/@opennextjs/aws/dist/core/edgeFunctionHandler.js"() {
     globalThis._ENTRIES = {};
     globalThis.self = globalThis;
     globalThis._ROUTES = [{ "name": "middleware", "page": "/", "regex": ["^(?:\\/(_next\\/data\\/[^/]{1,}))?(?:\\/((?!_next\\/static|_next\\/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*))(\\.json|\\.rsc|\\.segments\\/.+\\.segment\\.rsc)?[\\/#\\?]?$"] }];
@@ -10536,7 +10543,7 @@ var init_edgeFunctionHandler = __esm({
   }
 });
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/utils/cacheHeaders.js
+// node_modules/@opennextjs/aws/dist/utils/cacheHeaders.js
 var CACHE_CONTROL_HEADER = "cache-control";
 var OPEN_NEXT_CACHE_HEADER = "x-opennext-cache";
 var CACHE_TAGS_HEADER = "x-next-cache-tags";
@@ -10552,10 +10559,10 @@ function fixCacheControlForError(headers, statusCode) {
   }
 }
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/utils/promise.js
+// node_modules/@opennextjs/aws/dist/utils/promise.js
 init_logger();
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/utils/requestCache.js
+// node_modules/@opennextjs/aws/dist/utils/requestCache.js
 var RequestCache = class {
   _caches = /* @__PURE__ */ new Map();
   /**
@@ -10573,7 +10580,7 @@ var RequestCache = class {
   }
 };
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/utils/promise.js
+// node_modules/@opennextjs/aws/dist/utils/promise.js
 var DetachedPromise = class {
   resolve;
   reject;
@@ -10654,13 +10661,13 @@ function runWithOpenNextRequestContext({ isISRRevalidation, waitUntil, requestId
   });
 }
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/adapters/middleware.js
+// node_modules/@opennextjs/aws/dist/adapters/middleware.js
 init_logger();
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/core/createGenericHandler.js
+// node_modules/@opennextjs/aws/dist/core/createGenericHandler.js
 init_logger();
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/core/resolve.js
+// node_modules/@opennextjs/aws/dist/core/resolve.js
 async function resolveConverter(converter2) {
   if (typeof converter2 === "function") {
     return converter2();
@@ -10697,7 +10704,7 @@ async function resolveProxyRequest(proxyRequest) {
   return m_1.default;
 }
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/core/createGenericHandler.js
+// node_modules/@opennextjs/aws/dist/core/createGenericHandler.js
 async function createGenericHandler(handler3) {
   const config = await import("./open-next.config.mjs").then((m) => m.default);
   globalThis.openNextConfig = config;
@@ -10709,23 +10716,23 @@ async function createGenericHandler(handler3) {
   return wrapper(handler3.handler, converter2);
 }
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/core/routing/util.js
+// node_modules/@opennextjs/aws/dist/core/routing/util.js
 import crypto2 from "node:crypto";
 import { parse as parseQs, stringify as stringifyQs } from "node:querystring";
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/adapters/config/index.js
+// node_modules/@opennextjs/aws/dist/adapters/config/index.js
 init_logger();
 import path from "node:path";
 globalThis.__dirname ??= "";
 var NEXT_DIR = path.join(__dirname, ".next");
 var OPEN_NEXT_DIR = path.join(__dirname, ".open-next");
 debug({ NEXT_DIR, OPEN_NEXT_DIR });
-var NextConfig = { "env": {}, "webpack": null, "typescript": { "ignoreBuildErrors": false }, "typedRoutes": false, "distDir": ".next", "cleanDistDir": true, "assetPrefix": "", "cacheMaxMemorySize": 52428800, "configOrigin": "next.config.js", "useFileSystemPublicRoutes": true, "generateEtags": true, "pageExtensions": ["tsx", "ts", "jsx", "js"], "instrumentationClientInject": [], "poweredByHeader": true, "compress": true, "images": { "deviceSizes": [640, 750, 828, 1080, 1200, 1920, 2048, 3840], "imageSizes": [32, 48, 64, 96, 128, 256, 384], "path": "/_next/image", "loader": "default", "loaderFile": "", "domains": [], "disableStaticImages": false, "minimumCacheTTL": 14400, "formats": ["image/webp"], "maximumRedirects": 3, "maximumResponseBody": 5e7, "dangerouslyAllowLocalIP": false, "dangerouslyAllowSVG": false, "contentSecurityPolicy": "script-src 'none'; frame-src 'none'; sandbox;", "contentDispositionType": "attachment", "localPatterns": [{ "pathname": "**", "search": "" }], "remotePatterns": [], "qualities": [75], "unoptimized": false, "customCacheHandler": false }, "devIndicators": { "position": "bottom-left" }, "onDemandEntries": { "maxInactiveAge": 6e4, "pagesBufferLength": 5 }, "basePath": "", "sassOptions": {}, "trailingSlash": false, "i18n": null, "productionBrowserSourceMaps": false, "excludeDefaultMomentLocales": true, "reactProductionProfiling": false, "reactStrictMode": true, "reactMaxHeadersLength": 6e3, "httpAgentOptions": { "keepAlive": true }, "logging": { "serverFunctions": true, "browserToTerminal": "warn" }, "compiler": {}, "expireTime": 31536e3, "staticPageGenerationTimeout": 60, "output": "standalone", "modularizeImports": { "@mui/icons-material": { "transform": "@mui/icons-material/{{member}}" }, "lodash": { "transform": "lodash/{{member}}" } }, "outputFileTracingRoot": "D:\\Hub\\Innovation\\AarGa", "enablePrerenderSourceMaps": true, "cacheComponents": false, "cacheLife": { "default": { "stale": 300, "revalidate": 900, "expire": 4294967294 }, "seconds": { "stale": 30, "revalidate": 1, "expire": 60 }, "minutes": { "stale": 300, "revalidate": 60, "expire": 3600 }, "hours": { "stale": 300, "revalidate": 3600, "expire": 86400 }, "days": { "stale": 300, "revalidate": 86400, "expire": 604800 }, "weeks": { "stale": 300, "revalidate": 604800, "expire": 2592e3 }, "max": { "stale": 300, "revalidate": 2592e3, "expire": 31536e3 } }, "cacheHandlers": {}, "experimental": { "appNewScrollHandler": true, "coldCacheBadge": false, "devValidationWorker": true, "useSkewCookie": false, "cssChunking": true, "multiZoneDraftMode": false, "appNavFailHandling": false, "prerenderEarlyExit": true, "serverMinification": true, "linkNoTouchStart": false, "caseSensitiveRoutes": false, "cachedNavigations": false, "dynamicOnHover": false, "useOffline": false, "varyParams": true, "optimisticRouting": true, "instrumentationClientRouterTransitionEvents": false, "prefetchInlining": { "maxSize": 2048, "maxBundleSize": 10240 }, "preloadEntriesOnStart": true, "clientRouterFilter": true, "clientRouterFilterRedirects": false, "fetchCacheKeyPrefix": "", "proxyPrefetch": "flexible", "optimisticClientCache": true, "manualClientBasePath": false, "cpus": 7, "memoryBasedWorkersCount": false, "imgOptConcurrency": null, "imgOptOperationCache": null, "imgOptTimeoutInSeconds": 7, "imgOptMaxInputPixels": 268402689, "imgOptSequentialRead": null, "isrFlushToDisk": true, "workerThreads": false, "optimizeCss": false, "nextScriptWorkers": false, "scrollRestoration": false, "externalDir": false, "devMemoryThresholdRestart": true, "disableOptimizedLoading": false, "gzipSize": true, "craCompat": false, "esmExternals": true, "fullySpecified": false, "swcTraceProfiling": false, "forceSwcTransforms": false, "requestInsights": false, "largePageDataBytes": 128e3, "typedEnv": false, "parallelServerCompiles": false, "parallelServerBuildTraces": false, "ppr": false, "authInterrupts": false, "webpackMemoryOptimizations": false, "optimizeServerReact": true, "strictRouteTypes": false, "useTypeScriptCli": true, "removeUncaughtErrorAndRejectionListeners": false, "validateRSCRequestHeaders": true, "staleTimes": { "dynamic": 0, "static": 300 }, "reactDebugChannel": true, "serverComponentsHmrCache": true, "serverComponentsHmrCancellation": false, "staticGenerationMaxConcurrency": 8, "staticGenerationMinPagesPerWorker": 25, "transitionIndicator": false, "gestureTransition": false, "inlineCss": false, "useCache": false, "globalNotFound": false, "browserDebugInfoInTerminal": "warn", "lockDistDir": true, "proxyClientMaxBodySize": 10485760, "hideLogsAfterAbort": false, "mcpServer": true, "turbopackFileSystemCacheForDev": true, "turbopackFileSystemCacheForBuild": true, "turbopackInferModuleSideEffects": true, "turbopackPluginRuntimeStrategy": "childProcesses", "turbopackMemoryEvictionMode": "auto", "optimizePackageImports": ["lucide-react", "date-fns", "lodash-es", "ramda", "antd", "react-bootstrap", "ahooks", "@ant-design/icons", "@headlessui/react", "@headlessui-float/react", "@heroicons/react/20/solid", "@heroicons/react/24/solid", "@heroicons/react/24/outline", "@visx/visx", "@tremor/react", "rxjs", "@mui/material", "@mui/icons-material", "recharts", "react-use", "effect", "@effect/schema", "@effect/platform", "@effect/platform-node", "@effect/platform-browser", "@effect/platform-bun", "@effect/sql", "@effect/sql-mssql", "@effect/sql-mysql2", "@effect/sql-pg", "@effect/sql-sqlite-node", "@effect/sql-sqlite-bun", "@effect/sql-sqlite-wasm", "@effect/sql-sqlite-react-native", "@effect/rpc", "@effect/rpc-http", "@effect/typeclass", "@effect/experimental", "@effect/opentelemetry", "@material-ui/core", "@material-ui/icons", "@tabler/icons-react", "mui-core", "react-icons/ai", "react-icons/bi", "react-icons/bs", "react-icons/cg", "react-icons/ci", "react-icons/di", "react-icons/fa", "react-icons/fa6", "react-icons/fc", "react-icons/fi", "react-icons/gi", "react-icons/go", "react-icons/gr", "react-icons/hi", "react-icons/hi2", "react-icons/im", "react-icons/io", "react-icons/io5", "react-icons/lia", "react-icons/lib", "react-icons/lu", "react-icons/md", "react-icons/pi", "react-icons/ri", "react-icons/rx", "react-icons/si", "react-icons/sl", "react-icons/tb", "react-icons/tfi", "react-icons/ti", "react-icons/vsc", "react-icons/wi"], "useCacheTimeout": 54, "instantInsights": { "validationLevel": "warning" }, "trustHostHeader": false, "isExperimentalCompile": false }, "htmlLimitedBots": "[\\w-]+-Google|Google-[\\w-]+|Chrome-Lighthouse|Slurp|DuckDuckBot|baiduspider|yandex|sogou|bitlybot|tumblr|vkShare|quora link preview|redditbot|ia_archiver|Bingbot|BingPreview|applebot|facebookexternalhit|facebookcatalog|Twitterbot|LinkedInBot|Slackbot|Discordbot|WhatsApp|SkypeUriPreview|Yeti|googleweblight", "bundlePagesRouterDependencies": false, "configFileName": "next.config.js", "repoRoot": "D:\\Hub\\Innovation\\AarGa", "turbopack": { "root": "D:\\Hub\\Innovation\\AarGa" }, "distDirRoot": ".next" };
-var BuildId = "01xCBhCiwl1YxYTS1u7H3";
+var NextConfig = { "env": {}, "webpack": null, "typescript": { "ignoreBuildErrors": true }, "typedRoutes": false, "distDir": ".next", "cleanDistDir": true, "assetPrefix": "", "cacheMaxMemorySize": 52428800, "configOrigin": "next.config.js", "useFileSystemPublicRoutes": true, "generateEtags": true, "pageExtensions": ["tsx", "ts", "jsx", "js"], "instrumentationClientInject": [], "poweredByHeader": true, "compress": true, "images": { "deviceSizes": [640, 750, 828, 1080, 1200, 1920, 2048, 3840], "imageSizes": [32, 48, 64, 96, 128, 256, 384], "path": "/_next/image", "loader": "default", "loaderFile": "", "domains": [], "disableStaticImages": false, "minimumCacheTTL": 14400, "formats": ["image/webp"], "maximumRedirects": 3, "maximumResponseBody": 5e7, "dangerouslyAllowLocalIP": false, "dangerouslyAllowSVG": false, "contentSecurityPolicy": "script-src 'none'; frame-src 'none'; sandbox;", "contentDispositionType": "attachment", "localPatterns": [{ "pathname": "**", "search": "" }], "remotePatterns": [], "qualities": [75], "unoptimized": false, "customCacheHandler": false }, "devIndicators": { "position": "bottom-left" }, "onDemandEntries": { "maxInactiveAge": 6e4, "pagesBufferLength": 5 }, "basePath": "", "sassOptions": {}, "trailingSlash": false, "i18n": null, "productionBrowserSourceMaps": false, "excludeDefaultMomentLocales": true, "reactProductionProfiling": false, "reactStrictMode": true, "reactMaxHeadersLength": 6e3, "httpAgentOptions": { "keepAlive": true }, "logging": { "serverFunctions": true, "browserToTerminal": "warn" }, "compiler": {}, "expireTime": 31536e3, "staticPageGenerationTimeout": 60, "output": "standalone", "modularizeImports": { "@mui/icons-material": { "transform": "@mui/icons-material/{{member}}" }, "lodash": { "transform": "lodash/{{member}}" } }, "outputFileTracingRoot": "D:\\Hub\\Innovation\\AarGa", "enablePrerenderSourceMaps": true, "cacheComponents": false, "cacheLife": { "default": { "stale": 300, "revalidate": 900, "expire": 4294967294 }, "seconds": { "stale": 30, "revalidate": 1, "expire": 60 }, "minutes": { "stale": 300, "revalidate": 60, "expire": 3600 }, "hours": { "stale": 300, "revalidate": 3600, "expire": 86400 }, "days": { "stale": 300, "revalidate": 86400, "expire": 604800 }, "weeks": { "stale": 300, "revalidate": 604800, "expire": 2592e3 }, "max": { "stale": 300, "revalidate": 2592e3, "expire": 31536e3 } }, "cacheHandlers": {}, "experimental": { "appNewScrollHandler": true, "coldCacheBadge": false, "devValidationWorker": true, "useSkewCookie": false, "cssChunking": true, "multiZoneDraftMode": false, "appNavFailHandling": false, "prerenderEarlyExit": true, "serverMinification": true, "linkNoTouchStart": false, "caseSensitiveRoutes": false, "cachedNavigations": false, "dynamicOnHover": false, "useOffline": false, "varyParams": true, "optimisticRouting": true, "instrumentationClientRouterTransitionEvents": false, "prefetchInlining": { "maxSize": 2048, "maxBundleSize": 10240 }, "preloadEntriesOnStart": true, "clientRouterFilter": true, "clientRouterFilterRedirects": false, "fetchCacheKeyPrefix": "", "proxyPrefetch": "flexible", "optimisticClientCache": true, "manualClientBasePath": false, "cpus": 7, "memoryBasedWorkersCount": false, "imgOptConcurrency": null, "imgOptOperationCache": null, "imgOptTimeoutInSeconds": 7, "imgOptMaxInputPixels": 268402689, "imgOptSequentialRead": null, "isrFlushToDisk": true, "workerThreads": false, "optimizeCss": false, "nextScriptWorkers": false, "scrollRestoration": false, "externalDir": false, "devMemoryThresholdRestart": true, "disableOptimizedLoading": false, "gzipSize": true, "craCompat": false, "esmExternals": true, "fullySpecified": false, "swcTraceProfiling": false, "forceSwcTransforms": false, "requestInsights": false, "largePageDataBytes": 128e3, "typedEnv": false, "parallelServerCompiles": false, "parallelServerBuildTraces": false, "ppr": false, "authInterrupts": false, "webpackMemoryOptimizations": false, "optimizeServerReact": true, "strictRouteTypes": false, "useTypeScriptCli": true, "removeUncaughtErrorAndRejectionListeners": false, "validateRSCRequestHeaders": true, "staleTimes": { "dynamic": 0, "static": 300 }, "reactDebugChannel": true, "serverComponentsHmrCache": true, "serverComponentsHmrCancellation": false, "staticGenerationMaxConcurrency": 8, "staticGenerationMinPagesPerWorker": 25, "transitionIndicator": false, "gestureTransition": false, "inlineCss": false, "useCache": false, "globalNotFound": false, "browserDebugInfoInTerminal": "warn", "lockDistDir": true, "proxyClientMaxBodySize": 10485760, "hideLogsAfterAbort": false, "mcpServer": true, "turbopackFileSystemCacheForDev": true, "turbopackFileSystemCacheForBuild": true, "turbopackInferModuleSideEffects": true, "turbopackPluginRuntimeStrategy": "childProcesses", "turbopackMemoryEvictionMode": "auto", "optimizePackageImports": ["lucide-react", "date-fns", "lodash-es", "ramda", "antd", "react-bootstrap", "ahooks", "@ant-design/icons", "@headlessui/react", "@headlessui-float/react", "@heroicons/react/20/solid", "@heroicons/react/24/solid", "@heroicons/react/24/outline", "@visx/visx", "@tremor/react", "rxjs", "@mui/material", "@mui/icons-material", "recharts", "react-use", "effect", "@effect/schema", "@effect/platform", "@effect/platform-node", "@effect/platform-browser", "@effect/platform-bun", "@effect/sql", "@effect/sql-mssql", "@effect/sql-mysql2", "@effect/sql-pg", "@effect/sql-sqlite-node", "@effect/sql-sqlite-bun", "@effect/sql-sqlite-wasm", "@effect/sql-sqlite-react-native", "@effect/rpc", "@effect/rpc-http", "@effect/typeclass", "@effect/experimental", "@effect/opentelemetry", "@material-ui/core", "@material-ui/icons", "@tabler/icons-react", "mui-core", "react-icons/ai", "react-icons/bi", "react-icons/bs", "react-icons/cg", "react-icons/ci", "react-icons/di", "react-icons/fa", "react-icons/fa6", "react-icons/fc", "react-icons/fi", "react-icons/gi", "react-icons/go", "react-icons/gr", "react-icons/hi", "react-icons/hi2", "react-icons/im", "react-icons/io", "react-icons/io5", "react-icons/lia", "react-icons/lib", "react-icons/lu", "react-icons/md", "react-icons/pi", "react-icons/ri", "react-icons/rx", "react-icons/si", "react-icons/sl", "react-icons/tb", "react-icons/tfi", "react-icons/ti", "react-icons/vsc", "react-icons/wi"], "useCacheTimeout": 54, "instantInsights": { "validationLevel": "warning" }, "trustHostHeader": false, "isExperimentalCompile": false }, "htmlLimitedBots": "[\\w-]+-Google|Google-[\\w-]+|Chrome-Lighthouse|Slurp|DuckDuckBot|baiduspider|yandex|sogou|bitlybot|tumblr|vkShare|quora link preview|redditbot|ia_archiver|Bingbot|BingPreview|applebot|facebookexternalhit|facebookcatalog|Twitterbot|LinkedInBot|Slackbot|Discordbot|WhatsApp|SkypeUriPreview|Yeti|googleweblight", "bundlePagesRouterDependencies": false, "configFileName": "next.config.js", "eslint": { "ignoreDuringBuilds": true }, "repoRoot": "D:\\Hub\\Innovation\\AarGa", "turbopack": { "root": "D:\\Hub\\Innovation\\AarGa" }, "distDirRoot": ".next" };
+var BuildId = "q3hVo6PGFB_qjH8u4DwWp";
 var RoutesManifest = { "basePath": "", "rewrites": { "beforeFiles": [], "afterFiles": [], "fallback": [] }, "redirects": [{ "source": "/:path+/", "destination": "/:path+", "internal": true, "priority": true, "statusCode": 308, "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$" }], "routes": { "static": [{ "page": "/", "regex": "^/(?:/)?$", "routeKeys": {}, "namedRegex": "^/(?:/)?$" }, { "page": "/_global-error", "regex": "^/_global\\-error(?:/)?$", "routeKeys": {}, "namedRegex": "^/_global\\-error(?:/)?$" }, { "page": "/_not-found", "regex": "^/_not\\-found(?:/)?$", "routeKeys": {}, "namedRegex": "^/_not\\-found(?:/)?$" }, { "page": "/admin", "regex": "^/admin(?:/)?$", "routeKeys": {}, "namedRegex": "^/admin(?:/)?$" }, { "page": "/admin/clients", "regex": "^/admin/clients(?:/)?$", "routeKeys": {}, "namedRegex": "^/admin/clients(?:/)?$" }, { "page": "/admin/clients/new", "regex": "^/admin/clients/new(?:/)?$", "routeKeys": {}, "namedRegex": "^/admin/clients/new(?:/)?$" }, { "page": "/admin/ecosystem", "regex": "^/admin/ecosystem(?:/)?$", "routeKeys": {}, "namedRegex": "^/admin/ecosystem(?:/)?$" }, { "page": "/admin/ecosystem-metrics", "regex": "^/admin/ecosystem\\-metrics(?:/)?$", "routeKeys": {}, "namedRegex": "^/admin/ecosystem\\-metrics(?:/)?$" }, { "page": "/admin/interns", "regex": "^/admin/interns(?:/)?$", "routeKeys": {}, "namedRegex": "^/admin/interns(?:/)?$" }, { "page": "/admin/login", "regex": "^/admin/login(?:/)?$", "routeKeys": {}, "namedRegex": "^/admin/login(?:/)?$" }, { "page": "/admin/projects", "regex": "^/admin/projects(?:/)?$", "routeKeys": {}, "namedRegex": "^/admin/projects(?:/)?$" }, { "page": "/admin/sop", "regex": "^/admin/sop(?:/)?$", "routeKeys": {}, "namedRegex": "^/admin/sop(?:/)?$" }, { "page": "/admin/sop-templates", "regex": "^/admin/sop\\-templates(?:/)?$", "routeKeys": {}, "namedRegex": "^/admin/sop\\-templates(?:/)?$" }, { "page": "/admin/sop-templates/new", "regex": "^/admin/sop\\-templates/new(?:/)?$", "routeKeys": {}, "namedRegex": "^/admin/sop\\-templates/new(?:/)?$" }, { "page": "/admin/team", "regex": "^/admin/team(?:/)?$", "routeKeys": {}, "namedRegex": "^/admin/team(?:/)?$" }, { "page": "/admin/team/new", "regex": "^/admin/team/new(?:/)?$", "routeKeys": {}, "namedRegex": "^/admin/team/new(?:/)?$" }, { "page": "/api/interns", "regex": "^/api/interns(?:/)?$", "routeKeys": {}, "namedRegex": "^/api/interns(?:/)?$" }, { "page": "/api/projects", "regex": "^/api/projects(?:/)?$", "routeKeys": {}, "namedRegex": "^/api/projects(?:/)?$" }, { "page": "/ecosystem", "regex": "^/ecosystem(?:/)?$", "routeKeys": {}, "namedRegex": "^/ecosystem(?:/)?$" }, { "page": "/interns", "regex": "^/interns(?:/)?$", "routeKeys": {}, "namedRegex": "^/interns(?:/)?$" }, { "page": "/tech", "regex": "^/tech(?:/)?$", "routeKeys": {}, "namedRegex": "^/tech(?:/)?$" }, { "page": "/workspace", "regex": "^/workspace(?:/)?$", "routeKeys": {}, "namedRegex": "^/workspace(?:/)?$" }, { "page": "/workspace/login", "regex": "^/workspace/login(?:/)?$", "routeKeys": {}, "namedRegex": "^/workspace/login(?:/)?$" }], "dynamic": [{ "page": "/admin/clients/[clientId]/onboard", "regex": "^/admin/clients/([^/]+?)/onboard(?:/)?$", "routeKeys": { "nxtPclientId": "nxtPclientId" }, "namedRegex": "^/admin/clients/(?<nxtPclientId>[^/]+?)/onboard(?:/)?$" }, { "page": "/admin/clients/[clientId]/projects/[projectId]", "regex": "^/admin/clients/([^/]+?)/projects/([^/]+?)(?:/)?$", "routeKeys": { "nxtPclientId": "nxtPclientId", "nxtPprojectId": "nxtPprojectId" }, "namedRegex": "^/admin/clients/(?<nxtPclientId>[^/]+?)/projects/(?<nxtPprojectId>[^/]+?)(?:/)?$" }, { "page": "/admin/sop-templates/[id]/edit", "regex": "^/admin/sop\\-templates/([^/]+?)/edit(?:/)?$", "routeKeys": { "nxtPid": "nxtPid" }, "namedRegex": "^/admin/sop\\-templates/(?<nxtPid>[^/]+?)/edit(?:/)?$" }, { "page": "/api/projects/[slug]", "regex": "^/api/projects/([^/]+?)(?:/)?$", "routeKeys": { "nxtPslug": "nxtPslug" }, "namedRegex": "^/api/projects/(?<nxtPslug>[^/]+?)(?:/)?$" }], "data": { "static": [], "dynamic": [] } }, "locales": [] };
 var ConfigHeaders = [];
-var PrerenderManifest = { "version": 4, "routes": { "/": { "routeType": "page", "response": "complete", "compute": "static", "htmlSize": 43042, "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/", "dataRoute": "/index.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/_global-error": { "routeType": "page", "response": "complete", "compute": "static", "htmlSize": 8938, "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/_global-error", "dataRoute": "/_global-error.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/_not-found": { "initialStatus": 404, "routeType": "page", "response": "complete", "compute": "static", "htmlSize": 17328, "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/_not-found", "dataRoute": "/_not-found.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/admin/login": { "routeType": "page", "response": "complete", "compute": "static", "htmlSize": 12429, "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/admin/login", "dataRoute": "/admin/login.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/api/interns": { "initialHeaders": { "content-type": "application/json", "x-next-cache-tags": "_N_T_/layout,_N_T_/api/layout,_N_T_/api/interns/layout,_N_T_/api/interns/route,_N_T_/api/interns" }, "routeType": "route", "response": "complete", "compute": "static", "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": 60, "initialExpireSeconds": 31536e3, "srcRoute": "/api/interns", "dataRoute": null, "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/api/projects": { "initialHeaders": { "content-type": "application/json", "x-next-cache-tags": "_N_T_/layout,_N_T_/api/layout,_N_T_/api/projects/layout,_N_T_/api/projects/route,_N_T_/api/projects" }, "routeType": "route", "response": "complete", "compute": "static", "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": 60, "initialExpireSeconds": 31536e3, "srcRoute": "/api/projects", "dataRoute": null, "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/ecosystem": { "routeType": "page", "response": "complete", "compute": "static", "htmlSize": 47076, "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": 60, "initialExpireSeconds": 31536e3, "srcRoute": "/ecosystem", "dataRoute": "/ecosystem.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/interns": { "routeType": "page", "response": "complete", "compute": "static", "htmlSize": 28309, "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/interns", "dataRoute": "/interns.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/tech": { "routeType": "page", "response": "complete", "compute": "static", "htmlSize": 51473, "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/tech", "dataRoute": "/tech.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/workspace/login": { "routeType": "page", "response": "complete", "compute": "static", "htmlSize": 12437, "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/workspace/login", "dataRoute": "/workspace/login.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] } }, "dynamicRoutes": {}, "notFoundRoutes": [], "preview": { "previewModeId": "0988bd2a8f0485a48f3ad605317b199b", "previewModeSigningKey": "518020e0aa743c5dfeef3359b2497567c997315b6fdb9b4b6b093144355f0d24", "previewModeEncryptionKey": "1f6e1ac08dbe62ea9882830531cc80c3469a09df2bd59b1e36bea0ee11d057dd" } };
-var MiddlewareManifest = { "version": 3, "middleware": { "/": { "files": ["server/edge/chunks/node_modules_next_dist_esm_build_templates_edge-wrapper_1nw6_jx.js", "server/edge/chunks/[root-of-the-server]__1w850kr._.js", "server/edge/chunks/turbopack-node_modules_next_dist_esm_build_templates_edge-wrapper_0a7uqrk.js"], "name": "middleware", "page": "/", "entrypoint": "server/edge/chunks/turbopack-node_modules_next_dist_esm_build_templates_edge-wrapper_0a7uqrk.js", "matchers": [{ "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?(?:\\/((?!_next\\/static|_next\\/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*))(\\.json|\\.rsc|\\.segments\\/.+\\.segment\\.rsc)?[\\/#\\?]?$", "originalSource": "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)" }], "wasm": [], "assets": [], "env": { "__NEXT_BUILD_ID": "01xCBhCiwl1YxYTS1u7H3", "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "S3rzJ+SD/lF8l1M0O9YPlsAm9CxoJzQRp6svMYEpB/E=", "__NEXT_PREVIEW_MODE_ID": "0988bd2a8f0485a48f3ad605317b199b", "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "1f6e1ac08dbe62ea9882830531cc80c3469a09df2bd59b1e36bea0ee11d057dd", "__NEXT_PREVIEW_MODE_SIGNING_KEY": "518020e0aa743c5dfeef3359b2497567c997315b6fdb9b4b6b093144355f0d24" } } }, "sortedMiddleware": ["/"], "functions": {} };
+var PrerenderManifest = { "version": 4, "routes": { "/": { "routeType": "page", "response": "complete", "compute": "static", "htmlSize": 43358, "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/", "dataRoute": "/index.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/_global-error": { "routeType": "page", "response": "complete", "compute": "static", "htmlSize": 8938, "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/_global-error", "dataRoute": "/_global-error.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/_not-found": { "initialStatus": 404, "routeType": "page", "response": "complete", "compute": "static", "htmlSize": 17601, "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/_not-found", "dataRoute": "/_not-found.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/admin/login": { "routeType": "page", "response": "complete", "compute": "static", "htmlSize": 12702, "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/admin/login", "dataRoute": "/admin/login.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/api/interns": { "initialHeaders": { "content-type": "application/json", "x-next-cache-tags": "_N_T_/layout,_N_T_/api/layout,_N_T_/api/interns/layout,_N_T_/api/interns/route,_N_T_/api/interns" }, "routeType": "route", "response": "complete", "compute": "static", "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": 60, "initialExpireSeconds": 31536e3, "srcRoute": "/api/interns", "dataRoute": null, "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/api/projects": { "initialHeaders": { "content-type": "application/json", "x-next-cache-tags": "_N_T_/layout,_N_T_/api/layout,_N_T_/api/projects/layout,_N_T_/api/projects/route,_N_T_/api/projects" }, "routeType": "route", "response": "complete", "compute": "static", "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": 60, "initialExpireSeconds": 31536e3, "srcRoute": "/api/projects", "dataRoute": null, "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/ecosystem": { "routeType": "page", "response": "complete", "compute": "static", "htmlSize": 47349, "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": 60, "initialExpireSeconds": 31536e3, "srcRoute": "/ecosystem", "dataRoute": "/ecosystem.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/interns": { "routeType": "page", "response": "complete", "compute": "static", "htmlSize": 28582, "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/interns", "dataRoute": "/interns.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/tech": { "routeType": "page", "response": "complete", "compute": "static", "htmlSize": 51746, "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/tech", "dataRoute": "/tech.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/workspace/login": { "routeType": "page", "response": "complete", "compute": "static", "htmlSize": 12710, "experimentalBypassFor": [{ "type": "header", "key": "next-action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/workspace/login", "dataRoute": "/workspace/login.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] } }, "dynamicRoutes": {}, "notFoundRoutes": [], "preview": { "previewModeId": "0988bd2a8f0485a48f3ad605317b199b", "previewModeSigningKey": "518020e0aa743c5dfeef3359b2497567c997315b6fdb9b4b6b093144355f0d24", "previewModeEncryptionKey": "1f6e1ac08dbe62ea9882830531cc80c3469a09df2bd59b1e36bea0ee11d057dd" } };
+var MiddlewareManifest = { "version": 3, "middleware": { "/": { "files": ["server/edge/chunks/node_modules_next_dist_esm_build_templates_edge-wrapper_1nw6_jx.js", "server/edge/chunks/[root-of-the-server]__1w850kr._.js", "server/edge/chunks/turbopack-node_modules_next_dist_esm_build_templates_edge-wrapper_0a7uqrk.js"], "name": "middleware", "page": "/", "entrypoint": "server/edge/chunks/turbopack-node_modules_next_dist_esm_build_templates_edge-wrapper_0a7uqrk.js", "matchers": [{ "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?(?:\\/((?!_next\\/static|_next\\/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*))(\\.json|\\.rsc|\\.segments\\/.+\\.segment\\.rsc)?[\\/#\\?]?$", "originalSource": "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)" }], "wasm": [], "assets": [], "env": { "__NEXT_BUILD_ID": "q3hVo6PGFB_qjH8u4DwWp", "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "S3rzJ+SD/lF8l1M0O9YPlsAm9CxoJzQRp6svMYEpB/E=", "__NEXT_PREVIEW_MODE_ID": "0988bd2a8f0485a48f3ad605317b199b", "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "1f6e1ac08dbe62ea9882830531cc80c3469a09df2bd59b1e36bea0ee11d057dd", "__NEXT_PREVIEW_MODE_SIGNING_KEY": "518020e0aa743c5dfeef3359b2497567c997315b6fdb9b4b6b093144355f0d24" } } }, "sortedMiddleware": ["/"], "functions": {} };
 var AppPathRoutesManifest = { "/_global-error/page": "/_global-error", "/_not-found/page": "/_not-found", "/admin/(dashboard)/clients/[clientId]/onboard/page": "/admin/clients/[clientId]/onboard", "/admin/(dashboard)/clients/[clientId]/projects/[projectId]/page": "/admin/clients/[clientId]/projects/[projectId]", "/admin/(dashboard)/clients/new/page": "/admin/clients/new", "/admin/(dashboard)/clients/page": "/admin/clients", "/admin/(dashboard)/ecosystem-metrics/page": "/admin/ecosystem-metrics", "/admin/(dashboard)/ecosystem/page": "/admin/ecosystem", "/admin/(dashboard)/interns/page": "/admin/interns", "/admin/(dashboard)/page": "/admin", "/admin/(dashboard)/projects/page": "/admin/projects", "/admin/(dashboard)/sop-templates/[id]/edit/page": "/admin/sop-templates/[id]/edit", "/admin/(dashboard)/sop-templates/new/page": "/admin/sop-templates/new", "/admin/(dashboard)/sop-templates/page": "/admin/sop-templates", "/admin/(dashboard)/sop/page": "/admin/sop", "/admin/(dashboard)/team/new/page": "/admin/team/new", "/admin/(dashboard)/team/page": "/admin/team", "/admin/login/page": "/admin/login", "/api/interns/route": "/api/interns", "/api/projects/[slug]/route": "/api/projects/[slug]", "/api/projects/route": "/api/projects", "/ecosystem/page": "/ecosystem", "/interns/page": "/interns", "/page": "/", "/tech/page": "/tech", "/workspace/(dashboard)/page": "/workspace", "/workspace/login/page": "/workspace/login" };
 var FunctionsConfigManifest = { "version": 1, "functions": {} };
 var PagesManifest = { "/404": "pages/404.html", "/500": "pages/500.html" };
@@ -10733,17 +10740,17 @@ process.env.NEXT_BUILD_ID = BuildId;
 process.env.OPEN_NEXT_BUILD_ID = NextConfig.deploymentId ?? BuildId;
 process.env.NEXT_PREVIEW_MODE_ID = PrerenderManifest?.preview?.previewModeId;
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/http/openNextResponse.js
+// node_modules/@opennextjs/aws/dist/http/openNextResponse.js
 init_logger();
 import { Transform } from "node:stream";
 init_util();
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/core/routing/util.js
+// node_modules/@opennextjs/aws/dist/core/routing/util.js
 init_util();
 init_logger();
 import { ReadableStream as ReadableStream3 } from "node:stream/web";
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/utils/binary.js
+// node_modules/@opennextjs/aws/dist/utils/binary.js
 var commonBinaryMimeTypes = /* @__PURE__ */ new Set([
   "application/octet-stream",
   // Docs
@@ -10811,11 +10818,11 @@ function isBinaryContentType(contentType) {
   return commonBinaryMimeTypes.has(value);
 }
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/core/routing/i18n/index.js
+// node_modules/@opennextjs/aws/dist/core/routing/i18n/index.js
 init_stream();
 init_logger();
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/core/routing/i18n/accept-header.js
+// node_modules/@opennextjs/aws/dist/core/routing/i18n/accept-header.js
 function parse(raw, preferences, options) {
   const lowers = /* @__PURE__ */ new Map();
   const header = raw.replace(/[ \t]/g, "");
@@ -10915,7 +10922,7 @@ function acceptLanguage(header = "", preferences) {
   })[0] || void 0;
 }
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/core/routing/i18n/index.js
+// node_modules/@opennextjs/aws/dist/core/routing/i18n/index.js
 function isLocalizedPath(path3) {
   return NextConfig.i18n?.locales.includes(path3.split("/")[1].toLowerCase()) ?? false;
 }
@@ -11013,7 +11020,7 @@ function handleLocaleRedirect(internalEvent) {
   return false;
 }
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/core/routing/queue.js
+// node_modules/@opennextjs/aws/dist/core/routing/queue.js
 function generateShardId(rawPath, maxConcurrency, prefix) {
   let a = cyrb128(rawPath);
   let t = a += 1831565813;
@@ -11047,7 +11054,7 @@ function cyrb128(str) {
   return h1 >>> 0;
 }
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/core/routing/util.js
+// node_modules/@opennextjs/aws/dist/core/routing/util.js
 function isExternal(url, host) {
   if (!url)
     return false;
@@ -11157,17 +11164,17 @@ function normalizeLocationHeader(location2, baseUrl, encodeQuery = false) {
   return href;
 }
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/core/routingHandler.js
+// node_modules/@opennextjs/aws/dist/core/routingHandler.js
 init_logger();
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/core/routing/cacheInterceptor.js
+// node_modules/@opennextjs/aws/dist/core/routing/cacheInterceptor.js
 import { createHash } from "node:crypto";
 init_stream();
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/utils/cache.js
+// node_modules/@opennextjs/aws/dist/utils/cache.js
 init_logger();
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/utils/semver.js
+// node_modules/@opennextjs/aws/dist/utils/semver.js
 function compareSemver(v1, operator, v2) {
   let versionDiff = 0;
   if (v1 === "latest") {
@@ -11208,7 +11215,7 @@ function compareSemver(v1, operator, v2) {
   }
 }
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/utils/cache.js
+// node_modules/@opennextjs/aws/dist/utils/cache.js
 async function isStale(key, tags, lastModified) {
   if (!compareSemver(globalThis.nextVersion, ">=", "16.0.0")) {
     return false;
@@ -11252,7 +11259,7 @@ function getTagsFromValue(value) {
   }
 }
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/core/routing/cacheInterceptor.js
+// node_modules/@opennextjs/aws/dist/core/routing/cacheInterceptor.js
 init_logger();
 var CACHE_ONE_YEAR = 60 * 60 * 24 * 365;
 var CACHE_ONE_MONTH = 60 * 60 * 24 * 30;
@@ -11477,7 +11484,7 @@ async function cacheInterceptor(event) {
   return event;
 }
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/path-to-regexp/dist.es2015/index.js
+// node_modules/path-to-regexp/dist.es2015/index.js
 function lexer(str) {
   var tokens = [];
   var i = 0;
@@ -11853,18 +11860,18 @@ function pathToRegexp(path3, keys, options) {
   return stringToRegexp(path3, keys, options);
 }
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/utils/normalize-path.js
+// node_modules/@opennextjs/aws/dist/utils/normalize-path.js
 import path2 from "node:path";
 function normalizeRepeatedSlashes(url) {
   const urlNoQuery = url.host + url.pathname;
   return `${url.protocol}//${urlNoQuery.replace(/\\/g, "/").replace(/\/\/+/g, "/")}${url.search}`;
 }
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/core/routing/matcher.js
+// node_modules/@opennextjs/aws/dist/core/routing/matcher.js
 init_stream();
 init_logger();
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/core/routing/routeMatcher.js
+// node_modules/@opennextjs/aws/dist/core/routing/routeMatcher.js
 var optionalLocalePrefixRegex = `^/(?:${RoutesManifest.locales.map((locale) => `${locale}/?`).join("|")})?`;
 var optionalBasepathPrefixRegex = RoutesManifest.basePath ? `^${RoutesManifest.basePath}/?` : "^/";
 var optionalPrefix = optionalLocalePrefixRegex.replace("^/", optionalBasepathPrefixRegex);
@@ -11914,7 +11921,7 @@ function getStaticAPIRoutes() {
   return [...pagesStaticAPIRoutes, ...appPathsStaticAPIRoutes];
 }
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/core/routing/matcher.js
+// node_modules/@opennextjs/aws/dist/core/routing/matcher.js
 var routeHasMatcher = (headers, cookies, query) => (redirect) => {
   switch (redirect.type) {
     case "header":
@@ -12206,7 +12213,7 @@ function handleFallbackFalse(internalEvent, prerenderManifest) {
   };
 }
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/core/routing/middleware.js
+// node_modules/@opennextjs/aws/dist/core/routing/middleware.js
 init_stream();
 init_utils();
 var middlewareManifest = MiddlewareManifest;
@@ -12324,7 +12331,7 @@ async function handleMiddleware(internalEvent, initialSearch, middlewareLoader =
   };
 }
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/core/routingHandler.js
+// node_modules/@opennextjs/aws/dist/core/routingHandler.js
 var MIDDLEWARE_HEADER_PREFIX = "x-middleware-response-";
 var MIDDLEWARE_HEADER_PREFIX_LEN = MIDDLEWARE_HEADER_PREFIX.length;
 var INTERNAL_HEADER_PREFIX = "x-opennext-";
@@ -12509,7 +12516,7 @@ function isInternalResult(eventOrResult) {
   return eventOrResult != null && "statusCode" in eventOrResult;
 }
 
-// C:/Users/Aravindh/AppData/Local/npm-cache/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/adapters/middleware.js
+// node_modules/@opennextjs/aws/dist/adapters/middleware.js
 globalThis.internalFetch = fetch;
 globalThis.__openNextAls = new AsyncLocalStorage();
 var defaultHandler = async (internalEvent, options) => {
