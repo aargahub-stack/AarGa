@@ -51,6 +51,21 @@ export async function saveTemplate({
         return { success: false, error: `Failed to refresh template phases: ${delErr.message}` };
       }
     } else {
+      // Find current max version for this project_type to avoid constraint violation (uq_sop_templates_type_version)
+      let finalVersion = Number(version);
+
+      const { data: existingVersions } = await supabase
+        .from("sop_templates")
+        .select("version")
+        .eq("project_type", projectType);
+
+      if (existingVersions && existingVersions.length > 0) {
+        const maxVer = Math.max(0, ...existingVersions.map((v) => v.version || 1));
+        if (existingVersions.some((v) => v.version === finalVersion)) {
+          finalVersion = maxVer + 1;
+        }
+      }
+
       // Insert new template header
       const { data: newTmpl, error: tmplInsErr } = await supabase
         .from("sop_templates")
@@ -58,7 +73,7 @@ export async function saveTemplate({
           {
             project_type: projectType,
             name,
-            version: Number(version),
+            version: finalVersion,
             is_active: isActive,
           },
         ])
