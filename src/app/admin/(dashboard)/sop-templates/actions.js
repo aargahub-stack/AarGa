@@ -87,7 +87,27 @@ export async function saveTemplate({
       targetTemplateId = newTmpl.id;
     }
 
-    // Insert updated phases and tasks
+    // 1. Collect all unique skill tags across all phases & tasks for a SINGLE batch upsert subrequest
+    const allSkillTags = new Set();
+    phases.forEach((p) => {
+      (p.tasks || []).forEach((t) => {
+        (t.required_skill_tags || []).forEach((tag) => {
+          if (tag && tag.trim()) allSkillTags.add(tag.trim());
+        });
+      });
+    });
+
+    if (allSkillTags.size > 0) {
+      const skillsBatch = Array.from(allSkillTags).map((tag) => ({
+        name: tag,
+        category: "SOP Tag",
+      }));
+      await supabase
+        .from("skills")
+        .upsert(skillsBatch, { onConflict: "name", ignoreDuplicates: true });
+    }
+
+    // 2. Insert updated phases & tasks in batched operations
     for (let pIdx = 0; pIdx < phases.length; pIdx++) {
       const phase = phases[pIdx];
       const phaseOrder = pIdx + 1;
@@ -111,26 +131,13 @@ export async function saveTemplate({
       }
 
       const tasks = phase.tasks || [];
-      for (let tIdx = 0; tIdx < tasks.length; tIdx++) {
-        const task = tasks[tIdx];
-        const taskOrder = tIdx + 1;
-
-        const skillTags = Array.isArray(task.required_skill_tags)
-          ? task.required_skill_tags.filter(Boolean)
-          : [];
-
-        // Ensure skills exist in skills table for autocomplete lookup via valid Supabase upsert API
-        for (const tag of skillTags) {
-          await supabase
-            .from("skills")
-            .upsert([{ name: tag, category: "SOP Tag" }], {
-              onConflict: "name",
-              ignoreDuplicates: true,
-            });
-        }
-
-        const { error: taskInsErr } = await supabase.from("sop_template_tasks").insert([
-          {
+      if (tasks.length > 0) {
+        const batchedTasks = tasks.map((task, tIdx) => {
+          const taskOrder = tIdx + 1;
+          const skillTags = Array.isArray(task.required_skill_tags)
+            ? task.required_skill_tags.filter(Boolean)
+            : [];
+          return {
             sop_template_phase_id: insPhase.id,
             title: task.title || `Task ${taskOrder}`,
             description: task.description || "",
@@ -138,8 +145,12 @@ export async function saveTemplate({
             estimated_hours: Number(task.estimated_hours) || 4.0,
             task_order: taskOrder,
             is_optional: Boolean(task.is_optional),
-          },
-        ]);
+          };
+        });
+
+        const { error: taskInsErr } = await supabase
+          .from("sop_template_tasks")
+          .insert(batchedTasks);
 
         if (taskInsErr) {
           throw new Error(taskInsErr.message);
