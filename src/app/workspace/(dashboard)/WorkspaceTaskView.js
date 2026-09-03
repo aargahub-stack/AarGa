@@ -16,7 +16,7 @@ import {
   Zap,
 } from "lucide-react";
 
-import WorkspaceAttendanceWidget from "@/components/workspace/dashboard/WorkspaceAttendanceWidget";
+import WorkspaceAutoSessionWidget from "@/components/workspace/dashboard/WorkspaceAutoSessionWidget";
 import WorkspaceCompensationCard from "@/components/workspace/dashboard/WorkspaceCompensationCard";
 import WorkspaceAnalyticsGrid from "@/components/workspace/dashboard/WorkspaceAnalyticsGrid";
 
@@ -30,7 +30,7 @@ export default function WorkspaceTaskView({
 }) {
   const [tasks, setTasks] = useState(activeTasks);
   const [doneTasks, setDoneTasks] = useState(completedTasks);
-  const [activeTab, setActiveTab] = useState("active"); // 'active', 'pending', 'completed'
+  const [activeTab, setActiveTab] = useState("active");
 
   const [submittingTaskId, setSubmittingTaskId] = useState(null);
   const [submissionNote, setSubmissionNote] = useState("");
@@ -85,7 +85,6 @@ export default function WorkspaceTaskView({
     }
   };
 
-  // Group active tasks
   const inProgressOrAssigned = tasks.filter(
     (t) => t.status === "assigned" || t.status === "in_progress"
   );
@@ -94,7 +93,7 @@ export default function WorkspaceTaskView({
   );
 
   return (
-    <div className="max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-8 font-['Space_Grotesk'] text-ink">
+    <div className="max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-8 font-sans text-ink">
       {/* Toast Notification */}
       {toast && (
         <Toast
@@ -110,7 +109,7 @@ export default function WorkspaceTaskView({
           <div className="flex items-center gap-2 text-emerald-600 font-bold text-xs uppercase tracking-widest mb-1">
             <Zap size={15} /> Workspace Operational Dashboard
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-ink">
+          <h1 className="text-2xl sm:text-3xl font-black font-['Space_Grotesk'] tracking-tight text-ink">
             Welcome back, {teamMember.name}
           </h1>
           <p className="text-xs sm:text-sm font-semibold text-slate-500 mt-1">
@@ -119,11 +118,11 @@ export default function WorkspaceTaskView({
         </div>
       </div>
 
-      {/* Top Section: Attendance Tracker & Compensation Card */}
+      {/* Bento Grid Top Section: Automatic Presence Session & Compensation View */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <WorkspaceAttendanceWidget
+        <WorkspaceAutoSessionWidget
           initialActiveSession={attendanceData.activeSession}
-          initialHistory={attendanceData.history}
+          totalLoggedHours={32}
         />
         <WorkspaceCompensationCard
           compensationData={compensationData.data}
@@ -131,20 +130,19 @@ export default function WorkspaceTaskView({
         />
       </div>
 
-      {/* Analytics Grid */}
+      {/* Analytics Metrics Grid */}
       <WorkspaceAnalyticsGrid
         tasksCount={tasks.length + doneTasks.length}
         completedCount={doneTasks.length}
-        activeHours={28}
+        activeHours={32}
       />
 
       {/* Task & Work Execution Section */}
       <section className="space-y-6">
-        {/* Task Category Tabs */}
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 pb-3">
           <div className="flex items-center gap-2">
             <ListFilter size={18} className="text-slate-500" />
-            <h2 className="text-lg font-black text-ink">Task &amp; Work Execution</h2>
+            <h2 className="text-lg font-black font-['Space_Grotesk'] text-ink">Task &amp; Work Execution</h2>
           </div>
 
           <div className="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl border border-slate-200">
@@ -230,22 +228,22 @@ export default function WorkspaceTaskView({
                           ))}
                         </div>
 
-                        <h4 className="text-base font-extrabold text-ink">{task.title}</h4>
+                        <h4 className="text-base font-extrabold text-ink font-['Space_Grotesk']">{task.title}</h4>
 
                         {task.description && (
-                          <p className="text-xs text-slate-600 leading-relaxed max-w-2xl">
+                          <p className="text-xs text-slate-600 leading-relaxed max-w-2xl font-sans">
                             {task.description}
                           </p>
                         )}
 
-                        {/* Founder Rejection Notes */}
+                        {/* Lead Rejection Notes */}
                         {task.rejection_reason && isInProgress && (
                           <div className="mt-3 rounded-2xl border border-red-200 bg-red-50/90 p-4 text-xs space-y-2">
-                            <div className="flex items-center gap-1.5 font-black text-red-950">
+                            <div className="flex items-center gap-1.5 font-black text-red-950 font-['Space_Grotesk']">
                               <AlertCircle size={16} className="text-red-600 shrink-0" />
                               <span>Lead Rejection Notes</span>
                             </div>
-                            <p className="bg-white rounded-xl p-3 border border-red-200 text-slate-800 font-semibold">
+                            <p className="bg-white rounded-xl p-3 border border-red-200 text-slate-800 font-semibold font-sans">
                               {task.rejection_reason}
                             </p>
                           </div>
@@ -257,7 +255,7 @@ export default function WorkspaceTaskView({
                           <button
                             onClick={() => handleStartTask(task)}
                             disabled={loadingId === task.id}
-                            className="inline-flex items-center gap-1.5 rounded-xl bg-ink px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-moss-800 transition-colors disabled:opacity-50"
+                            className="inline-flex items-center gap-1.5 rounded-xl bg-ink px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-moss-800 transition-colors disabled:opacity-50 font-sans"
                           >
                             <Play size={14} />
                             <span>{loadingId === task.id ? "Starting..." : "Start Task →"}</span>
@@ -270,7 +268,7 @@ export default function WorkspaceTaskView({
                               setSubmittingTaskId(task.id);
                               setSubmissionNote(task.submission_note || "");
                             }}
-                            className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-emerald-700 transition-colors"
+                            className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-emerald-700 transition-colors font-sans"
                           >
                             <Send size={14} />
                             <span>{isReturned ? "Resubmit for Review" : "Submit for Review"}</span>
@@ -289,20 +287,20 @@ export default function WorkspaceTaskView({
         {activeTab === "pending" && (
           <div className="space-y-4">
             {pendingReviewTasks.length === 0 ? (
-              <div className="rounded-3xl border border-slate-200 bg-white p-8 text-center text-slate-400">
+              <div className="rounded-3xl border border-slate-200 bg-white p-8 text-center text-slate-400 font-sans">
                 <p className="text-sm font-semibold">No tasks currently awaiting lead approval.</p>
               </div>
             ) : (
               pendingReviewTasks.map((task) => (
                 <div
                   key={task.id}
-                  className="rounded-2xl border border-amber-200 bg-amber-50/50 p-5 flex items-center justify-between"
+                  className="rounded-2xl border border-amber-200 bg-amber-50/50 p-5 flex items-center justify-between font-sans"
                 >
                   <div>
                     <span className="inline-block rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-800 mb-1">
                       Submitted for Lead Review
                     </span>
-                    <h4 className="text-base font-bold text-ink">{task.title}</h4>
+                    <h4 className="text-base font-bold text-ink font-['Space_Grotesk']">{task.title}</h4>
                     {task.submission_note && (
                       <p className="text-xs text-slate-600 mt-1">Note: {task.submission_note}</p>
                     )}
@@ -321,17 +319,17 @@ export default function WorkspaceTaskView({
         {activeTab === "completed" && (
           <div className="space-y-3">
             {doneTasks.length === 0 ? (
-              <div className="rounded-3xl border border-slate-200 bg-white p-8 text-center text-slate-400">
+              <div className="rounded-3xl border border-slate-200 bg-white p-8 text-center text-slate-400 font-sans">
                 <p className="text-sm font-semibold">No completed tasks recorded yet.</p>
               </div>
             ) : (
               doneTasks.map((task) => (
                 <div
                   key={task.id}
-                  className="flex items-center justify-between rounded-xl border border-slate-200 bg-slate-50/60 p-4 text-xs"
+                  className="flex items-center justify-between rounded-xl border border-slate-200 bg-slate-50/60 p-4 text-xs font-sans"
                 >
                   <div>
-                    <div className="font-bold text-ink">{task.title}</div>
+                    <div className="font-bold text-ink font-['Space_Grotesk']">{task.title}</div>
                     <div className="text-[11px] text-slate-500">
                       Phase: {task.project_phases?.name || "Verified Output"}
                     </div>
@@ -349,9 +347,9 @@ export default function WorkspaceTaskView({
 
       {/* Submission Note Modal */}
       {submittingTaskId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 font-['Space_Grotesk']">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 font-sans">
           <div className="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-6 shadow-xl">
-            <h3 className="text-lg font-black text-ink">Submit Task for Review</h3>
+            <h3 className="text-lg font-black font-['Space_Grotesk'] text-ink">Submit Task for Review</h3>
             <p className="mt-1 text-xs text-slate-500">
               Provide optional submission notes or PR / deliverable links for your reviewer.
             </p>

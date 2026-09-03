@@ -37,14 +37,14 @@ export default function WorkspaceCompensationCard({ compensationData, teamMember
   const formattedDate = formatDateDeterministic(comp.next_payout_date);
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm font-['Space_Grotesk']">
+    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm font-sans text-ink">
       <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
         <div className="flex items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sky-50 text-sky-600 border border-sky-200">
             <CreditCard size={16} />
           </div>
           <div>
-            <h3 className="text-sm font-black text-ink">Compensation &amp; Stipend View</h3>
+            <h3 className="text-sm font-black font-['Space_Grotesk'] text-ink">Compensation &amp; Stipend View</h3>
             <p className="text-[11px] text-slate-500 font-semibold">Transparent payout status &amp; breakdown</p>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import { getWorkspaceSession } from "@/lib/supabase/workspaceAuth";
 import WorkspaceHeader from "./WorkspaceHeader";
+import WorkspaceSidebar from "./WorkspaceSidebar";
 
 export const metadata = {
   title: "Employee Workspace — AarGa SOP Engine",
@@ -19,9 +20,12 @@ export default async function WorkspaceLayout({ children }) {
   const unreadCount = (notifications || []).length;
 
   return (
-    <div className="flex min-h-screen flex-col bg-paper font-sans text-ink antialiased">
-      <WorkspaceHeader teamMember={teamMember} unreadCount={unreadCount} />
-      <main className="flex-1 w-full flex flex-col no-scrollbar">{children}</main>
+    <div className="flex min-h-screen bg-paper font-sans text-ink antialiased">
+      <WorkspaceSidebar teamMember={teamMember} />
+      <div className="flex-1 flex flex-col min-w-0">
+        <WorkspaceHeader teamMember={teamMember} unreadCount={unreadCount} />
+        <main className="flex-1 w-full flex flex-col no-scrollbar">{children}</main>
+      </div>
     </div>
   );
 }

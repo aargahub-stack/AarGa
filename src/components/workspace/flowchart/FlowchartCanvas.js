@@ -203,7 +203,7 @@ function FlowchartCanvasInner({ initialFlowchart, teamMemberId }) {
   }
 
   return (
-    <div className="flex h-[calc(100vh-73px)] w-full bg-slate-950 font-['Space_Grotesk'] overflow-hidden border-t border-slate-800">
+    <div className="flex h-[calc(100vh-56px)] w-full bg-slate-950 font-['Space_Grotesk'] overflow-hidden border-t border-slate-800">
       <FlowchartSidebar />
       <div className="flex flex-1 flex-col overflow-hidden">
         <FlowchartTopBar

@@ -3,6 +3,41 @@
 import { revalidatePath } from "next/cache";
 import { getWorkspaceSession } from "@/lib/supabase/workspaceAuth";
 
+export async function autoSyncSessionAction(notes = "Automatic active presence session") {
+  try {
+    const { teamMember, supabase } = await getWorkspaceSession();
+
+    const { data: existingActive } = await supabase
+      .from("workspace_attendance")
+      .select("*")
+      .eq("team_member_id", teamMember.id)
+      .eq("status", "active")
+      .maybeSingle();
+
+    if (existingActive) {
+      return { success: true, data: existingActive };
+    }
+
+    const { data, error } = await supabase
+      .from("workspace_attendance")
+      .insert([
+        {
+          team_member_id: teamMember.id,
+          clock_in: new Date().toISOString(),
+          status: "active",
+          notes: notes,
+        },
+      ])
+      .select()
+      .maybeSingle();
+
+    if (error) return { success: false, error: error.message };
+    return { success: true, data };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+}
+
 export async function clockInAction(notes = "") {
   try {
     const { teamMember, supabase } = await getWorkspaceSession();

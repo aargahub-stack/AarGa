@@ -41,7 +41,7 @@ export default function WorkspaceAnalyticsGrid({ tasksCount = 0, completedCount 
   ];
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 font-['Space_Grotesk']">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 font-sans">
       {metrics.map((m) => {
         const Icon = m.icon;
         return (
