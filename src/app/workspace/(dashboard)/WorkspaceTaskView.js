@@ -3,11 +3,35 @@
 import { useState } from "react";
 import { startTaskAction, submitTaskForReviewAction } from "./actions";
 import Toast from "@/components/admin/Toast";
-import { AlertCircle, CheckCircle2, Clock, Send, Play, MessageSquare, CheckSquare } from "lucide-react";
+import {
+  AlertCircle,
+  CheckCircle2,
+  Clock,
+  Send,
+  Play,
+  MessageSquare,
+  CheckSquare,
+  ListFilter,
+  FileCheck,
+  Zap,
+} from "lucide-react";
 
-export default function WorkspaceTaskView({ teamMember, activeTasks, completedTasks, notifications = [] }) {
+import WorkspaceAttendanceWidget from "@/components/workspace/dashboard/WorkspaceAttendanceWidget";
+import WorkspaceCompensationCard from "@/components/workspace/dashboard/WorkspaceCompensationCard";
+import WorkspaceAnalyticsGrid from "@/components/workspace/dashboard/WorkspaceAnalyticsGrid";
+
+export default function WorkspaceTaskView({
+  teamMember,
+  activeTasks,
+  completedTasks,
+  notifications = [],
+  attendanceData = {},
+  compensationData = {},
+}) {
   const [tasks, setTasks] = useState(activeTasks);
   const [doneTasks, setDoneTasks] = useState(completedTasks);
+  const [activeTab, setActiveTab] = useState("active"); // 'active', 'pending', 'completed'
+
   const [submittingTaskId, setSubmittingTaskId] = useState(null);
   const [submissionNote, setSubmissionNote] = useState("");
   const [loadingId, setLoadingId] = useState(null);
@@ -44,7 +68,12 @@ export default function WorkspaceTaskView({ teamMember, activeTasks, completedTa
       setTasks((prev) =>
         prev.map((t) =>
           t.id === submittingTaskId
-            ? { ...t, status: "submitted_for_review", submission_note: submissionNote, rejection_reason: null }
+            ? {
+                ...t,
+                status: "submitted_for_review",
+                submission_note: submissionNote,
+                rejection_reason: null,
+              }
             : t
         )
       );
@@ -56,20 +85,16 @@ export default function WorkspaceTaskView({ teamMember, activeTasks, completedTa
     }
   };
 
-  // Group active tasks by project
-  const projectGroups = {};
-  tasks.forEach((task) => {
-    const projName = task.project_phases?.client_projects?.clients?.org_name || "Active Engagement";
-    const phaseName = task.project_phases?.name || "Active Phase";
-    const key = `${projName} — ${phaseName}`;
-    if (!projectGroups[key]) {
-      projectGroups[key] = [];
-    }
-    projectGroups[key].push(task);
-  });
+  // Group active tasks
+  const inProgressOrAssigned = tasks.filter(
+    (t) => t.status === "assigned" || t.status === "in_progress"
+  );
+  const pendingReviewTasks = tasks.filter(
+    (t) => t.status === "submitted_for_review"
+  );
 
   return (
-    <div className="space-y-8">
+    <div className="max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-8 font-['Space_Grotesk'] text-ink">
       {/* Toast Notification */}
       {toast && (
         <Toast
@@ -79,202 +104,253 @@ export default function WorkspaceTaskView({ teamMember, activeTasks, completedTa
         />
       )}
 
-      {/* Header */}
-      <div>
-        <span className="text-xs font-bold uppercase tracking-widest text-emerald-600">
-          Daily Execution Queue
-        </span>
-        <h1 className="mt-1 text-3xl font-black tracking-tight text-ink">
-          Welcome back, {teamMember.name}
-        </h1>
-        <p className="mt-1 text-xs text-slate-500">
-          Focus on your assigned tasks in currently active project phases.
-        </p>
+      {/* Header Banner */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-6">
+        <div>
+          <div className="flex items-center gap-2 text-emerald-600 font-bold text-xs uppercase tracking-widest mb-1">
+            <Zap size={15} /> Workspace Operational Dashboard
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-ink">
+            Welcome back, {teamMember.name}
+          </h1>
+          <p className="text-xs sm:text-sm font-semibold text-slate-500 mt-1">
+            Role: <span className="text-emerald-700 font-bold">{teamMember.role}</span> • Enterprise Command Dashboard
+          </p>
+        </div>
       </div>
 
-      {/* Actionable Active Tasks Section */}
+      {/* Top Section: Attendance Tracker & Compensation Card */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <WorkspaceAttendanceWidget
+          initialActiveSession={attendanceData.activeSession}
+          initialHistory={attendanceData.history}
+        />
+        <WorkspaceCompensationCard
+          compensationData={compensationData.data}
+          teamMember={teamMember}
+        />
+      </div>
+
+      {/* Analytics Grid */}
+      <WorkspaceAnalyticsGrid
+        tasksCount={tasks.length + doneTasks.length}
+        completedCount={doneTasks.length}
+        activeHours={28}
+      />
+
+      {/* Task & Work Execution Section */}
       <section className="space-y-6">
-        <h2 className="text-lg font-bold text-ink">Active Tasks Queue</h2>
-
-        {Object.keys(projectGroups).length === 0 ? (
-          <div className="rounded-3xl border border-slate-200 bg-white p-8 text-center text-slate-400">
-            <p className="text-sm font-semibold">No active assigned tasks right now.</p>
-            <p className="mt-1 text-xs text-slate-400">
-              When new phase tasks are assigned to you, they will appear here.
-            </p>
+        {/* Task Category Tabs */}
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 pb-3">
+          <div className="flex items-center gap-2">
+            <ListFilter size={18} className="text-slate-500" />
+            <h2 className="text-lg font-black text-ink">Task &amp; Work Execution</h2>
           </div>
-        ) : (
-          Object.entries(projectGroups).map(([groupTitle, groupTasks]) => (
-            <div key={groupTitle} className="space-y-3">
-              <div className="flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-emerald-500" />
-                <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-500">
-                  {groupTitle}
-                </h3>
+
+          <div className="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl border border-slate-200">
+            <button
+              onClick={() => setActiveTab("active")}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                activeTab === "active"
+                  ? "bg-white text-emerald-700 shadow-sm"
+                  : "text-slate-600 hover:text-slate-900"
+              }`}
+            >
+              <Zap size={14} /> Active Work ({inProgressOrAssigned.length})
+            </button>
+
+            <button
+              onClick={() => setActiveTab("pending")}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                activeTab === "pending"
+                  ? "bg-white text-amber-700 shadow-sm"
+                  : "text-slate-600 hover:text-slate-900"
+              }`}
+            >
+              <Clock size={14} /> Pending Approvals ({pendingReviewTasks.length})
+            </button>
+
+            <button
+              onClick={() => setActiveTab("completed")}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                activeTab === "completed"
+                  ? "bg-white text-sky-700 shadow-sm"
+                  : "text-slate-600 hover:text-slate-900"
+              }`}
+            >
+              <FileCheck size={14} /> Completed ({doneTasks.length})
+            </button>
+          </div>
+        </div>
+
+        {/* Tab 1: Active Work Tasks */}
+        {activeTab === "active" && (
+          <div className="space-y-4">
+            {inProgressOrAssigned.length === 0 ? (
+              <div className="rounded-3xl border border-slate-200 bg-white p-8 text-center text-slate-400">
+                <p className="text-sm font-semibold">No active assigned tasks right now.</p>
+                <p className="mt-1 text-xs text-slate-400">
+                  When new phase tasks are assigned to you, they will appear here.
+                </p>
               </div>
+            ) : (
+              inProgressOrAssigned.map((task) => {
+                const isAssigned = task.status === "assigned";
+                const isInProgress = task.status === "in_progress";
+                const isReturned = Boolean(task.rejection_reason);
 
-              <div className="space-y-4">
-                {groupTasks.map((task) => {
-                  const isAssigned = task.status === "assigned";
-                  const isInProgress = task.status === "in_progress";
-                  const isSubmitted = task.status === "submitted_for_review";
-                  const isReturned = Boolean(task.rejection_reason);
-
-                  // Extract key points from founder's rejection reason
-                  const pointsList = (task.rejection_reason || "")
-                    .split(/[\n,;]|\.\s+/)
-                    .map((p) => p.trim())
-                    .filter((p) => p.length > 2);
-
-                  return (
-                    <div
-                      key={task.id}
-                      className={`rounded-2xl border bg-white p-6 shadow-sm hover:shadow-md transition-all ${
-                        isReturned && isInProgress
-                          ? "border-red-300 ring-2 ring-red-500/10"
-                          : "border-slate-200"
-                      }`}
-                    >
-                      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                        <div className="space-y-2 flex-1">
-                          <div className="flex items-center gap-2">
-                            <span
-                              className={`inline-block rounded-full px-2.5 py-0.5 text-[10px] font-extrabold ${
-                                isReturned && isInProgress
-                                  ? "bg-red-100 text-red-800 border border-red-200"
-                                  : isAssigned
-                                  ? "bg-slate-100 text-slate-700 border border-slate-200"
-                                  : isInProgress
-                                  ? "bg-amber-100 text-amber-800 border border-amber-200"
-                                  : isSubmitted
-                                  ? "bg-emerald-100 text-emerald-800 border border-emerald-200"
-                                  : "bg-slate-100 text-slate-600"
-                              }`}
-                            >
-                              {isReturned && isInProgress
-                                ? "Returned for Revisions"
+                return (
+                  <div
+                    key={task.id}
+                    className={`rounded-2xl border bg-white p-5 shadow-sm hover:shadow-md transition-all ${
+                      isReturned ? "border-red-300 ring-2 ring-red-500/10" : "border-slate-200"
+                    }`}
+                  >
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                      <div className="space-y-2 flex-1">
+                        <div className="flex items-center gap-2">
+                          <span
+                            className={`inline-block rounded-full px-2.5 py-0.5 text-[10px] font-extrabold ${
+                              isReturned
+                                ? "bg-red-100 text-red-800 border border-red-200"
                                 : isAssigned
-                                ? "Assigned"
-                                : isInProgress
-                                ? "In Progress"
-                                : isSubmitted
-                                ? "Submitted — Pending Review"
-                                : task.status}
+                                ? "bg-slate-100 text-slate-700 border border-slate-200"
+                                : "bg-amber-100 text-amber-800 border border-amber-200"
+                            }`}
+                          >
+                            {isReturned ? "Returned for Revisions" : isAssigned ? "Assigned" : "In Progress"}
+                          </span>
+                          {task.required_skill_tags?.map((tag) => (
+                            <span
+                              key={tag}
+                              className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-600"
+                            >
+                              {tag}
                             </span>
-                            {task.required_skill_tags?.map((tag) => (
-                              <span
-                                key={tag}
-                                className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-600"
-                              >
-                                {tag}
-                              </span>
-                            ))}
-                          </div>
+                          ))}
+                        </div>
 
-                          <h4 className="text-base font-extrabold text-ink">
-                            {task.title}
-                          </h4>
+                        <h4 className="text-base font-extrabold text-ink">{task.title}</h4>
 
-                          {task.description && (
-                            <p className="text-xs text-slate-600 leading-relaxed max-w-2xl">
-                              {task.description}
-                            </p>
-                          )}
+                        {task.description && (
+                          <p className="text-xs text-slate-600 leading-relaxed max-w-2xl">
+                            {task.description}
+                          </p>
+                        )}
 
-                          {/* Founder Rejection Feedback & Key Revision Points Card */}
-                          {task.rejection_reason && isInProgress && (
-                            <div className="mt-3 rounded-2xl border border-red-200 bg-red-50/90 p-4 text-xs space-y-3">
-                              <div className="flex items-center justify-between border-b border-red-200/80 pb-2">
-                                <div className="flex items-center gap-1.5 font-black text-red-950">
-                                  <AlertCircle size={16} className="text-red-600 shrink-0" />
-                                  <span>Founder Rejection Notes &amp; Actionable Feedback</span>
-                                </div>
-                                <span className="rounded-full bg-red-100 px-2.5 py-0.5 text-[10px] font-black uppercase text-red-800 border border-red-200">
-                                  Action Required
-                                </span>
-                              </div>
-
-                              {/* Exact Founder Message */}
-                              <div className="bg-white rounded-xl p-3.5 border border-red-200/90 text-slate-800 font-semibold whitespace-pre-wrap leading-relaxed shadow-sm">
-                                <div className="flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-red-600 mb-1">
-                                  <MessageSquare size={12} />
-                                  <span>Founder Message Notes:</span>
-                                </div>
-                                {task.rejection_reason}
-                              </div>
-
-                              {/* Key Revision Points Breakdown */}
-                              {pointsList.length > 0 && (
-                                <div className="pl-1 space-y-1.5">
-                                  <div className="flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-slate-500">
-                                    <CheckSquare size={12} className="text-red-600" />
-                                    <span>Key Points to Fix:</span>
-                                  </div>
-                                  <div className="space-y-1">
-                                    {pointsList.map((point, idx) => (
-                                      <div key={idx} className="flex items-start gap-2 text-[11px] text-slate-800 bg-white/60 p-2 rounded-lg border border-red-100">
-                                        <span className="text-red-600 font-extrabold shrink-0">•</span>
-                                        <span className="font-bold leading-tight">{point}</span>
-                                      </div>
-                                    ))}
-                                  </div>
-                                </div>
-                              )}
-
-                              <p className="text-[10px] text-red-700 font-bold pt-1">
-                                Please revise your work addressing the founder feedback above, then click &quot;Resubmit for Review&quot;.
-                              </p>
+                        {/* Founder Rejection Notes */}
+                        {task.rejection_reason && isInProgress && (
+                          <div className="mt-3 rounded-2xl border border-red-200 bg-red-50/90 p-4 text-xs space-y-2">
+                            <div className="flex items-center gap-1.5 font-black text-red-950">
+                              <AlertCircle size={16} className="text-red-600 shrink-0" />
+                              <span>Lead Rejection Notes</span>
                             </div>
-                          )}
-                        </div>
+                            <p className="bg-white rounded-xl p-3 border border-red-200 text-slate-800 font-semibold">
+                              {task.rejection_reason}
+                            </p>
+                          </div>
+                        )}
+                      </div>
 
-                        {/* Action Control Buttons */}
-                        <div className="shrink-0 pt-2 sm:pt-0">
-                          {isAssigned && (
-                            <button
-                              onClick={() => handleStartTask(task)}
-                              disabled={loadingId === task.id}
-                              className="inline-flex items-center gap-1.5 rounded-xl bg-ink px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-moss-800 transition-colors disabled:opacity-50"
-                            >
-                              <Play size={14} />
-                              <span>{loadingId === task.id ? "Starting..." : "Start Task →"}</span>
-                            </button>
-                          )}
+                      <div className="shrink-0 pt-2 sm:pt-0">
+                        {isAssigned && (
+                          <button
+                            onClick={() => handleStartTask(task)}
+                            disabled={loadingId === task.id}
+                            className="inline-flex items-center gap-1.5 rounded-xl bg-ink px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-moss-800 transition-colors disabled:opacity-50"
+                          >
+                            <Play size={14} />
+                            <span>{loadingId === task.id ? "Starting..." : "Start Task →"}</span>
+                          </button>
+                        )}
 
-                          {isInProgress && (
-                            <button
-                              onClick={() => {
-                                setSubmittingTaskId(task.id);
-                                setSubmissionNote(task.submission_note || "");
-                              }}
-                              className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-emerald-700 transition-colors"
-                            >
-                              <Send size={14} />
-                              <span>{isReturned ? "Resubmit for Review" : "Submit for Review"}</span>
-                            </button>
-                          )}
-
-                          {isSubmitted && (
-                            <span className="inline-flex items-center gap-1.5 rounded-xl border border-amber-200 bg-amber-50 px-3 py-1.5 text-xs font-bold text-amber-800">
-                              <Clock size={14} className="text-amber-600 animate-pulse" />
-                              <span>Awaiting Founder Review</span>
-                            </span>
-                          )}
-                        </div>
+                        {isInProgress && (
+                          <button
+                            onClick={() => {
+                              setSubmittingTaskId(task.id);
+                              setSubmissionNote(task.submission_note || "");
+                            }}
+                            className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-emerald-700 transition-colors"
+                          >
+                            <Send size={14} />
+                            <span>{isReturned ? "Resubmit for Review" : "Submit for Review"}</span>
+                          </button>
+                        )}
                       </div>
                     </div>
-                  );
-                })}
+                  </div>
+                );
+              })
+            )}
+          </div>
+        )}
+
+        {/* Tab 2: Pending Approvals */}
+        {activeTab === "pending" && (
+          <div className="space-y-4">
+            {pendingReviewTasks.length === 0 ? (
+              <div className="rounded-3xl border border-slate-200 bg-white p-8 text-center text-slate-400">
+                <p className="text-sm font-semibold">No tasks currently awaiting lead approval.</p>
               </div>
-            </div>
-          ))
+            ) : (
+              pendingReviewTasks.map((task) => (
+                <div
+                  key={task.id}
+                  className="rounded-2xl border border-amber-200 bg-amber-50/50 p-5 flex items-center justify-between"
+                >
+                  <div>
+                    <span className="inline-block rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-800 mb-1">
+                      Submitted for Lead Review
+                    </span>
+                    <h4 className="text-base font-bold text-ink">{task.title}</h4>
+                    {task.submission_note && (
+                      <p className="text-xs text-slate-600 mt-1">Note: {task.submission_note}</p>
+                    )}
+                  </div>
+                  <span className="inline-flex items-center gap-1 rounded-xl bg-white border border-amber-200 px-3 py-1.5 text-xs font-bold text-amber-800">
+                    <Clock size={14} className="text-amber-600 animate-pulse" />
+                    <span>In Lead Queue</span>
+                  </span>
+                </div>
+              ))
+            )}
+          </div>
+        )}
+
+        {/* Tab 3: Completed Tasks */}
+        {activeTab === "completed" && (
+          <div className="space-y-3">
+            {doneTasks.length === 0 ? (
+              <div className="rounded-3xl border border-slate-200 bg-white p-8 text-center text-slate-400">
+                <p className="text-sm font-semibold">No completed tasks recorded yet.</p>
+              </div>
+            ) : (
+              doneTasks.map((task) => (
+                <div
+                  key={task.id}
+                  className="flex items-center justify-between rounded-xl border border-slate-200 bg-slate-50/60 p-4 text-xs"
+                >
+                  <div>
+                    <div className="font-bold text-ink">{task.title}</div>
+                    <div className="text-[11px] text-slate-500">
+                      Phase: {task.project_phases?.name || "Verified Output"}
+                    </div>
+                  </div>
+                  <span className="rounded-full border border-emerald-200 bg-emerald-100 px-3 py-1 font-bold text-emerald-800 flex items-center gap-1">
+                    <CheckCircle2 size={12} />
+                    <span>Verified Complete</span>
+                  </span>
+                </div>
+              ))
+            )}
+          </div>
         )}
       </section>
 
       {/* Submission Note Modal */}
       {submittingTaskId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-          <div className="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-6 shadow-glass">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 font-['Space_Grotesk']">
+          <div className="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-6 shadow-xl">
             <h3 className="text-lg font-black text-ink">Submit Task for Review</h3>
             <p className="mt-1 text-xs text-slate-500">
               Provide optional submission notes or PR / deliverable links for your reviewer.
@@ -313,35 +389,6 @@ export default function WorkspaceTaskView({ teamMember, activeTasks, completedTa
             </form>
           </div>
         </div>
-      )}
-
-      {/* Read-Only Completed Tasks Section */}
-      {doneTasks.length > 0 && (
-        <section className="space-y-4 border-t border-slate-200/80 pt-8">
-          <h2 className="text-sm font-extrabold uppercase tracking-wider text-slate-500">
-            Recently Completed &amp; Verified Tasks
-          </h2>
-
-          <div className="space-y-3">
-            {doneTasks.map((task) => (
-              <div
-                key={task.id}
-                className="flex items-center justify-between rounded-xl border border-slate-200 bg-slate-50/60 p-4 text-xs"
-              >
-                <div>
-                  <div className="font-bold text-ink">{task.title}</div>
-                  <div className="text-[11px] text-slate-500">
-                    Phase: {task.project_phases?.name || "Phase"}
-                  </div>
-                </div>
-                <span className="rounded-full border border-emerald-200 bg-emerald-100 px-3 py-1 font-bold text-emerald-800 flex items-center gap-1">
-                  <CheckCircle2 size={12} />
-                  <span>Verified Complete</span>
-                </span>
-              </div>
-            ))}
-          </div>
-        </section>
       )}
     </div>
   );

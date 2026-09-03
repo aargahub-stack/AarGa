@@ -1,23 +1,30 @@
 import { getWorkspaceSession } from "@/lib/supabase/workspaceAuth";
 import WorkspaceTaskView from "./WorkspaceTaskView";
+import { getAttendanceDataAction, getCompensationDataAction } from "./dashboardActions";
 
 export default async function WorkspaceDashboardPage() {
   const { teamMember, supabase } = await getWorkspaceSession();
 
-  // Query assigned tasks and notifications concurrently
-  const [{ data: allAssignedTasks }, { data: notifications }] =
-    await Promise.all([
-      supabase
-        .from("sop_tasks")
-        .select("*, project_phases(*, client_projects(*, clients(*)))")
-        .eq("assigned_to", teamMember.id)
-        .order("created_at", { ascending: false }),
-      supabase
-        .from("sop_notifications")
-        .select("*")
-        .eq("team_member_id", teamMember.id)
-        .order("created_at", { ascending: false }),
-    ]);
+  // Query assigned tasks, notifications, attendance, and compensation concurrently
+  const [
+    { data: allAssignedTasks },
+    { data: notifications },
+    attendanceData,
+    compensationData,
+  ] = await Promise.all([
+    supabase
+      .from("sop_tasks")
+      .select("*, project_phases(*, client_projects(*, clients(*)))")
+      .eq("assigned_to", teamMember.id)
+      .order("created_at", { ascending: false }),
+    supabase
+      .from("sop_notifications")
+      .select("*")
+      .eq("team_member_id", teamMember.id)
+      .order("created_at", { ascending: false }),
+    getAttendanceDataAction(),
+    getCompensationDataAction(),
+  ]);
 
   const tasksList = allAssignedTasks || [];
 
@@ -63,6 +70,8 @@ export default async function WorkspaceDashboardPage() {
       activeTasks={activeTasks}
       completedTasks={completedTasks}
       notifications={notifications || []}
+      attendanceData={attendanceData}
+      compensationData={compensationData}
     />
   );
 }

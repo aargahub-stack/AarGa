@@ -21,7 +21,7 @@ export default async function WorkspaceLayout({ children }) {
   return (
     <div className="flex min-h-screen flex-col bg-paper font-sans text-ink antialiased">
       <WorkspaceHeader teamMember={teamMember} unreadCount={unreadCount} />
-      <main className="flex-1 max-w-6xl w-full mx-auto p-6 sm:p-8 no-scrollbar">{children}</main>
+      <main className="flex-1 w-full flex flex-col no-scrollbar">{children}</main>
     </div>
   );
 }
