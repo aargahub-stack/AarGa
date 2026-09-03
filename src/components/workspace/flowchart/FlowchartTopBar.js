@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { Save, Download, FileJson, Upload, Loader2, CheckCircle2, ArrowLeft } from "lucide-react";
+import { Save, Download, FileJson, Upload, Loader2, CheckCircle2, ArrowLeft, Workflow, Code2 } from "lucide-react";
 import Link from "next/link";
 
 export default function FlowchartTopBar({
@@ -14,11 +14,13 @@ export default function FlowchartTopBar({
   onExportPng,
   onExportJson,
   onImportJson,
+  mode = "visual",
+  onModeChange,
 }) {
   const fileInputRef = useRef(null);
 
   return (
-    <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 bg-slate-950/90 backdrop-blur-xl px-6 py-3.5 font-['Space_Grotesk']">
+    <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 bg-slate-950/90 backdrop-blur-xl px-6 py-3.5 font-['Space_Grotesk'] font-sans">
       <div className="flex items-center gap-3">
         <Link
           href="/workspace/flowchart"
@@ -31,9 +33,34 @@ export default function FlowchartTopBar({
           <input
             value={title}
             onChange={(e) => onTitleChange(e.target.value)}
-            className="bg-transparent text-lg font-bold text-white outline-none border-b border-transparent hover:border-slate-700 focus:border-emerald-400 transition-colors px-1 py-0.5"
+            className="bg-transparent text-lg font-bold font-['Space_Grotesk'] text-white outline-none border-b border-transparent hover:border-slate-700 focus:border-emerald-400 transition-colors px-1 py-0.5"
             placeholder="Untitled Flowchart"
           />
+        </div>
+
+        {/* Mode Switcher Toggle */}
+        <div className="ml-4 flex items-center gap-1 rounded-xl border border-slate-800 bg-slate-900 p-1">
+          <button
+            onClick={() => onModeChange("visual")}
+            className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+              mode === "visual"
+                ? "bg-emerald-500 text-slate-950 shadow-sm"
+                : "text-slate-400 hover:text-white"
+            }`}
+          >
+            <Workflow size={13} /> Visual Canvas
+          </button>
+
+          <button
+            onClick={() => onModeChange("code")}
+            className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+              mode === "code"
+                ? "bg-emerald-500 text-slate-950 shadow-sm"
+                : "text-slate-400 hover:text-white"
+            }`}
+          >
+            <Code2 size={13} /> Code (Mermaid)
+          </button>
         </div>
       </div>
 
@@ -52,7 +79,7 @@ export default function FlowchartTopBar({
           className="hidden"
           onChange={(e) => e.target.files?.[0] && onImportJson(e.target.files[0])}
         />
-        
+
         <button
           onClick={() => fileInputRef.current?.click()}
           className="flex items-center gap-1.5 rounded-lg border border-slate-800 bg-slate-900 px-3.5 py-2 text-xs font-semibold text-slate-300 hover:bg-slate-800 hover:text-white transition-colors"

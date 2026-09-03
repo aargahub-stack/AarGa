@@ -21,6 +21,7 @@ import DatabaseNode from "./nodes/DatabaseNode";
 import ApiCallNode from "./nodes/ApiCallNode";
 import FlowchartSidebar from "./FlowchartSidebar";
 import FlowchartTopBar from "./FlowchartTopBar";
+import MermaidDiagramEditor from "./MermaidDiagramEditor";
 import { saveFlowchart } from "@/app/workspace/(dashboard)/flowchart/actions";
 
 const nodeTypes = {
@@ -60,6 +61,7 @@ const nextId = () => `node_${Date.now()}_${idCounter++}`;
 
 function FlowchartCanvasInner({ initialFlowchart, teamMemberId }) {
   const router = useRouter();
+  const [mode, setMode] = useState("visual"); // 'visual' | 'code'
 
   const [nodes, setNodes, onNodesChange] = useNodesState(
     initialFlowchart?.nodes && initialFlowchart.nodes.length > 0
@@ -147,8 +149,7 @@ function FlowchartCanvasInner({ initialFlowchart, teamMemberId }) {
 
     setSaveSuccess(true);
     setFlowchartId(result.data.id);
-    
-    // Update URL if new chart created
+
     if (!flowchartId && result.data?.id) {
       router.replace(`/workspace/flowchart?id=${result.data.id}`);
     }
@@ -170,7 +171,7 @@ function FlowchartCanvasInner({ initialFlowchart, teamMemberId }) {
       link.download = `${title.replace(/\s+/g, "-").toLowerCase()}.png`;
       link.href = dataUrl;
       link.click();
-    } catch (err) {
+    } catch {
       setSaveError("Failed to render PNG export.");
     }
   }
@@ -202,6 +203,30 @@ function FlowchartCanvasInner({ initialFlowchart, teamMemberId }) {
     reader.readAsText(file);
   }
 
+  if (mode === "code") {
+    return (
+      <div className="flex flex-col h-[calc(100vh-56px)] w-full bg-slate-950">
+        <FlowchartTopBar
+          title={title}
+          onTitleChange={setTitle}
+          onSave={handleSave}
+          isSaving={isSaving}
+          saveSuccess={saveSuccess}
+          saveError={saveError}
+          onExportPng={handleExportPng}
+          onExportJson={handleExportJson}
+          onImportJson={handleImportJson}
+          mode={mode}
+          onModeChange={setMode}
+        />
+        <MermaidDiagramEditor
+          initialTitle={title}
+          flowchartId={flowchartId}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="flex h-[calc(100vh-56px)] w-full bg-slate-950 font-['Space_Grotesk'] overflow-hidden border-t border-slate-800">
       <FlowchartSidebar />
@@ -216,6 +241,8 @@ function FlowchartCanvasInner({ initialFlowchart, teamMemberId }) {
           onExportPng={handleExportPng}
           onExportJson={handleExportJson}
           onImportJson={handleImportJson}
+          mode={mode}
+          onModeChange={setMode}
         />
         <div className="flex-1 relative w-full h-full" ref={reactFlowWrapper}>
           <ReactFlow
