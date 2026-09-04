@@ -56,7 +56,7 @@ export default function WorkspaceAttendanceWidget({ initialActiveSession, initia
   };
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm font-['Space_Grotesk']">
+    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm font-sans">
       <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
         <div className="flex items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-200">

@@ -14,7 +14,7 @@ export default function DecisionNode({ data, selected }) {
         style={{ transform: "rotate(45deg)", borderRadius: "12px" }}
       />
       <Handle type="target" position={Position.Top} className="!bg-amber-400 !w-3 !h-3" />
-      <span className="relative z-10 px-4 text-center text-xs font-bold text-amber-200 font-['Space_Grotesk']">
+      <span className="relative z-10 px-4 text-center text-xs font-bold text-amber-200 font-sans">
         {data.label || "Decision?"}
       </span>
       <Handle type="source" position={Position.Bottom} id="yes" className="!bg-amber-400 !w-3 !h-3" />

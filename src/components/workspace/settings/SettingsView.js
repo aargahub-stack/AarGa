@@ -45,7 +45,7 @@ export default function SettingsView({ teamMember }) {
   };
 
   return (
-    <div className="max-w-4xl w-full mx-auto p-4 sm:p-6 space-y-8 font-['Space_Grotesk'] text-ink">
+    <div className="max-w-4xl w-full mx-auto p-4 sm:p-6 space-y-8 font-sans text-ink">
       {/* Header */}
       <div className="border-b border-slate-200 pb-4">
         <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-ink">

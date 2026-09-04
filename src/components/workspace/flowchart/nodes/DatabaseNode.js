@@ -18,7 +18,7 @@ export default function DatabaseNode({ data, selected }) {
         }`}
       >
         <Handle type="target" position={Position.Top} className="!bg-sky-400 !w-3 !h-3" />
-        <span className="text-sm font-semibold text-sky-200 font-['Space_Grotesk']">{data.label || "Database"}</span>
+        <span className="text-sm font-semibold text-sky-200 font-sans">{data.label || "Database"}</span>
         <Handle type="source" position={Position.Bottom} className="!bg-sky-400 !w-3 !h-3" />
       </div>
       <div

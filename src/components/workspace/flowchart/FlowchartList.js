@@ -36,7 +36,7 @@ export default function FlowchartList({ flowcharts: initialFlowcharts, teamMembe
   }
 
   return (
-    <div className="max-w-6xl w-full mx-auto p-6 sm:p-8 space-y-8 font-['Space_Grotesk'] text-ink">
+    <div className="max-w-6xl w-full mx-auto p-6 sm:p-8 space-y-8 font-sans text-ink">
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200/80 pb-6">
         <div>

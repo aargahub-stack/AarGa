@@ -42,12 +42,12 @@ export default function WorkspaceSidebar({ teamMember }) {
   return (
     <aside className="fixed left-0 top-0 z-40 flex h-screen w-[260px] flex-col border-r border-slate-200 bg-white font-sans shadow-xs">
       {/* Brand Header */}
-      <div className="flex items-center gap-3 px-5 py-5 border-b border-slate-100">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-md shadow-emerald-600/20">
-          <Sparkles className="h-5 w-5 text-white" />
+      <div className="flex h-16 shrink-0 items-center gap-3 px-5 border-b border-slate-200">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-600/10 border border-emerald-500/20 p-1.5 shadow-xs">
+          <AargaLogo className="h-full w-full object-contain" />
         </div>
         <div className="min-w-0">
-          <h1 className="text-sm font-black font-['Space_Grotesk'] leading-tight text-ink">
+          <h1 className="text-sm font-black leading-tight text-ink">
             AarGa OS
           </h1>
           <p className="text-[11px] font-semibold text-slate-500 leading-tight">Workspace</p>

@@ -48,7 +48,7 @@ export default function WorkspaceAutoSessionWidget({ initialActiveSession, total
             <Zap size={16} />
           </div>
           <div>
-            <h3 className="text-sm font-extrabold font-['Space_Grotesk'] text-ink">Active Workspace Session</h3>
+            <h3 className="text-sm font-extrabold text-ink">Active Workspace Session</h3>
             <p className="text-[11px] font-medium text-slate-500">Auto presence tracking enabled</p>
           </div>
         </div>

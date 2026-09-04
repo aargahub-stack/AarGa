@@ -25,7 +25,7 @@ export default function FlowchartSidebar() {
   }
 
   return (
-    <aside className="w-64 shrink-0 border-r border-slate-800 bg-slate-950/90 backdrop-blur-xl p-5 flex flex-col justify-between font-['Space_Grotesk']">
+    <aside className="w-64 shrink-0 border-r border-slate-800 bg-slate-950/90 backdrop-blur-xl p-5 flex flex-col justify-between font-sans">
       <div>
         <div className="flex items-center justify-between mb-6">
           <Link

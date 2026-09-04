@@ -150,7 +150,7 @@ export default function WorkspaceTaskView({
       {/* Page Title Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-black font-['Space_Grotesk'] text-ink">Dashboard</h1>
+          <h1 className="text-2xl font-black text-ink">Dashboard</h1>
           <p className="mt-0.5 text-xs sm:text-sm font-semibold text-slate-500">
             Welcome back, {teamMember?.name || "Operator"}. Here&apos;s your workspace overview.
           </p>
@@ -170,7 +170,7 @@ export default function WorkspaceTaskView({
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-200">
                 <Clock className="h-4 w-4" />
               </div>
-              <h2 className="text-sm font-black font-['Space_Grotesk'] text-ink">Session Timer</h2>
+              <h2 className="text-sm font-black text-ink">Session Timer</h2>
             </div>
             <MoreHorizontal className="h-4 w-4 text-slate-400" />
           </div>
@@ -195,7 +195,7 @@ export default function WorkspaceTaskView({
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-200">
                 <DollarSign className="h-4 w-4" />
               </div>
-              <h2 className="text-sm font-black font-['Space_Grotesk'] text-ink">Compensation &amp; Stipend</h2>
+              <h2 className="text-sm font-black text-ink">Compensation &amp; Stipend</h2>
             </div>
             <button className="text-[11px] font-extrabold text-emerald-700 hover:underline">
               View breakdown →
@@ -258,7 +258,7 @@ export default function WorkspaceTaskView({
       {/* Productivity Metrics Grid */}
       <div>
         <div className="mb-3 flex items-center justify-between">
-          <h2 className="text-lg font-black font-['Space_Grotesk'] text-ink">Productivity Metrics</h2>
+          <h2 className="text-lg font-black text-ink">Productivity Metrics</h2>
           <span className="text-xs font-semibold text-slate-400">Updated 2 min ago</span>
         </div>
 
@@ -306,7 +306,7 @@ export default function WorkspaceTaskView({
       <div className="rounded-2xl border border-slate-200 bg-white shadow-xs overflow-hidden">
         <div className="p-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h2 className="text-lg font-black font-['Space_Grotesk'] text-ink">Task &amp; Work Execution</h2>
+            <h2 className="text-lg font-black text-ink">Task &amp; Work Execution</h2>
             <p className="text-xs font-semibold text-slate-500 mt-0.5">Track and manage your assigned work queue</p>
           </div>
 

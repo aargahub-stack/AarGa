@@ -44,7 +44,7 @@ export default function ProfileView({ teamMember }) {
   };
 
   return (
-    <div className="max-w-4xl w-full mx-auto p-4 sm:p-6 space-y-8 font-['Space_Grotesk'] text-ink">
+    <div className="max-w-4xl w-full mx-auto p-4 sm:p-6 space-y-8 font-sans text-ink">
       {/* Header Banner */}
       <div className="rounded-3xl border border-slate-800 bg-slate-950 p-6 sm:p-8 text-white shadow-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
         <div className="flex items-center gap-4">

@@ -12,7 +12,7 @@ export default function ProcessNode({ data, selected }) {
       }`}
     >
       <Handle type="target" position={Position.Top} className="!bg-emerald-400 !w-3 !h-3" />
-      <span className="text-sm font-semibold text-white font-['Space_Grotesk']">{data.label || "Process"}</span>
+      <span className="text-sm font-semibold text-white font-sans">{data.label || "Process"}</span>
       <Handle type="source" position={Position.Bottom} className="!bg-emerald-400 !w-3 !h-3" />
     </div>
   );

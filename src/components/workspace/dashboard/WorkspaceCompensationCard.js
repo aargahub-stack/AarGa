@@ -44,7 +44,7 @@ export default function WorkspaceCompensationCard({ compensationData, teamMember
             <CreditCard size={16} />
           </div>
           <div>
-            <h3 className="text-sm font-black font-['Space_Grotesk'] text-ink">Compensation &amp; Stipend View</h3>
+            <h3 className="text-sm font-black text-ink">Compensation &amp; Stipend View</h3>
             <p className="text-[11px] text-slate-500 font-semibold">Transparent payout status &amp; breakdown</p>
           </div>
         </div>

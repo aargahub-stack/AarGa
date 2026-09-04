@@ -20,7 +20,7 @@ export default function FlowchartTopBar({
   const fileInputRef = useRef(null);
 
   return (
-    <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 bg-slate-950/90 backdrop-blur-xl px-6 py-3.5 font-['Space_Grotesk'] font-sans">
+    <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 bg-slate-950/90 backdrop-blur-xl px-6 py-3.5 font-sans">
       <div className="flex items-center gap-3">
         <Link
           href="/workspace/flowchart"
@@ -33,7 +33,7 @@ export default function FlowchartTopBar({
           <input
             value={title}
             onChange={(e) => onTitleChange(e.target.value)}
-            className="bg-transparent text-lg font-bold font-['Space_Grotesk'] text-white outline-none border-b border-transparent hover:border-slate-700 focus:border-emerald-400 transition-colors px-1 py-0.5"
+            className="bg-transparent text-lg font-bold text-white outline-none border-b border-transparent hover:border-slate-700 focus:border-emerald-400 transition-colors px-1 py-0.5"
             placeholder="Untitled Flowchart"
           />
         </div>

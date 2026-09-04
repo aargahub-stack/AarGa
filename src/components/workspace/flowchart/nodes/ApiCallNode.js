@@ -14,7 +14,7 @@ export default function ApiCallNode({ data, selected }) {
     >
       <Handle type="target" position={Position.Left} className="!bg-violet-400 !w-3 !h-3" />
       <Zap size={18} className="text-violet-400 shrink-0 fill-violet-400/20" />
-      <span className="text-sm font-semibold text-violet-200 font-['Space_Grotesk']">{data.label || "API Call"}</span>
+      <span className="text-sm font-semibold text-violet-200 font-sans">{data.label || "API Call"}</span>
       <Handle type="source" position={Position.Right} className="!bg-violet-400 !w-3 !h-3" />
     </div>
   );

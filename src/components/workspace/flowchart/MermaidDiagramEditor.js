@@ -161,7 +161,7 @@ export default function MermaidDiagramEditor({ initialTitle = "Code Flowchart", 
           <input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="bg-transparent text-base font-black font-['Space_Grotesk'] text-white outline-none border-b border-transparent hover:border-slate-700 focus:border-emerald-400 transition-colors px-1 py-0.5"
+            className="bg-transparent text-base font-black text-white outline-none border-b border-transparent hover:border-slate-700 focus:border-emerald-400 transition-colors px-1 py-0.5"
             placeholder="Untitled Mermaid Diagram"
           />
         </div>
@@ -238,7 +238,7 @@ export default function MermaidDiagramEditor({ initialTitle = "Code Flowchart", 
         {/* Left Panel: Code Input & Syntax Helper */}
         <div className="flex flex-col border-r border-slate-800 bg-slate-950 p-4 overflow-hidden">
           <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-2 text-xs font-extrabold font-['Space_Grotesk'] text-slate-300 uppercase tracking-wider">
+            <div className="flex items-center gap-2 text-xs font-extrabold text-slate-300 uppercase tracking-wider">
               <Code2 size={15} className="text-emerald-400" /> Mermaid Syntax Editor
             </div>
             <span className="text-[11px] text-slate-500 font-mono">graph TD / sequence / erDiagram</span>
@@ -270,7 +270,7 @@ export default function MermaidDiagramEditor({ initialTitle = "Code Flowchart", 
         {/* Right Panel: Real-Time Rendered Canvas */}
         <div className="flex flex-col bg-slate-900/50 p-4 overflow-hidden relative">
           <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-2 text-xs font-extrabold font-['Space_Grotesk'] text-slate-300 uppercase tracking-wider">
+            <div className="flex items-center gap-2 text-xs font-extrabold text-slate-300 uppercase tracking-wider">
               <Workflow size={15} className="text-sky-400" /> Live Render Preview
             </div>
             <span className="text-[11px] text-emerald-400 font-bold flex items-center gap-1">
