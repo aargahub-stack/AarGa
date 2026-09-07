@@ -52,10 +52,11 @@ export default function FlowchartList({ flowcharts: initialFlowcharts, teamMembe
         </div>
 
         <Link
-          href="/workspace/flowchart?new=true"
+          href="/workspace/flowchart/editor?new=true"
+          target="_blank"
           className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 px-5 py-2.5 text-xs font-extrabold text-white transition-all shadow-sm shrink-0"
         >
-          <Plus size={18} strokeWidth={2.5} /> New Flowchart
+          <Plus size={18} strokeWidth={2.5} /> New Flowchart Studio (New Tab)
         </Link>
       </div>
 
@@ -88,10 +89,11 @@ export default function FlowchartList({ flowcharts: initialFlowcharts, teamMembe
               : "You haven't saved any flowcharts yet. Create a new diagram to get started."}
           </p>
           <Link
-            href="/workspace/flowchart?new=true"
+            href="/workspace/flowchart/editor?new=true"
+            target="_blank"
             className="inline-flex items-center gap-2 mt-6 rounded-xl bg-ink hover:bg-moss-800 px-4 py-2.5 text-xs font-bold text-white transition-colors shadow-sm"
           >
-            <Plus size={14} /> Create First Flowchart
+            <Plus size={14} /> Create First Flowchart Studio
           </Link>
         </div>
       ) : (
@@ -148,10 +150,11 @@ export default function FlowchartList({ flowcharts: initialFlowcharts, teamMembe
                   </div>
 
                   <Link
-                    href={`/workspace/flowchart?id=${chart.id}`}
+                    href={`/workspace/flowchart/editor?id=${chart.id}`}
+                    target="_blank"
                     className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 px-3.5 py-1.5 text-xs font-bold text-white transition-all shadow-sm"
                   >
-                    Open Canvas <ExternalLink size={13} />
+                    Open Studio <ExternalLink size={13} />
                   </Link>
                 </div>
               </div>

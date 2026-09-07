@@ -117,7 +117,7 @@ export default function MermaidDiagramEditor({ initialTitle = "Code Flowchart", 
     const result = await saveFlowchart({
       id: flowchartId,
       title: title || "Mermaid Code Flowchart",
-      nodes: [{ id: "mermaid_code", type: "code", data: { code } }],
+      nodes: [{ id: "mermaid_code", type: "code", position: { x: 0, y: 0 }, data: { code } }],
       edges: [],
     });
 

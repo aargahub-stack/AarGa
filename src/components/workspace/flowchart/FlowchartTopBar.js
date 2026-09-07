@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { Save, Download, FileJson, Upload, Loader2, CheckCircle2, ArrowLeft, Workflow, Code2 } from "lucide-react";
 import Link from "next/link";
+import AargaLogo from "@/components/AargaLogo";
 
 export default function FlowchartTopBar({
   title,
@@ -14,13 +15,13 @@ export default function FlowchartTopBar({
   onExportPng,
   onExportJson,
   onImportJson,
-  mode = "visual",
-  onModeChange,
+  isCodeDrawerOpen = false,
+  onToggleCodeDrawer,
 }) {
   const fileInputRef = useRef(null);
 
   return (
-    <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 bg-slate-950/90 backdrop-blur-xl px-6 py-3.5 font-sans">
+    <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 bg-slate-950/90 backdrop-blur-xl px-6 py-3 font-sans h-14 shrink-0">
       <div className="flex items-center gap-3">
         <Link
           href="/workspace/flowchart"
@@ -29,37 +30,30 @@ export default function FlowchartTopBar({
         >
           <ArrowLeft size={16} />
         </Link>
-        <div>
+        <div className="flex items-center gap-2">
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-500/10 border border-emerald-500/20 p-1">
+            <AargaLogo className="h-full w-full object-contain" />
+          </div>
           <input
             value={title}
             onChange={(e) => onTitleChange(e.target.value)}
-            className="bg-transparent text-lg font-bold text-white outline-none border-b border-transparent hover:border-slate-700 focus:border-emerald-400 transition-colors px-1 py-0.5"
+            className="bg-transparent text-base font-bold text-white outline-none border-b border-transparent hover:border-slate-700 focus:border-emerald-400 transition-colors px-1 py-0.5"
             placeholder="Untitled Flowchart"
           />
         </div>
 
-        {/* Mode Switcher Toggle */}
-        <div className="ml-4 flex items-center gap-1 rounded-xl border border-slate-800 bg-slate-900 p-1">
+        {/* Mode & Code Drawer Toggle */}
+        <div className="ml-4 flex items-center gap-2">
           <button
-            onClick={() => onModeChange("visual")}
-            className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold transition-all ${
-              mode === "visual"
-                ? "bg-emerald-500 text-slate-950 shadow-sm"
-                : "text-slate-400 hover:text-white"
+            onClick={onToggleCodeDrawer}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all shadow-xs ${
+              isCodeDrawerOpen
+                ? "bg-emerald-500/20 border-emerald-400 text-emerald-300"
+                : "border-slate-800 bg-slate-900 text-slate-300 hover:text-white hover:bg-slate-800"
             }`}
           >
-            <Workflow size={13} /> Visual Canvas
-          </button>
-
-          <button
-            onClick={() => onModeChange("code")}
-            className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold transition-all ${
-              mode === "code"
-                ? "bg-emerald-500 text-slate-950 shadow-sm"
-                : "text-slate-400 hover:text-white"
-            }`}
-          >
-            <Code2 size={13} /> Code (Mermaid)
+            <Code2 size={14} className="text-emerald-400" />
+            <span>Mermaid Code Editor</span>
           </button>
         </div>
       </div>

@@ -3,22 +3,87 @@
 import { Handle, Position } from "@xyflow/react";
 
 export default function DecisionNode({ data, selected }) {
+  const size = 110;
+
   return (
-    <div className="relative flex items-center justify-center min-w-[140px] min-h-[100px]">
-      <div
-        className={`absolute inset-0 border-2 bg-slate-900/90 backdrop-blur-md transition-all ${
-          selected
-            ? "border-amber-400 shadow-[0_0_20px_-4px_rgba(245,158,11,0.5)]"
-            : "border-amber-500/30 hover:border-amber-400/60"
-        }`}
-        style={{ transform: "rotate(45deg)", borderRadius: "12px" }}
+    <div
+      style={{
+        width: size * 1.55,
+        height: size,
+        position: "relative",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      {/* Diamond SVG shape */}
+      <svg
+        width="100%"
+        height="100%"
+        viewBox="0 0 170 110"
+        style={{ position: "absolute", inset: 0 }}
+      >
+        <polygon
+          points="85,4 166,55 85,106 4,55"
+          fill={selected ? "#3b82f6" : "#60a5fa"}
+          stroke={selected ? "#1d4ed8" : "#3b82f6"}
+          strokeWidth={selected ? 2.5 : 1.5}
+          style={{
+            filter: selected
+              ? "drop-shadow(0 0 8px rgba(59,130,246,0.7))"
+              : "drop-shadow(0 4px 10px rgba(59,130,246,0.4))",
+            transition: "all 0.15s",
+          }}
+        />
+      </svg>
+
+      {/* Handles */}
+      <Handle
+        type="target"
+        position={Position.Top}
+        className="!w-3 !h-3 !border-2 !border-white"
+        style={{ background: "#3b82f6" }}
       />
-      <Handle type="target" position={Position.Top} className="!bg-amber-400 !w-3 !h-3" />
-      <span className="relative z-10 px-4 text-center text-xs font-bold text-amber-200 font-sans">
+      <Handle
+        type="target"
+        position={Position.Left}
+        className="!w-3 !h-3 !border-2 !border-white"
+        style={{ background: "#3b82f6" }}
+      />
+
+      {/* Label */}
+      <span
+        style={{
+          position: "relative",
+          zIndex: 1,
+          fontSize: 12,
+          fontWeight: 700,
+          color: "#ffffff",
+          fontFamily: "Urbanist, sans-serif",
+          textAlign: "center",
+          maxWidth: 110,
+          lineHeight: 1.3,
+          pointerEvents: "none",
+          userSelect: "none",
+        }}
+      >
         {data.label || "Decision?"}
       </span>
-      <Handle type="source" position={Position.Bottom} id="yes" className="!bg-amber-400 !w-3 !h-3" />
-      <Handle type="source" position={Position.Right} id="no" className="!bg-amber-400 !w-3 !h-3" />
+
+      <Handle
+        type="source"
+        position={Position.Right}
+        id="yes"
+        className="!w-3 !h-3 !border-2 !border-white"
+        style={{ background: "#3b82f6" }}
+      />
+      <Handle
+        type="source"
+        position={Position.Bottom}
+        id="no"
+        className="!w-3 !h-3 !border-2 !border-white"
+        style={{ background: "#3b82f6" }}
+      />
     </div>
   );
 }

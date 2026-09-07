@@ -21,7 +21,7 @@ import DatabaseNode from "./nodes/DatabaseNode";
 import ApiCallNode from "./nodes/ApiCallNode";
 import FlowchartSidebar from "./FlowchartSidebar";
 import FlowchartTopBar from "./FlowchartTopBar";
-import MermaidDiagramEditor from "./MermaidDiagramEditor";
+import MermaidCodeDrawer from "./MermaidCodeDrawer";
 import { saveFlowchart } from "@/app/workspace/(dashboard)/flowchart/actions";
 
 const nodeTypes = {
@@ -59,18 +59,31 @@ const DEFAULT_EDGES = [
 let idCounter = 0;
 const nextId = () => `node_${Date.now()}_${idCounter++}`;
 
-function FlowchartCanvasInner({ initialFlowchart, teamMemberId }) {
+const sanitizeNodes = (rawNodes) => {
+  if (!Array.isArray(rawNodes) || rawNodes.length === 0) return DEFAULT_NODES;
+  const filtered = rawNodes.filter((n) => n && typeof n === "object" && n.type !== "code");
+  if (filtered.length === 0) return DEFAULT_NODES;
+  return filtered.map((n, i) => ({
+    ...n,
+    position:
+      n?.position &&
+      typeof n.position.x === "number" &&
+      typeof n.position.y === "number"
+        ? n.position
+        : { x: 250, y: 100 + i * 120 },
+  }));
+};
+
+function FlowchartCanvasInner({ initialFlowchart, teamMemberId, isStandalone }) {
   const router = useRouter();
-  const [mode, setMode] = useState("visual"); // 'visual' | 'code'
+  const [isCodeDrawerOpen, setIsCodeDrawerOpen] = useState(false);
 
   const [nodes, setNodes, onNodesChange] = useNodesState(
-    initialFlowchart?.nodes && initialFlowchart.nodes.length > 0
-      ? initialFlowchart.nodes
-      : DEFAULT_NODES
+    sanitizeNodes(initialFlowchart?.nodes)
   );
 
   const [edges, setEdges, onEdgesChange] = useEdgesState(
-    initialFlowchart?.edges && initialFlowchart.edges.length > 0
+    initialFlowchart?.edges && Array.isArray(initialFlowchart.edges)
       ? initialFlowchart.edges
       : DEFAULT_EDGES
   );
@@ -150,7 +163,7 @@ function FlowchartCanvasInner({ initialFlowchart, teamMemberId }) {
     setSaveSuccess(true);
     setFlowchartId(result.data.id);
 
-    if (!flowchartId && result.data?.id) {
+    if (!flowchartId && result.data?.id && !isStandalone) {
       router.replace(`/workspace/flowchart?id=${result.data.id}`);
     }
 
@@ -203,34 +216,102 @@ function FlowchartCanvasInner({ initialFlowchart, teamMemberId }) {
     reader.readAsText(file);
   }
 
-  if (mode === "code") {
-    return (
-      <div className="flex flex-col h-[calc(100vh-56px)] w-full bg-slate-950">
-        <FlowchartTopBar
-          title={title}
-          onTitleChange={setTitle}
-          onSave={handleSave}
-          isSaving={isSaving}
-          saveSuccess={saveSuccess}
-          saveError={saveError}
-          onExportPng={handleExportPng}
-          onExportJson={handleExportJson}
-          onImportJson={handleImportJson}
-          mode={mode}
-          onModeChange={setMode}
-        />
-        <MermaidDiagramEditor
-          initialTitle={title}
-          flowchartId={flowchartId}
-        />
-      </div>
-    );
-  }
+  // Parse Mermaid graph syntax into ReactFlow nodes & edges
+  const parseMermaidToFlow = (code) => {
+    const lines = code
+      .split("\n")
+      .map((l) => l.trim())
+      .filter((l) => l && !/^graph\s+(TD|LR|TB|RL|BT)/i.test(l) && !/^sequenceDiagram/i.test(l) && !/^erDiagram/i.test(l) && !/^autonumber/i.test(l));
+
+    const nodeMap = {}   // id -> { label, type }
+    const edgeList = []; // { source, target, label }
+
+    // Regex: match edges like A-->B, A-- label -->B, A--"label"-->B, A[X]-->B[Y]
+    const edgeRe = /^(.+?)\s*(-[-.]->?|--\|.+?\||--\s*.+?\s*-->)\s*(.+)$/;
+    // Extract node id + optional label from token: A[Label], A{Label}, A(Label), or plain A
+    const parseToken = (raw) => {
+      raw = raw.trim();
+      const brMatch = raw.match(/^([\w\s]+)\[(.+?)\]$/);
+      if (brMatch) return { id: brMatch[1].trim().replace(/\s+/g, "_"), label: brMatch[2], type: "process" };
+      const cuMatch = raw.match(/^([\w\s]+)\{(.+?)\}$/);
+      if (cuMatch) return { id: cuMatch[1].trim().replace(/\s+/g, "_"), label: cuMatch[2], type: "decision" };
+      const paMatch = raw.match(/^([\w\s]+)\((.+?)\)$/);
+      if (paMatch) return { id: paMatch[1].trim().replace(/\s+/g, "_"), label: paMatch[2], type: "process" };
+      // plain id
+      const plain = raw.replace(/\s+/g, "_");
+      return { id: plain, label: raw, type: "process" };
+    };
+
+    lines.forEach((line) => {
+      // Skip style/class lines
+      if (/^(style|classDef|class|linkStyle)/i.test(line)) return;
+      // Check if edge line
+      const arrow = line.includes("-->") || line.includes("---") || line.includes("-.->")
+        || line.includes("-.->") || line.includes("==>");
+      if (arrow) {
+        // Split on --> to get source and target sides (handle edge labels)
+        const parts = line.split(/\s*-->\s*|\s*---\s*|\s*-\.->\s*|\s*==>\s*/);
+        if (parts.length >= 2) {
+          // Handle edge label syntax: A -- label --> B
+          let srcRaw = parts[0];
+          let tgtRaw = parts[parts.length - 1];
+          // Strip inline edge label like "-- Yes -->" from src
+          srcRaw = srcRaw.replace(/\s*--\s+.*$/, "").trim();
+
+          const src = parseToken(srcRaw);
+          const tgt = parseToken(tgtRaw);
+          if (!nodeMap[src.id]) nodeMap[src.id] = { label: src.label, type: src.type };
+          if (!nodeMap[tgt.id]) nodeMap[tgt.id] = { label: tgt.label, type: tgt.type };
+          edgeList.push({ source: src.id, target: tgt.id });
+        }
+      } else {
+        // Standalone node definition
+        const node = parseToken(line);
+        if (!nodeMap[node.id]) nodeMap[node.id] = { label: node.label, type: node.type };
+      }
+    });
+
+    const nodeIds = Object.keys(nodeMap);
+    if (nodeIds.length === 0) return null;
+
+    // Layout nodes in a vertical column centered
+    const COL_X = 280;
+    const ROW_GAP = 140;
+    const rfNodes = nodeIds.map((id, i) => ({
+      id,
+      type: nodeMap[id].type,
+      position: { x: COL_X, y: 80 + i * ROW_GAP },
+      data: { label: nodeMap[id].label },
+    }));
+
+    const rfEdges = edgeList.map((e, i) => ({
+      id: `mermaid_edge_${i}`,
+      source: e.source,
+      target: e.target,
+      animated: true,
+      style: { stroke: "#10B981", strokeWidth: 2 },
+    }));
+
+    return { nodes: rfNodes, edges: rfEdges };
+  };
+
+  // Handle Mermaid Code Drawer Run & Render callback
+  const handleMermaidRenderSuccess = ({ code }) => {
+    const result = parseMermaidToFlow(code);
+    if (result) {
+      setNodes(result.nodes);
+      setEdges(result.edges);
+    }
+  };
 
   return (
-    <div className="flex h-[calc(100vh-56px)] w-full bg-slate-950 font-sans overflow-hidden border-t border-slate-800">
+    <div className="flex h-screen w-screen bg-slate-950 font-sans overflow-hidden relative">
+      {/* Visual Components Sidebar */}
       <FlowchartSidebar />
-      <div className="flex flex-1 flex-col overflow-hidden">
+
+      {/* Main Viewport Container */}
+      <div className="flex flex-1 flex-col overflow-hidden relative">
+        {/* Studio Top Bar */}
         <FlowchartTopBar
           title={title}
           onTitleChange={setTitle}
@@ -241,9 +322,11 @@ function FlowchartCanvasInner({ initialFlowchart, teamMemberId }) {
           onExportPng={handleExportPng}
           onExportJson={handleExportJson}
           onImportJson={handleImportJson}
-          mode={mode}
-          onModeChange={setMode}
+          isCodeDrawerOpen={isCodeDrawerOpen}
+          onToggleCodeDrawer={() => setIsCodeDrawerOpen((prev) => !prev)}
         />
+
+        {/* Live Visual Canvas Area */}
         <div className="flex-1 relative w-full h-full" ref={reactFlowWrapper}>
           <ReactFlow
             nodes={nodes}
@@ -267,6 +350,14 @@ function FlowchartCanvasInner({ initialFlowchart, teamMemberId }) {
             />
           </ReactFlow>
         </div>
+
+        {/* Slide-Out 35% Mermaid Code Drawer overlay with Arrow Handle */}
+        <MermaidCodeDrawer
+          isOpen={isCodeDrawerOpen}
+          onClose={() => setIsCodeDrawerOpen(false)}
+          onRenderSuccess={handleMermaidRenderSuccess}
+          initialCode={initialFlowchart?.nodes?.[0]?.data?.code}
+        />
       </div>
     </div>
   );

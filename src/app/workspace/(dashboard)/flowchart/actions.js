@@ -7,16 +7,21 @@ export async function saveFlowchart({ id, title, nodes, edges }) {
   try {
     const { teamMember, supabase } = await getWorkspaceSession();
 
-    const payload = {
+    const updatePayload = {
       title: title || "Untitled Flowchart",
       nodes: nodes || [],
       edges: edges || [],
+      updated_at: new Date().toISOString(),
+    };
+
+    const insertPayload = {
+      ...updatePayload,
       created_by: teamMember.id,
     };
 
     const query = id
-      ? supabase.from("flowcharts").update(payload).eq("id", id).select().single()
-      : supabase.from("flowcharts").insert([payload]).select().single();
+      ? supabase.from("flowcharts").update(updatePayload).eq("id", id).select().single()
+      : supabase.from("flowcharts").insert([insertPayload]).select().single();
 
     const { data, error } = await query;
 
