@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   ReactFlow,
@@ -96,6 +96,16 @@ function FlowchartCanvasInner({ initialFlowchart, teamMemberId, isStandalone }) 
 
   const reactFlowWrapper = useRef(null);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
+
+  useEffect(() => {
+    if (!reactFlowInstance || nodes.length === 0) return;
+
+    const frame = requestAnimationFrame(() => {
+      reactFlowInstance.fitView({ padding: 0.2, duration: 350 });
+    });
+
+    return () => cancelAnimationFrame(frame);
+  }, [nodes, edges, reactFlowInstance]);
 
   const onConnect = useCallback(
     (params) =>
@@ -205,7 +215,7 @@ function FlowchartCanvasInner({ initialFlowchart, teamMemberId, isStandalone }) 
     reader.onload = (e) => {
       try {
         const parsed = JSON.parse(e.target.result);
-        if (Array.isArray(parsed.nodes)) setNodes(parsed.nodes);
+        if (Array.isArray(parsed.nodes)) setNodes(sanitizeNodes(parsed.nodes));
         if (Array.isArray(parsed.edges)) setEdges(parsed.edges);
         if (parsed.title) setTitle(parsed.title);
         setFlowchartId(null);
@@ -218,12 +228,13 @@ function FlowchartCanvasInner({ initialFlowchart, teamMemberId, isStandalone }) 
 
   // Parse Mermaid graph syntax into ReactFlow nodes & edges
   const parseMermaidToFlow = (code) => {
-    const lines = code
-      .split("\n")
-      .map((l) => l.trim())
-      .filter((l) => l && !/^graph\s+(TD|LR|TB|RL|BT)/i.test(l) && !/^sequenceDiagram/i.test(l) && !/^erDiagram/i.test(l) && !/^autonumber/i.test(l));
+    const sourceLines = code.split("\n").map((line) => line.trim()).filter(Boolean);
+    const graphLine = sourceLines.find((line) => /^(graph|flowchart)\s+/i.test(line));
+    const direction = graphLine?.match(/^(?:graph|flowchart)\s+(TD|TB|LR|RL|BT)/i)?.[1]?.toUpperCase() || "TD";
+    const lines = sourceLines
+      .filter((l) => l && !/^(graph|flowchart)\s+(TD|LR|TB|RL|BT)/i.test(l) && !/^sequenceDiagram/i.test(l) && !/^erDiagram/i.test(l) && !/^autonumber/i.test(l));
 
-    const nodeMap = {}   // id -> { label, type }
+    const nodeMap = {}; // id -> { label, type }
     const edgeList = []; // { source, target, label }
 
     // Regex: match edges like A-->B, A-- label -->B, A--"label"-->B, A[X]-->B[Y]
@@ -274,13 +285,56 @@ function FlowchartCanvasInner({ initialFlowchart, teamMemberId, isStandalone }) 
     const nodeIds = Object.keys(nodeMap);
     if (nodeIds.length === 0) return null;
 
-    // Layout nodes in a vertical column centered
-    const COL_X = 280;
-    const ROW_GAP = 140;
+    // Place nodes in dependency layers so branches render beside each other.
+    const incoming = Object.fromEntries(nodeIds.map((id) => [id, 0]));
+    const outgoing = Object.fromEntries(nodeIds.map((id) => [id, []]));
+    edgeList.forEach(({ source, target }) => {
+      if (outgoing[source] && incoming[target] !== undefined) {
+        outgoing[source].push(target);
+        incoming[target] += 1;
+      }
+    });
+
+    const layers = [];
+    const remaining = new Set(nodeIds);
+    let available = nodeIds.filter((id) => incoming[id] === 0);
+
+    while (remaining.size > 0) {
+      if (available.length === 0) available = [...remaining];
+      const layer = [...new Set(available)].filter((id) => remaining.has(id));
+      if (layer.length === 0) break;
+
+      layers.push(layer);
+      layer.forEach((id) => remaining.delete(id));
+      layer.forEach((id) => {
+        outgoing[id].forEach((target) => {
+          incoming[target] -= 1;
+        });
+      });
+      available = [...remaining].filter((id) => incoming[id] <= 0);
+    }
+
+    const positionById = {};
+    const LAYER_GAP = 230;
+    const NODE_GAP = 150;
+    layers.forEach((layer, layerIndex) => {
+      const crossAxisOffset = ((layer.length - 1) * NODE_GAP) / 2;
+      layer.forEach((id, index) => {
+        const primary = 120 + layerIndex * LAYER_GAP;
+        const crossAxis = 320 - crossAxisOffset + index * NODE_GAP;
+
+        if (direction === "LR") positionById[id] = { x: primary, y: crossAxis };
+        else if (direction === "RL") positionById[id] = { x: 120 - layerIndex * LAYER_GAP, y: crossAxis };
+        else if (direction === "BT") positionById[id] = { x: crossAxis, y: 120 - layerIndex * LAYER_GAP };
+        else positionById[id] = { x: crossAxis, y: primary };
+      });
+    });
+
+    const NODE_GAP_FALLBACK = 150;
     const rfNodes = nodeIds.map((id, i) => ({
       id,
       type: nodeMap[id].type,
-      position: { x: COL_X, y: 80 + i * ROW_GAP },
+      position: positionById[id] || { x: 320, y: 120 + i * NODE_GAP_FALLBACK },
       data: { label: nodeMap[id].label },
     }));
 
