@@ -19,3 +19,10 @@ npm-debug.log*
 .baseline_phase_2b/
 .baseline_env_backup/
 *.patch
+
+# AI Audit and Architecture Reports
+AARGA_*.md
+AGENTS.md
+AARGA_SYSTEM_AUDIT/
+AARGA_SYSTEM_AUDIT_VALIDATION/
+*.zip
