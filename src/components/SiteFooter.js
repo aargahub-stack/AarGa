@@ -9,6 +9,7 @@ const FOOTER_COLUMNS = [
     title: "Ecosystem",
     links: [
       { label: "Overview", href: "/ecosystem" },
+      { label: "AarCode", href: "/tech#aarcode" },
       { label: "NexFix", href: "/tech#nexfix" },
       { label: "Exora", href: "/tech#exora" },
       { label: "AarVed", href: "/tech#aarved" },

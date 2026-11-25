@@ -21,10 +21,28 @@ export default async function HomePage() {
             </span>
           </h1>
 
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-600 text-balance animate-fade-up">
+          <p className="mt-6 max-w-3xl text-lg leading-relaxed text-slate-600 text-balance animate-fade-up">
             AarGa runs a foundation and a SaaS platform on the same
-            infrastructure — NexFix handles operations &amp; finance, Exora
-            handles secure examinations &amp; academic integrity, and AarVed
+            infrastructure —{" "}
+            <span className="font-bold text-ink whitespace-nowrap">
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#109A70] mr-1.5 align-middle" />
+              AarCode
+            </span>{" "}
+            handles competitive programming &amp; algorithmic challenges,{" "}
+            <span className="font-bold text-ink whitespace-nowrap">
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#109A70] mr-1.5 align-middle" />
+              NexFix
+            </span>{" "}
+            handles operations &amp; finance,{" "}
+            <span className="font-bold text-ink whitespace-nowrap">
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#109A70] mr-1.5 align-middle" />
+              Exora
+            </span>{" "}
+            handles secure examinations &amp; academic integrity, and{" "}
+            <span className="font-bold text-ink whitespace-nowrap">
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#109A70] mr-1.5 align-middle" />
+              AarVed
+            </span>{" "}
             handles education &amp; student learning.
           </p>
 

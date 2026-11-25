@@ -13,7 +13,7 @@ const urbanist = Urbanist({
 export const metadata = {
   title: "AarGa — One Ecosystem. Two Missions.",
   description:
-    "AarGa unifies social impact with enterprise engineering — powering NexFix, Exora, and AarVed from one shared platform core.",
+    "AarGa unifies social impact with enterprise engineering — powering NexFix, Exora, AarVed, and AarCode from one shared platform core.",
   metadataBase: new URL("https://aarga.org"),
   icons: {
     icon: "/aarga-logo.png",
