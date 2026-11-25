@@ -10,7 +10,6 @@ const NAV_LINKS = [
   { href: "/ecosystem", label: "Ecosystem" },
   { href: "/tech", label: "Tech Hub" },
   { href: "/interns", label: "Verified Interns" },
-  { href: "https://portal.aarga.org/admin", label: "Sign In", external: true },
 ];
 
 export default function SiteHeader() {
@@ -57,35 +56,40 @@ export default function SiteHeader() {
       }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
-        <Link href={getLinkHref("/")} className="flex items-center gap-2.5 group">
-          <AargaLogo className="h-8 w-8" />
-          <span className="text-lg font-extrabold tracking-tight text-ink">
-            Aar<span className="text-[#109A70]">Ga</span>
-          </span>
-        </Link>
+        {/* Left: Brand */}
+        <div className="flex flex-1 items-center">
+          <Link href={getLinkHref("/")} className="flex items-center gap-2.5 group">
+            <AargaLogo className="h-8 w-8" />
+            <span className="text-lg font-extrabold tracking-tight text-ink">
+              Aar<span className="text-[#109A70]">Ga</span>
+            </span>
+          </Link>
+        </div>
 
-        <nav className="hidden items-center gap-1 md:flex">
-          {NAV_LINKS.map((link) =>
-            link.external ? (
-              <a
-                key={link.href}
-                href={link.href}
-                className="rounded-full px-4 py-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-emerald-50 hover:text-ink"
-              >
-                {link.label}
-              </a>
-            ) : (
-              <Link
-                key={link.href}
-                href={getLinkHref(link.href)}
-                className="rounded-full px-4 py-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-emerald-50 hover:text-ink"
-              >
-                {link.label}
-              </Link>
-            )
-          )}
+        {/* Center: Main Navigation */}
+        <nav className="hidden items-center justify-center gap-1 md:flex">
+          {NAV_LINKS.map((link) => (
+            <Link
+              key={link.href}
+              href={getLinkHref(link.href)}
+              className="rounded-full px-4 py-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100 hover:text-ink"
+            >
+              {link.label}
+            </Link>
+          ))}
         </nav>
 
+        {/* Right: Sign In Link (Plain text nav style, no oval button) */}
+        <div className="hidden flex-1 items-center justify-end md:flex">
+          <a
+            href="https://portal.aarga.org/admin"
+            className="rounded-full px-4 py-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100 hover:text-ink"
+          >
+            Sign In
+          </a>
+        </div>
+
+        {/* Mobile Hamburger Toggle */}
         <button
           aria-label="Toggle menu"
           aria-expanded={open}
@@ -101,30 +105,27 @@ export default function SiteHeader() {
         </button>
       </div>
 
+      {/* Mobile Menu Drawer */}
       {open && (
         <div className="bg-white border-t border-slate-200 px-6 py-4 md:hidden">
           <nav className="flex flex-col gap-1">
-            {NAV_LINKS.map((link) =>
-              link.external ? (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setOpen(false)}
-                  className="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-emerald-50 hover:text-ink"
-                >
-                  {link.label}
-                </a>
-              ) : (
-                <Link
-                  key={link.href}
-                  href={getLinkHref(link.href)}
-                  onClick={() => setOpen(false)}
-                  className="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-emerald-50 hover:text-ink"
-                >
-                  {link.label}
-                </Link>
-              )
-            )}
+            {NAV_LINKS.map((link) => (
+              <Link
+                key={link.href}
+                href={getLinkHref(link.href)}
+                onClick={() => setOpen(false)}
+                className="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-100 hover:text-ink"
+              >
+                {link.label}
+              </Link>
+            ))}
+            <a
+              href="https://portal.aarga.org/admin"
+              onClick={() => setOpen(false)}
+              className="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-100 hover:text-ink"
+            >
+              Sign In
+            </a>
           </nav>
         </div>
       )}
