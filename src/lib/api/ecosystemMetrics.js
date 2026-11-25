@@ -19,7 +19,7 @@ function mapMetricRow(row) {
 }
 
 export async function getMetricsByEntity(entityType) {
-  if (!isSupabaseConfigured || !supabaseServer) {
+  if (!isSupabaseConfigured()) {
     return [];
   }
 
@@ -42,7 +42,7 @@ export async function getMetricsByEntity(entityType) {
 }
 
 export async function getAllEcosystemMetrics() {
-  if (!isSupabaseConfigured || !supabaseServer) {
+  if (!isSupabaseConfigured()) {
     return [];
   }
 

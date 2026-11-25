@@ -5,15 +5,15 @@ import { redirect } from "next/navigation";
 export async function getWorkspaceSupabaseClient() {
   const cookieStore = await cookies();
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const supabasePublishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
-  if (!supabaseUrl || !supabaseAnonKey) {
+  if (!supabaseUrl || !supabasePublishableKey) {
     throw new Error(
-      "[workspaceAuth] Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY env variables."
+      "[workspaceAuth] Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY env variables."
     );
   }
 
-  return createServerClient(supabaseUrl, supabaseAnonKey, {
+  return createServerClient(supabaseUrl, supabasePublishableKey, {
     cookies: {
       getAll() {
         return cookieStore.getAll();
@@ -50,7 +50,9 @@ export async function getWorkspaceSession() {
     .eq("user_id", user.id)
     .maybeSingle();
 
-  // 2. Fallback check for admin_users member
+  let isAdminOversight = false;
+
+  // 2. Check for admin_users member if not an operational team member
   if (!teamMember) {
     const { data: adminRecord } = await supabase
       .from("admin_users")
@@ -59,22 +61,21 @@ export async function getWorkspaceSession() {
       .maybeSingle();
 
     if (adminRecord) {
-      teamMember = {
-        id: user.id,
-        name: user.email?.split("@")[0] || "Administrator",
-        role: `System Lead (${adminRecord.role})`,
-        user_id: user.id,
-      };
+      // User is an administrator without an operational employment record.
+      // Enable Admin Oversight Mode without fabricating employment data or synthetic IDs.
+      isAdminOversight = true;
+      teamMember = null;
     }
   }
 
-  if (!teamMember) {
+  if (!teamMember && !isAdminOversight) {
     redirect("/workspace/login?error=unregistered_employee");
   }
 
   return {
     user,
     teamMember,
+    isAdminOversight,
     supabase,
   };
 }

@@ -7,6 +7,13 @@ export async function autoSyncSessionAction(notes = "Automatic active presence s
   try {
     const { teamMember, supabase } = await getWorkspaceSession();
 
+    if (!teamMember) {
+      return {
+        success: false,
+        error: "Action unavailable in Administrative Oversight Mode. An operator record is required.",
+      };
+    }
+
     const { data: existingActive } = await supabase
       .from("workspace_attendance")
       .select("*")
@@ -41,6 +48,13 @@ export async function autoSyncSessionAction(notes = "Automatic active presence s
 export async function clockInAction(notes = "") {
   try {
     const { teamMember, supabase } = await getWorkspaceSession();
+
+    if (!teamMember) {
+      return {
+        success: false,
+        error: "Action unavailable in Administrative Oversight Mode. An operator record is required.",
+      };
+    }
 
     // Check if there is already an active session
     const { data: activeSession } = await supabase
@@ -79,6 +93,13 @@ export async function clockInAction(notes = "") {
 export async function clockOutAction(attendanceId, notes = "") {
   try {
     const { teamMember, supabase } = await getWorkspaceSession();
+
+    if (!teamMember) {
+      return {
+        success: false,
+        error: "Action unavailable in Administrative Oversight Mode. An operator record is required.",
+      };
+    }
 
     let sessionToClockOut = null;
 
@@ -135,6 +156,14 @@ export async function getAttendanceDataAction() {
   try {
     const { teamMember, supabase } = await getWorkspaceSession();
 
+    if (!teamMember) {
+      return {
+        success: true,
+        activeSession: null,
+        history: [],
+      };
+    }
+
     const { data: logs, error } = await supabase
       .from("workspace_attendance")
       .select("*")
@@ -161,6 +190,14 @@ export async function getAttendanceDataAction() {
 export async function getCompensationDataAction() {
   try {
     const { teamMember, supabase } = await getWorkspaceSession();
+
+    if (!teamMember) {
+      return {
+        success: true,
+        data: null,
+        isOversight: true,
+      };
+    }
 
     const { data, error } = await supabase
       .from("team_compensation")
@@ -195,6 +232,13 @@ export async function getCompensationDataAction() {
 export async function updateProfileAction({ phone, bio, skill_tags }) {
   try {
     const { teamMember, supabase } = await getWorkspaceSession();
+
+    if (!teamMember) {
+      return {
+        success: false,
+        error: "Action unavailable in Administrative Oversight Mode. An operator record is required.",
+      };
+    }
 
     const payload = {};
     if (phone !== undefined) payload.phone = phone;

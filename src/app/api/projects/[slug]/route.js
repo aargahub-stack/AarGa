@@ -5,7 +5,8 @@ export const revalidate = 60;
 
 export async function GET(_request, { params }) {
   try {
-    const project = await getProjectBySlug(params.slug);
+    const { slug } = await params;
+    const project = await getProjectBySlug(slug);
     if (!project) {
       return NextResponse.json({ error: "Project not found." }, { status: 404 });
     }

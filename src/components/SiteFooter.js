@@ -18,7 +18,7 @@ const FOOTER_COLUMNS = [
     title: "Programs",
     links: [
       { label: "Verified Interns", href: "/interns" },
-      { label: "Founder Portal ↗", href: "/admin" },
+      { label: "Founder Portal ↗", href: "https://portal.aarga.org/admin", external: true },
     ],
   },
   {

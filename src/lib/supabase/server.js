@@ -4,33 +4,64 @@ import { createClient } from "@supabase/supabase-js";
 /**
  * Server-only Supabase client.
  *
- * Uses the SERVICE ROLE key, which bypasses Row Level Security — this file
- * must never be imported from a "use client" component or exposed to the
- * browser bundle. It is safe here because every consumer in src/lib/api/*
- * only runs inside Server Components or Route Handlers.
+ * Uses elevated secret authorization (SUPABASE_SECRET_KEY exclusively), which bypasses
+ * Row Level Security. This module must never be imported from a Client Component or
+ * exposed to browser bundles.
  *
- * If the env vars are not set (e.g. local dev before Supabase is wired up),
- * `supabaseServer` is `null` and every service-layer function in
- * `src/lib/api/*` transparently falls back to the static seed data in
- * `src/data/*` so the site still renders end to end.
+ * Client instantiation is deferred to request runtime inside active Cloudflare
+ * request contexts and memoized per isolate lifecycle.
  */
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+let cachedClient = null;
 
-let client = null;
+export function getSupabaseServerClient() {
+  if (cachedClient) {
+    return cachedClient;
+  }
 
-if (supabaseUrl && serviceRoleKey) {
-  client = createClient(supabaseUrl, serviceRoleKey, {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const secretKey = process.env.SUPABASE_SECRET_KEY;
+
+  if (!supabaseUrl || !secretKey) {
+    return null;
+  }
+
+  cachedClient = createClient(supabaseUrl, secretKey, {
     auth: { persistSession: false, autoRefreshToken: false },
   });
-} else if (process.env.NODE_ENV !== "production") {
-  // Loud in dev, silent-ish in prod build logs.
-  console.warn(
-    "[supabase] NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY not set — " +
-      "src/lib/api/* will serve static fallback data from src/data/*."
-  );
+
+  return cachedClient;
 }
 
-export const supabaseServer = client;
-export const isSupabaseConfigured = Boolean(client);
+/**
+ * Dynamic configuration check evaluated at runtime.
+ */
+export function isSupabaseConfigured() {
+  return Boolean(getSupabaseServerClient());
+}
+
+/**
+ * Transparent proxy preserving backward compatibility for existing consumers
+ * while guaranteeing lazy runtime initialization and fail-safe error handling.
+ */
+export const supabaseServer = new Proxy(
+  {},
+  {
+    get(_target, prop) {
+      const client = getSupabaseServerClient();
+      if (!client) {
+        if (process.env.NODE_ENV !== "production") {
+          console.warn(
+            `[supabaseServer] Database client accessed (${String(prop)}) before SUPABASE_SECRET_KEY was configured.`
+          );
+        }
+        throw new Error(
+          `[supabaseServer] Cannot access '${String(prop)}' because SUPABASE_SECRET_KEY is not configured.`
+        );
+      }
+
+      const val = client[prop];
+      return typeof val === "function" ? val.bind(client) : val;
+    },
+  }
+);

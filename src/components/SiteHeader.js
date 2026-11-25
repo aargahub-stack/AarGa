@@ -16,6 +16,7 @@ export default function SiteHeader() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [mainOrigin, setMainOrigin] = useState("");
 
   useEffect(() => {
     const onScroll = () => {
@@ -27,6 +28,19 @@ export default function SiteHeader() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.location.hostname === "portal.aarga.org") {
+      setMainOrigin("https://aarga.org");
+    }
+  }, []);
+
+  const getLinkHref = (href) => {
+    if (mainOrigin && (href === "/" || href === "/ecosystem" || href === "/tech")) {
+      return `${mainOrigin}${href}`;
+    }
+    return href;
+  };
 
   // Hide public site header completely on all admin and workspace routes
   if (pathname?.startsWith("/admin") || pathname?.startsWith("/workspace")) {
@@ -42,7 +56,7 @@ export default function SiteHeader() {
       }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
-        <Link href="/" className="flex items-center gap-2.5 group">
+        <Link href={getLinkHref("/")} className="flex items-center gap-2.5 group">
           <AargaLogo className="h-8 w-8" />
           <span className="text-lg font-extrabold tracking-tight text-ink">
             Aar<span className="text-emerald-600">Ga</span>
@@ -53,7 +67,7 @@ export default function SiteHeader() {
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
-              href={link.href}
+              href={getLinkHref(link.href)}
               className="rounded-full px-4 py-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-700"
             >
               {link.label}
@@ -62,13 +76,13 @@ export default function SiteHeader() {
         </nav>
 
         <div className="hidden md:block">
-          <Link
-            href="/admin"
+          <a
+            href="https://portal.aarga.org/admin"
             className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-white shadow-glass transition-transform hover:scale-[1.03] hover:bg-moss-800"
           >
             Founder Sign In
             <span aria-hidden="true">↗</span>
-          </Link>
+          </a>
         </div>
 
         <button
@@ -92,21 +106,21 @@ export default function SiteHeader() {
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
-                href={link.href}
+                href={getLinkHref(link.href)}
                 onClick={() => setOpen(false)}
                 className="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700"
               >
                 {link.label}
               </Link>
             ))}
-            <Link
-              href="/admin"
+            <a
+              href="https://portal.aarga.org/admin"
               onClick={() => setOpen(false)}
               className="mt-2 flex items-center justify-center gap-2 rounded-xl bg-ink px-4 py-3 text-center text-sm font-semibold text-white"
             >
               Founder Sign In
               <span aria-hidden="true">↗</span>
-            </Link>
+            </a>
           </nav>
         </div>
       )}

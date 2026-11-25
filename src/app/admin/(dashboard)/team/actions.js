@@ -1,7 +1,7 @@
 "use server";
 
 import { getAdminSession } from "@/lib/supabase/authServer";
-import { supabaseServer } from "@/lib/supabase/server";
+import { supabaseServer, isSupabaseConfigured } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 
 /**
@@ -9,6 +9,15 @@ import { revalidatePath } from "next/cache";
  */
 export async function getOptionsForNewTeamMember() {
   await getAdminSession();
+
+  if (!isSupabaseConfigured()) {
+    console.warn("[getOptionsForNewTeamMember] Database client not configured (SUPABASE_SECRET_KEY missing).");
+    return {
+      authUsers: [],
+      interns: [],
+      allSkills: [],
+    };
+  }
 
   let authUsers = [];
   try {
@@ -47,6 +56,13 @@ export async function getOptionsForNewTeamMember() {
  *    If employee: emp@${first4}#${dobYear} (e.g. emp@yuva#2007)
  */
 async function generateCredentialsFromEmail(name, rawEmail, employmentType, dobYear = 2005) {
+  if (!isSupabaseConfigured()) {
+    return {
+      success: false,
+      error: "Database service unavailable. Cannot verify username collision.",
+    };
+  }
+
   let email = (rawEmail || "").trim().toLowerCase();
   let handle = "";
 
@@ -81,7 +97,7 @@ async function generateCredentialsFromEmail(name, rawEmail, employmentType, dobY
     attempts++;
   }
 
-  return { username, email, defaultPassword };
+  return { success: true, username, email, defaultPassword };
 }
 
 /**
@@ -100,16 +116,27 @@ export async function createTeamMember({
   importSkills = false,
   customSkills = [],
 }) {
-  const { supabase } = await getAdminSession();
-
   if (!name || !role) {
     return { success: false, error: "Name and role are required." };
   }
+
+  if (!isSupabaseConfigured()) {
+    return {
+      success: false,
+      error: "Database service not configured or unavailable. Team member creation aborted.",
+    };
+  }
+
+  const { supabase } = await getAdminSession();
 
   let finalUserId = userId || null;
   let generatedCredentials = null;
 
   const creds = await generateCredentialsFromEmail(name, inputEmail, employmentType, dobYear);
+  if (!creds.success) {
+    return { success: false, error: creds.error };
+  }
+
   const targetEmail = creds.email;
   const username = creds.username;
   const defaultPasswordHint = creds.defaultPassword;

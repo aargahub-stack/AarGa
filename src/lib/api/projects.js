@@ -27,7 +27,7 @@ function mapProjectRow(row) {
 }
 
 export async function getAllProjects() {
-  if (!isSupabaseConfigured || !supabaseServer) {
+  if (!isSupabaseConfigured()) {
     console.warn("[projects api] Supabase is not configured.");
     return [];
   }
@@ -51,7 +51,7 @@ export async function getAllProjects() {
 }
 
 export async function getProjectBySlug(slug) {
-  if (!isSupabaseConfigured || !supabaseServer) {
+  if (!isSupabaseConfigured()) {
     return null;
   }
 

@@ -20,10 +20,12 @@ import {
   Play,
   Send,
   CheckSquare,
+  Shield,
 } from "lucide-react";
 
 export default function WorkspaceTaskView({
   teamMember,
+  isAdminOversight = false,
   activeTasks = [],
   completedTasks = [],
   notifications = [],
@@ -43,6 +45,10 @@ export default function WorkspaceTaskView({
   };
 
   const handleStartTask = async (task) => {
+    if (isAdminOversight) {
+      showToast("error", "Task execution is disabled in Administrative Oversight Mode.");
+      return;
+    }
     setLoadingId(task.id);
     const res = await startTaskAction(task.id);
     setLoadingId(null);
@@ -59,6 +65,10 @@ export default function WorkspaceTaskView({
 
   const handleSubmitTask = async (e) => {
     e.preventDefault();
+    if (isAdminOversight) {
+      showToast("error", "Task execution is disabled in Administrative Oversight Mode.");
+      return;
+    }
     if (!submittingTaskId) return;
 
     setLoadingId(submittingTaskId);
@@ -147,6 +157,19 @@ export default function WorkspaceTaskView({
         />
       )}
 
+      {/* Admin Oversight Notice Banner */}
+      {isAdminOversight && (
+        <div className="flex items-center gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-xs font-semibold text-amber-900 shadow-xs">
+          <AlertCircle className="h-5 w-5 shrink-0 text-amber-600" />
+          <div>
+            <p className="font-bold text-amber-950">Administrative Oversight Mode</p>
+            <p className="text-amber-800">
+              Viewing in Administrative Oversight Mode. Shift tracking and task execution require an operational team member record.
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Page Title Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -155,10 +178,17 @@ export default function WorkspaceTaskView({
             Welcome back, {teamMember?.name || "Operator"}. Here&apos;s your workspace overview.
           </p>
         </div>
-        <div className="flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-bold text-emerald-800">
-          <Zap className="h-3.5 w-3.5 text-emerald-600" />
-          <span>On Shift</span>
-        </div>
+        {isAdminOversight ? (
+          <div className="flex items-center gap-2 rounded-xl border border-amber-200 bg-amber-50 px-3 py-1.5 text-xs font-bold text-amber-800">
+            <Shield className="h-3.5 w-3.5 text-amber-600" />
+            <span>Oversight View</span>
+          </div>
+        ) : (
+          <div className="flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-bold text-emerald-800">
+            <Zap className="h-3.5 w-3.5 text-emerald-600" />
+            <span>On Shift</span>
+          </div>
+        )}
       </div>
 
       {/* Top Row: Session Timer + Compensation */}
@@ -176,15 +206,30 @@ export default function WorkspaceTaskView({
           </div>
 
           <div className="flex flex-1 items-center justify-center py-2">
-            <WorkspaceSessionTimer />
+            {isAdminOversight ? (
+              <div className="text-center py-4">
+                <p className="text-2xl font-black text-slate-300 tracking-wider">--:--:--</p>
+                <p className="mt-1 text-xs font-semibold text-slate-500">Tracking inactive (Oversight)</p>
+              </div>
+            ) : (
+              <WorkspaceSessionTimer />
+            )}
           </div>
 
           <div className="mt-2 flex items-center justify-center gap-4 text-[11px] font-semibold text-slate-500 border-t border-slate-100 pt-3">
-            <span className="flex items-center gap-1.5">
-              <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" /> Heartbeat active
-            </span>
-            <span>•</span>
-            <span>Auto-tracking enabled</span>
+            {isAdminOversight ? (
+              <span className="flex items-center gap-1.5 text-slate-400">
+                <span className="h-2 w-2 rounded-full bg-slate-300" /> Shift tracking disabled for administrators
+              </span>
+            ) : (
+              <>
+                <span className="flex items-center gap-1.5">
+                  <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" /> Heartbeat active
+                </span>
+                <span>•</span>
+                <span>Auto-tracking enabled</span>
+              </>
+            )}
           </div>
         </div>
 
@@ -197,40 +242,49 @@ export default function WorkspaceTaskView({
               </div>
               <h2 className="text-sm font-black text-ink">Compensation &amp; Stipend</h2>
             </div>
-            <button className="text-[11px] font-extrabold text-emerald-700 hover:underline">
-              View breakdown →
-            </button>
+            {!isAdminOversight && (
+              <button className="text-[11px] font-extrabold text-emerald-700 hover:underline">
+                View breakdown →
+              </button>
+            )}
           </div>
 
-          <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-            <div className="rounded-xl border border-slate-100 bg-slate-50/80 p-3.5">
-              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Current Balance</p>
-              <p className="mt-1 text-xl font-black text-ink">₹65,000</p>
-              <p className="mt-1 flex items-center gap-1 text-[11px] font-bold text-emerald-600">
-                <ArrowUpRight className="h-3 w-3" /> +₹4,200 this week
-              </p>
+          {isAdminOversight ? (
+            <div className="flex flex-1 flex-col items-center justify-center py-8 text-center text-slate-500">
+              <p className="text-xs font-semibold text-slate-600">Compensation records are linked to operational team members.</p>
+              <p className="text-[11px] text-slate-400 mt-1">Administrative accounts do not accrue shift compensation.</p>
             </div>
+          ) : (
+            <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+              <div className="rounded-xl border border-slate-100 bg-slate-50/80 p-3.5">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Current Balance</p>
+                <p className="mt-1 text-xl font-black text-ink">₹65,000</p>
+                <p className="mt-1 flex items-center gap-1 text-[11px] font-bold text-emerald-600">
+                  <ArrowUpRight className="h-3 w-3" /> +₹4,200 this week
+                </p>
+              </div>
 
-            <div className="rounded-xl border border-slate-100 bg-slate-50/80 p-3.5">
-              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Pending Payout</p>
-              <p className="mt-1 text-xl font-black text-ink">₹15,000</p>
-              <p className="mt-1 text-[11px] font-medium text-slate-500">Available Sep 30</p>
-            </div>
+              <div className="rounded-xl border border-slate-100 bg-slate-50/80 p-3.5">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Pending Payout</p>
+                <p className="mt-1 text-xl font-black text-ink">₹15,000</p>
+                <p className="mt-1 text-[11px] font-medium text-slate-500">Available Sep 30</p>
+              </div>
 
-            <div className="rounded-xl border border-slate-100 bg-slate-50/80 p-3.5">
-              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Monthly Stipend</p>
-              <p className="mt-1 text-xl font-black text-ink">₹65,000</p>
-              <p className="mt-1 text-[11px] font-medium text-slate-500">Paid on 1st</p>
-            </div>
+              <div className="rounded-xl border border-slate-100 bg-slate-50/80 p-3.5">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Monthly Stipend</p>
+                <p className="mt-1 text-xl font-black text-ink">₹65,000</p>
+                <p className="mt-1 text-[11px] font-medium text-slate-500">Paid on 1st</p>
+              </div>
 
-            <div className="rounded-xl border border-slate-100 bg-slate-50/80 p-3.5">
-              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Lifetime Earnings</p>
-              <p className="mt-1 text-xl font-black text-ink">₹4,89,200</p>
-              <p className="mt-1 flex items-center gap-1 text-[11px] font-bold text-emerald-600">
-                <ArrowUpRight className="h-3 w-3" /> +8.2% YoY
-              </p>
+              <div className="rounded-xl border border-slate-100 bg-slate-50/80 p-3.5">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Lifetime Earnings</p>
+                <p className="mt-1 text-xl font-black text-ink">₹4,89,200</p>
+                <p className="mt-1 flex items-center gap-1 text-[11px] font-bold text-emerald-600">
+                  <ArrowUpRight className="h-3 w-3" /> +8.2% YoY
+                </p>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Earnings Mini Bar Chart */}
           <div className="mt-5 border-t border-slate-100 pt-4">
@@ -399,8 +453,13 @@ export default function WorkspaceTaskView({
                           {isAssigned && (
                             <button
                               onClick={() => handleStartTask(task)}
-                              disabled={loadingId === task.id}
-                              className="inline-flex items-center gap-1.5 rounded-xl bg-ink px-3.5 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-moss-800 transition-colors disabled:opacity-50"
+                              disabled={loadingId === task.id || isAdminOversight}
+                              title={isAdminOversight ? "Task execution disabled in Administrative Oversight Mode" : undefined}
+                              className={`inline-flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 text-xs font-bold transition-colors shadow-xs ${
+                                isAdminOversight
+                                  ? "bg-slate-200 text-slate-400 cursor-not-allowed opacity-60"
+                                  : "bg-ink text-white hover:bg-moss-800 disabled:opacity-50"
+                              }`}
                             >
                               <Play size={13} />
                               <span>{loadingId === task.id ? "Starting..." : "Start Task"}</span>
@@ -410,10 +469,17 @@ export default function WorkspaceTaskView({
                           {isInProgress && (
                             <button
                               onClick={() => {
+                                if (isAdminOversight) return;
                                 setSubmittingTaskId(task.id);
                                 setSubmissionNote(task.submission_note || "");
                               }}
-                              className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-3.5 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-emerald-700 transition-colors"
+                              disabled={isAdminOversight}
+                              title={isAdminOversight ? "Task execution disabled in Administrative Oversight Mode" : undefined}
+                              className={`inline-flex items-center gap-1.5 rounded-xl px-3.5 py-1.5 text-xs font-bold transition-colors shadow-xs ${
+                                isAdminOversight
+                                  ? "bg-slate-200 text-slate-400 cursor-not-allowed opacity-60"
+                                  : "bg-emerald-600 text-white hover:bg-emerald-700"
+                              }`}
                             >
                               <Send size={13} />
                               <span>Submit</span>

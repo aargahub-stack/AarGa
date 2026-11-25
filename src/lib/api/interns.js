@@ -35,7 +35,7 @@ function mapInternRow(row) {
 }
 
 export async function getAllInterns() {
-  if (!isSupabaseConfigured || !supabaseServer) {
+  if (!isSupabaseConfigured()) {
     console.warn("[interns api] Supabase is not configured.");
     return [];
   }
@@ -59,7 +59,7 @@ export async function getAllInterns() {
 }
 
 export async function getInternBySlug(slug) {
-  if (!isSupabaseConfigured || !supabaseServer) {
+  if (!isSupabaseConfigured()) {
     return null;
   }
 

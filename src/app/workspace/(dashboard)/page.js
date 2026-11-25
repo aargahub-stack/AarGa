@@ -3,7 +3,27 @@ import WorkspaceTaskView from "./WorkspaceTaskView";
 import { getAttendanceDataAction, getCompensationDataAction } from "./dashboardActions";
 
 export default async function WorkspaceDashboardPage() {
-  const { teamMember, supabase } = await getWorkspaceSession();
+  const { teamMember, isAdminOversight, supabase } = await getWorkspaceSession();
+
+  // If in Admin Oversight Mode without an operational team_member record, bypass operator queries
+  if (isAdminOversight || !teamMember) {
+    const [attendanceData, compensationData] = await Promise.all([
+      getAttendanceDataAction(),
+      getCompensationDataAction(),
+    ]);
+
+    return (
+      <WorkspaceTaskView
+        teamMember={null}
+        isAdminOversight={true}
+        activeTasks={[]}
+        completedTasks={[]}
+        notifications={[]}
+        attendanceData={attendanceData}
+        compensationData={compensationData}
+      />
+    );
+  }
 
   // Query assigned tasks, notifications, attendance, and compensation concurrently
   const [
@@ -67,6 +87,7 @@ export default async function WorkspaceDashboardPage() {
   return (
     <WorkspaceTaskView
       teamMember={teamMember}
+      isAdminOversight={isAdminOversight || false}
       activeTasks={activeTasks}
       completedTasks={completedTasks}
       notifications={notifications || []}

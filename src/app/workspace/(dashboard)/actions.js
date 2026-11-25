@@ -6,6 +6,13 @@ import { revalidatePath } from "next/cache";
 export async function startTaskAction(sopTaskId) {
   const { teamMember, supabase } = await getWorkspaceSession();
 
+  if (!teamMember) {
+    return {
+      success: false,
+      error: "Action unavailable in Administrative Oversight Mode. An operator record is required.",
+    };
+  }
+
   if (!sopTaskId) {
     return { success: false, error: "Task ID is required." };
   }
@@ -56,6 +63,13 @@ export async function startTaskAction(sopTaskId) {
 
 export async function submitTaskForReviewAction(sopTaskId, submissionNote = "") {
   const { teamMember, supabase } = await getWorkspaceSession();
+
+  if (!teamMember) {
+    return {
+      success: false,
+      error: "Action unavailable in Administrative Oversight Mode. An operator record is required.",
+    };
+  }
 
   if (!sopTaskId) {
     return { success: false, error: "Task ID is required." };
