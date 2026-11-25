@@ -41,7 +41,7 @@ export default function MatrixHero({ children }) {
         className="pointer-events-none absolute inset-0 opacity-40"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(15,122,72,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(15,122,72,0.06) 1px, transparent 1px)",
+            "linear-gradient(rgba(0,240,118,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,240,118,0.06) 1px, transparent 1px)",
           backgroundSize: "40px 40px",
         }}
         aria-hidden="true"

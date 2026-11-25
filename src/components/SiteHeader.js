@@ -10,6 +10,7 @@ const NAV_LINKS = [
   { href: "/ecosystem", label: "Ecosystem" },
   { href: "/tech", label: "Tech Hub" },
   { href: "/interns", label: "Verified Interns" },
+  { href: "https://portal.aarga.org/admin", label: "Sign In", external: true },
 ];
 
 export default function SiteHeader() {
@@ -51,7 +52,7 @@ export default function SiteHeader() {
     <header
       className={`sticky top-0 z-50 transition-all duration-300 -mb-[72px] ${
         scrolled
-          ? "bg-white shadow-md border-b border-slate-200"
+          ? "bg-white/95 backdrop-blur-md shadow-md border-b border-slate-200"
           : "bg-transparent border-b border-transparent shadow-none"
       }`}
     >
@@ -59,31 +60,31 @@ export default function SiteHeader() {
         <Link href={getLinkHref("/")} className="flex items-center gap-2.5 group">
           <AargaLogo className="h-8 w-8" />
           <span className="text-lg font-extrabold tracking-tight text-ink">
-            Aar<span className="text-emerald-600">Ga</span>
+            Aar<span className="text-[#109A70]">Ga</span>
           </span>
         </Link>
 
         <nav className="hidden items-center gap-1 md:flex">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={getLinkHref(link.href)}
-              className="rounded-full px-4 py-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-700"
-            >
-              {link.label}
-            </Link>
-          ))}
+          {NAV_LINKS.map((link) =>
+            link.external ? (
+              <a
+                key={link.href}
+                href={link.href}
+                className="rounded-full px-4 py-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-emerald-50 hover:text-ink"
+              >
+                {link.label}
+              </a>
+            ) : (
+              <Link
+                key={link.href}
+                href={getLinkHref(link.href)}
+                className="rounded-full px-4 py-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-emerald-50 hover:text-ink"
+              >
+                {link.label}
+              </Link>
+            )
+          )}
         </nav>
-
-        <div className="hidden md:block">
-          <a
-            href="https://portal.aarga.org/admin"
-            className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-white shadow-glass transition-transform hover:scale-[1.03] hover:bg-moss-800"
-          >
-            Founder Sign In
-            <span aria-hidden="true">↗</span>
-          </a>
-        </div>
 
         <button
           aria-label="Toggle menu"
@@ -103,24 +104,27 @@ export default function SiteHeader() {
       {open && (
         <div className="bg-white border-t border-slate-200 px-6 py-4 md:hidden">
           <nav className="flex flex-col gap-1">
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={getLinkHref(link.href)}
-                onClick={() => setOpen(false)}
-                className="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700"
-              >
-                {link.label}
-              </Link>
-            ))}
-            <a
-              href="https://portal.aarga.org/admin"
-              onClick={() => setOpen(false)}
-              className="mt-2 flex items-center justify-center gap-2 rounded-xl bg-ink px-4 py-3 text-center text-sm font-semibold text-white"
-            >
-              Founder Sign In
-              <span aria-hidden="true">↗</span>
-            </a>
+            {NAV_LINKS.map((link) =>
+              link.external ? (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setOpen(false)}
+                  className="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-emerald-50 hover:text-ink"
+                >
+                  {link.label}
+                </a>
+              ) : (
+                <Link
+                  key={link.href}
+                  href={getLinkHref(link.href)}
+                  onClick={() => setOpen(false)}
+                  className="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-emerald-50 hover:text-ink"
+                >
+                  {link.label}
+                </Link>
+              )
+            )}
           </nav>
         </div>
       )}

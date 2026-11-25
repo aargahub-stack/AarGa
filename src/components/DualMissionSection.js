@@ -46,27 +46,28 @@ export default async function DualMissionSection() {
           return (
             <div
               key={m.id}
-              className={`relative overflow-hidden rounded-3xl border p-8 shadow-glass ${
-                m.tone === "moss"
-                  ? "border-moss-200 bg-moss-50/60"
-                  : "border-emerald-200 bg-emerald-50/60"
-              }`}
+              className="relative overflow-hidden rounded-3xl border border-slate-200/90 bg-white/85 p-8 shadow-glass transition-all hover:shadow-glass-lg"
             >
               <span
-                className={`text-xs font-bold uppercase tracking-widest ${
-                  m.tone === "moss" ? "text-moss-700" : "text-emerald-700"
+                className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-widest ${
+                  m.tone === "moss"
+                    ? "bg-slate-100 text-slate-700"
+                    : "bg-[#109A70]/10 text-[#109A70] border border-[#109A70]/20"
                 }`}
               >
+                {m.tone !== "moss" && (
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#109A70]" />
+                )}
                 {m.eyebrow}
               </span>
-              <h3 className="mt-3 text-2xl font-extrabold tracking-tight text-ink">
+              <h3 className="mt-4 text-2xl font-extrabold tracking-tight text-ink">
                 {m.title}
               </h3>
-              <p className="mt-4 max-w-md text-slate-700 leading-relaxed">
+              <p className="mt-3 max-w-md text-slate-600 leading-relaxed text-sm">
                 {m.body}
               </p>
-              <div className="mt-8 flex items-baseline gap-3">
-                <span className="text-4xl font-black tracking-tight text-ink">
+              <div className="mt-8 flex items-baseline gap-3 pt-6 border-t border-slate-100">
+                <span className={`text-4xl font-black tracking-tight ${m.tone === "moss" ? "text-ink" : "text-[#109A70]"}`}>
                   {stat.value}
                 </span>
                 <span className="text-sm font-semibold text-slate-500">

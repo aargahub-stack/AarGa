@@ -18,7 +18,7 @@ const FOOTER_COLUMNS = [
     title: "Programs",
     links: [
       { label: "Verified Interns", href: "/interns" },
-      { label: "Founder Portal ↗", href: "https://portal.aarga.org/admin", external: true },
+      { label: "Sign In ↗", href: "https://portal.aarga.org/admin", external: true },
     ],
   },
   {
@@ -47,7 +47,7 @@ export default function SiteFooter() {
             <div className="flex items-center gap-2.5">
               <AargaLogo className="h-8 w-8" />
               <span className="text-lg font-extrabold tracking-tight">
-                Aar<span className="text-emerald-600">Ga</span>
+                Aar<span className="text-[#109A70]">Ga</span>
               </span>
             </div>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-slate-600">

@@ -1,4 +1,4 @@
-import { Urbanist, JetBrains_Mono } from "next/font/google";
+import { Urbanist } from "next/font/google";
 import "./globals.css";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
@@ -7,13 +7,6 @@ const urbanist = Urbanist({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800", "900"],
   variable: "--font-urbanist",
-  display: "swap",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-mono",
   display: "swap",
 });
 
@@ -49,7 +42,7 @@ import GlobalLoadingIndicator from "@/components/GlobalLoadingIndicator";
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${urbanist.variable} ${jetbrainsMono.variable}`} data-scroll-behavior="smooth">
+    <html lang="en" className={urbanist.variable} data-scroll-behavior="smooth">
       <body className="font-sans bg-paper text-ink antialiased selection:bg-emerald-200">
         <GlobalLoadingIndicator />
         <SiteHeader />

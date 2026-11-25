@@ -65,17 +65,17 @@ export default function GlobalNavigationProgressBar() {
       {/* Top Glowing Progress Bar */}
       <div className="h-1 w-full bg-slate-200/20 overflow-hidden">
         <div
-          className="h-full bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-300 shadow-[0_0_12px_rgba(16,185,129,0.8)] transition-all duration-200 ease-out"
+          className="h-full bg-[#00F076] shadow-[0_0_12px_rgba(0,240,118,0.8)] transition-all duration-200 ease-out"
           style={{ width: `${progress}%` }}
         />
       </div>
 
       {/* Floating Modern Loader Pill */}
       {loading && (
-        <div className="absolute top-4 right-4 flex items-center gap-2.5 rounded-full border border-emerald-500/30 bg-slate-950/85 px-4 py-2 text-xs font-bold text-white shadow-2xl backdrop-blur-md animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="absolute top-4 right-4 flex items-center gap-2.5 rounded-full border border-[#00F076]/30 bg-[#0C0D0E]/90 px-4 py-2 text-xs font-bold text-white shadow-2xl backdrop-blur-md animate-in fade-in slide-in-from-top-2 duration-200">
           <div className="relative flex h-4 w-4 items-center justify-center">
-            <span className="absolute h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
-            <AargaLogo className="h-3.5 w-3.5 text-emerald-400 animate-spin" />
+            <span className="absolute h-full w-full animate-ping rounded-full bg-[#00F076] opacity-75"></span>
+            <AargaLogo className="h-3.5 w-3.5 text-[#00F076] animate-spin" />
           </div>
           <span className="tracking-wide">Loading...</span>
         </div>

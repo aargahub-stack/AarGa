@@ -2,22 +2,22 @@ import Link from "next/link";
 
 const ACCENT_STYLES = {
   emerald: {
-    ring: "ring-emerald-200/70",
-    badge: "bg-emerald-100 text-emerald-800",
-    dot: "bg-emerald-500",
+    ring: "ring-[#00F076]/30",
+    badge: "bg-[#00F076]/15 text-[#0C0D0E]",
+    dot: "bg-[#00F076]",
     glow: "hover:shadow-glow-emerald",
   },
   moss: {
-    ring: "ring-moss-200/70",
-    badge: "bg-moss-100 text-moss-800",
-    dot: "bg-moss-600",
-    glow: "hover:shadow-[0_0_40px_-8px_rgba(15,122,72,0.35)]",
+    ring: "ring-[#00F076]/30",
+    badge: "bg-[#00F076]/15 text-[#0C0D0E]",
+    dot: "bg-[#00F076]",
+    glow: "hover:shadow-glow-emerald",
   },
   gold: {
-    ring: "ring-gold-400/40",
-    badge: "bg-gold-400/20 text-gold-600",
-    dot: "bg-gold-500",
-    glow: "hover:shadow-[0_0_40px_-8px_rgba(217,164,65,0.4)]",
+    ring: "ring-[#00F076]/30",
+    badge: "bg-[#00F076]/15 text-[#0C0D0E]",
+    dot: "bg-[#00F076]",
+    glow: "hover:shadow-glow-emerald",
   },
 };
 
@@ -40,12 +40,7 @@ export default function BentoToolCard({ tool }) {
       <div
         className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full opacity-30 blur-3xl transition-opacity duration-500 group-hover:opacity-50"
         style={{
-          background:
-            tool.accent === "gold"
-              ? "radial-gradient(circle, #D9A441, transparent 70%)"
-              : tool.accent === "moss"
-              ? "radial-gradient(circle, #0F7A48, transparent 70%)"
-              : "radial-gradient(circle, #10B981, transparent 70%)",
+          background: "radial-gradient(circle, rgba(0, 240, 118, 0.25), transparent 70%)",
         }}
         aria-hidden="true"
       />

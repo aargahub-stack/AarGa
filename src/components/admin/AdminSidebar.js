@@ -47,7 +47,7 @@ export default function AdminSidebar() {
           <AargaLogo className="h-7 w-7 text-emerald-600" />
           <div>
             <span className="text-base font-black tracking-tight text-ink">
-              Aar<span className="text-emerald-600">Ga</span>
+              Aar<span className="text-[#109A70]">Ga</span>
             </span>
             <span className="ml-2 rounded bg-emerald-100 px-1.5 py-0.5 text-[10px] font-bold text-emerald-800">
               ADMIN

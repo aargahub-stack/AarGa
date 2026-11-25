@@ -8,14 +8,15 @@ export default async function HomePage() {
     <>
       <MatrixHero>
         <div className="mx-auto flex max-w-5xl flex-col items-center px-6 py-28 text-center lg:py-36">
-          <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50/80 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-emerald-700 animate-fade-up">
+          <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/90 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-slate-700 shadow-sm animate-fade-up">
+            <span className="h-2 w-2 rounded-full bg-[#109A70]" />
             Grassroots Roots · Enterprise Grade
           </span>
 
           <h1 className="mt-6 text-5xl font-black tracking-tight text-ink sm:text-6xl md:text-7xl text-balance animate-fade-up">
             One Ecosystem.
             <br />
-            <span className="bg-gradient-to-r from-moss-700 via-emerald-600 to-moss-700 bg-clip-text text-transparent">
+            <span className="text-[#109A70]">
               Two Missions.
             </span>
           </h1>
@@ -63,13 +64,13 @@ export default async function HomePage() {
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
               href="/ecosystem"
-              className="rounded-full bg-emerald-500 px-7 py-3.5 text-sm font-bold text-ink shadow-glow-emerald transition-transform hover:scale-[1.03]"
+              className="rounded-full bg-white px-7 py-3.5 text-sm font-bold text-ink shadow-sm transition-transform hover:scale-[1.03] hover:bg-slate-100"
             >
               Explore Ecosystem
             </Link>
             <Link
               href="/tech"
-              className="rounded-full border-2 border-white/30 px-7 py-3.5 text-sm font-bold text-white transition-colors hover:border-white hover:bg-white/10"
+              className="rounded-full border border-white/30 px-7 py-3.5 text-sm font-bold text-white transition-colors hover:border-white hover:bg-white/10"
             >
               Explore Tech Hub
             </Link>

@@ -1,12 +1,10 @@
 const STATUS_STYLES = {
-  Verified: "bg-emerald-100 text-emerald-800",
-  "In Review": "bg-gold-400/20 text-gold-600",
+  Verified: "bg-[#00F076]/20 text-[#0C0D0E]",
+  "In Review": "bg-[#0C0D0E]/5 text-[#0C0D0E]",
 };
 
 function scoreColor(score) {
-  if (score >= 90) return "text-emerald-600";
-  if (score >= 80) return "text-moss-600";
-  return "text-gold-600";
+  return "text-[#00F076]";
 }
 
 export default function InternCard({ intern }) {
