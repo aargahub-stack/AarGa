@@ -25,12 +25,8 @@ export async function saveTemplate({
   try {
     let targetTemplateId = templateId;
 
-<<<<<<< HEAD
-    // Use the exact version requested by the user
-    let finalVersion = Number(version) || 1;
-=======
     // Check for potential version collision with OTHER templates of the same project_type
-    let finalVersion = Number(version);
+    let finalVersion = Number(version) || 1;
     const { data: existingVersions } = await supabase
       .from("sop_templates")
       .select("id, version")
@@ -43,7 +39,6 @@ export async function saveTemplate({
         finalVersion = maxVer + 1;
       }
     }
->>>>>>> 949a6bd32e64e675d969963250b774cb8a07b549
 
     if (targetTemplateId) {
       // Update existing template header
