@@ -25,8 +25,25 @@ export async function saveTemplate({
   try {
     let targetTemplateId = templateId;
 
+<<<<<<< HEAD
     // Use the exact version requested by the user
     let finalVersion = Number(version) || 1;
+=======
+    // Check for potential version collision with OTHER templates of the same project_type
+    let finalVersion = Number(version);
+    const { data: existingVersions } = await supabase
+      .from("sop_templates")
+      .select("id, version")
+      .eq("project_type", projectType);
+
+    if (existingVersions && existingVersions.length > 0) {
+      const otherVersions = existingVersions.filter((v) => v.id !== targetTemplateId);
+      if (otherVersions.some((v) => v.version === finalVersion)) {
+        const maxVer = Math.max(0, ...existingVersions.map((v) => v.version || 1));
+        finalVersion = maxVer + 1;
+      }
+    }
+>>>>>>> 949a6bd32e64e675d969963250b774cb8a07b549
 
     if (targetTemplateId) {
       // Update existing template header
