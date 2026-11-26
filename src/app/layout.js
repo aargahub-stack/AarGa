@@ -31,6 +31,8 @@ export const metadata = {
   },
 };
 
+import GlobalLoadingIndicator from "@/components/GlobalLoadingIndicator";
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en" data-scroll-behavior="smooth">
