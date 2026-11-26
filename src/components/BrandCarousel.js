@@ -1,33 +1,34 @@
 "use client";
 
-import Image from "next/image";
-
 const PARTNERS = [
-  { name: "Artxa Frames", src: "/partners/artsa-frames-dark.webp" },
-  { name: "Namma Stay", src: "/partners/namma-stay-dark.webp" },
-  { name: "SNX", src: "/partners/snx-dark.webp" },
-  { name: "Tamizhar Startup", src: "/partners/tamizhar-startup-dark.webp" },
-  { name: "SaaS Connect", src: "/partners/saas-connect.webp" },
-  { name: "TN-34", src: "/partners/tn-34.png" },
+  { name: "AarCode", src: "/partners/AarCode.png", needsInvert: false },
+  { name: "NexFix", src: "/partners/nexfix-logo.png", needsInvert: false },
+  { name: "Artxa Frames", src: "/partners/artsa-frames-dark.webp", needsInvert: true },
+  { name: "Namma Stay", src: "/partners/namma-stay-dark.webp", needsInvert: true },
+  { name: "SNX", src: "/partners/snx-dark.webp", needsInvert: true },
+  { name: "Tamizhar Startup", src: "/partners/tamizhar-startup-dark.webp", needsInvert: true },
+  { name: "SaaS Connect", src: "/partners/saas-connect.webp", needsInvert: false },
+  { name: "TN-34", src: "/partners/tn-34.png", needsInvert: false },
 ];
 
 export default function BrandCarousel() {
   return (
-    <section className="relative w-full overflow-hidden bg-[#0C0D0E] border-y border-white/10 py-8 sm:py-10 shadow-2xl">
-      {/* Subtle background brand watermark */}
-      <div 
-        aria-hidden="true" 
-        className="pointer-events-none absolute inset-0 flex items-center justify-center select-none opacity-[0.02]"
-      >
-        <span className="text-8xl sm:text-9xl font-black tracking-widest text-white">
-          AARGA
-        </span>
-      </div>
+    <section className="relative w-full overflow-hidden bg-paper border-b border-slate-200/80 py-8 sm:py-10">
+      {/* Subtle background matrix grid dots matching MatrixHero */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-40"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(0,240,118,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,240,118,0.06) 1px, transparent 1px)",
+          backgroundSize: "40px 40px",
+        }}
+        aria-hidden="true"
+      />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 relative z-10">
         {/* Caption Header */}
         <div className="text-center pb-5 sm:pb-6">
-          <p className="text-[11px] sm:text-xs font-bold tracking-[0.28em] text-slate-400 uppercase">
+          <p className="text-[11px] sm:text-xs font-bold tracking-[0.28em] text-slate-500 uppercase">
             Backed by Brands Who Bet on Bold
           </p>
         </div>
@@ -46,7 +47,11 @@ export default function BrandCarousel() {
                   <img
                     src={partner.src}
                     alt={partner.name}
-                    className="h-8 sm:h-10 w-auto max-w-[130px] sm:max-w-[170px] object-contain opacity-70 hover:opacity-100 transition-opacity duration-300 filter brightness-110"
+                    className={`h-8 sm:h-9 w-auto max-w-[130px] sm:max-w-[160px] object-contain transition-all duration-300 ${
+                      partner.needsInvert
+                        ? "brightness-0 opacity-65 hover:opacity-100"
+                        : "opacity-75 hover:opacity-100"
+                    }`}
                     loading="lazy"
                   />
                 </div>
@@ -64,7 +69,11 @@ export default function BrandCarousel() {
                   <img
                     src={partner.src}
                     alt={partner.name}
-                    className="h-8 sm:h-10 w-auto max-w-[130px] sm:max-w-[170px] object-contain opacity-70 hover:opacity-100 transition-opacity duration-300 filter brightness-110"
+                    className={`h-8 sm:h-9 w-auto max-w-[130px] sm:max-w-[160px] object-contain transition-all duration-300 ${
+                      partner.needsInvert
+                        ? "brightness-0 opacity-65 hover:opacity-100"
+                        : "opacity-75 hover:opacity-100"
+                    }`}
                     loading="lazy"
                   />
                 </div>
@@ -73,12 +82,6 @@ export default function BrandCarousel() {
           </div>
         </div>
       </div>
-
-      {/* Optical hairline accent border at bottom */}
-      <div 
-        aria-hidden="true" 
-        className="pointer-events-none absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#00F076]/30 to-transparent" 
-      />
     </section>
   );
 }
