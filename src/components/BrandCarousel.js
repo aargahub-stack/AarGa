@@ -29,7 +29,7 @@ export default function BrandCarousel() {
         {/* Caption Header */}
         <div className="text-center pb-5 sm:pb-6">
           <p className="text-[11px] sm:text-xs font-bold tracking-[0.28em] text-slate-500 uppercase">
-            Backed by Brands Who Bet on Bold
+            Ecosystem Partners &amp; Allies
           </p>
         </div>
 
