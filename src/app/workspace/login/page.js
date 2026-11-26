@@ -5,6 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { createSupabaseBrowserClient } from "@/lib/supabase/browserClient";
 import AargaLogo from "@/components/AargaLogo";
 
+export const dynamic = "force-dynamic";
+
 function WorkspaceLoginFormContent() {
   const router = useRouter();
   const searchParams = useSearchParams();

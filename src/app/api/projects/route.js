@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { getAllProjects } from "@/lib/api/projects";
 
-export const revalidate = 60; // ISR: re-fetch from Supabase at most once a minute
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function GET() {
   try {

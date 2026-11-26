@@ -1,16 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,400..900;1,400..900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --font-urbanist: "Urbanist", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "Urbanist", ui-sans-serif, system-ui, sans-serif;
+  --font-urbanist: 'Urbanist', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Urbanist', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 html {
   scroll-behavior: smooth;
   -ms-overflow-style: none;
   scrollbar-width: none;
+  font-family: 'Urbanist', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 html::-webkit-scrollbar,
@@ -23,7 +26,7 @@ body {
   color: #0C0D0E;
   -ms-overflow-style: none;
   scrollbar-width: none;
-  font-family: var(--font-urbanist);
+  font-family: 'Urbanist', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 /* Utility class to hide scrollbars on any scrollable container */

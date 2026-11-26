@@ -8,8 +8,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["var(--font-urbanist)", "ui-sans-serif", "system-ui", "sans-serif"],
-        mono: ["var(--font-urbanist)", "ui-sans-serif", "system-ui", "sans-serif"],
+        sans: ["Urbanist", "var(--font-urbanist)", "ui-sans-serif", "system-ui", "sans-serif"],
+        mono: ["Urbanist", "var(--font-urbanist)", "ui-sans-serif", "system-ui", "sans-serif"],
       },
       colors: {
         // Strict 3-color palette

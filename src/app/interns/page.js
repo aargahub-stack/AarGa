@@ -1,6 +1,9 @@
 import { getAllInterns, getInternStats } from "@/lib/api/interns";
 import InternCard from "@/components/InternCard";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export const metadata = {
   title: "Verified Interns Registry — AarGa",
   description:

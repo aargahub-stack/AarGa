@@ -2,6 +2,9 @@ import { getAllProjects } from "@/lib/api/projects";
 import { numberToWord } from "@/lib/formatters";
 import { lifecycleStages, platformCapabilities } from "@/data/engineeringLifecycle";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export const metadata = {
   title: "Tech Hub — AarGa",
   description:

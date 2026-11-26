@@ -3,7 +3,8 @@ import { getAllProjects } from "@/lib/api/projects";
 import { getMetricsByEntity, getEcosystemSynergyStats } from "@/lib/api/ecosystemMetrics";
 import BentoToolCard from "@/components/BentoToolCard";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export const metadata = {
   title: "Ecosystem Command Center — AarGa",
@@ -227,13 +228,19 @@ export default async function EcosystemPage() {
         </div>
 
         <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-3">
-          {CORE_PRODUCT_SLUGS.map((slug) => {
-            const tool = projectMap.get(slug);
-            if (tool) {
-              return <BentoToolCard key={tool.id || tool.slug} tool={tool} />;
-            }
-            return <ComingSoonTile key={slug} slug={slug} />;
-          })}
+          {projects.length > 0 ? (
+            projects.map((tool) => (
+              <BentoToolCard key={tool.id || tool.slug} tool={tool} />
+            ))
+          ) : (
+            CORE_PRODUCT_SLUGS.map((slug) => {
+              const tool = projectMap.get(slug);
+              if (tool) {
+                return <BentoToolCard key={tool.id || tool.slug} tool={tool} />;
+              }
+              return <ComingSoonTile key={slug} slug={slug} />;
+            })
+          )}
         </div>
       </section>
 

@@ -3,11 +3,14 @@ import MatrixHero from "@/components/MatrixHero";
 import DualMissionSection from "@/components/DualMissionSection";
 import EcosystemGrid from "@/components/EcosystemGrid";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function HomePage() {
   return (
     <>
       <MatrixHero>
-        <div className="mx-auto flex max-w-5xl flex-col items-center px-6 py-28 text-center lg:py-36">
+        <div className="mx-auto flex max-w-5xl flex-col items-center px-6 pt-24 pb-16 text-center lg:pt-32 lg:pb-20">
           <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/90 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-slate-700 shadow-sm animate-fade-up">
             <span className="h-2 w-2 rounded-full bg-[#109A70]" />
             Grassroots Roots · Enterprise Grade

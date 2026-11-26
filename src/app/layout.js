@@ -1,14 +1,7 @@
-import { Urbanist } from "next/font/google";
 import "./globals.css";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
-
-const urbanist = Urbanist({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
-  variable: "--font-urbanist",
-  display: "swap",
-});
+import GlobalLoadingIndicator from "@/components/GlobalLoadingIndicator";
 
 export const metadata = {
   title: "AarGa — One Ecosystem. Two Missions.",
@@ -38,11 +31,14 @@ export const metadata = {
   },
 };
 
-import GlobalLoadingIndicator from "@/components/GlobalLoadingIndicator";
-
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={urbanist.variable} data-scroll-behavior="smooth">
+    <html lang="en" data-scroll-behavior="smooth">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet" />
+      </head>
       <body className="font-sans bg-paper text-ink antialiased selection:bg-emerald-200">
         <GlobalLoadingIndicator />
         <SiteHeader />
