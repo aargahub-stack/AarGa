@@ -7,7 +7,6 @@ const PARTNERS = [
   { name: "Namma Stay", src: "/partners/namma-stay-dark.webp" },
   { name: "SNX", src: "/partners/snx-dark.webp" },
   { name: "Tamizhar Startup", src: "/partners/tamizhar-startup-dark.webp" },
-  { name: "Vagai Tamil Sangam", src: "/partners/vagai-tamil-sangam-dark.webp" },
   { name: "SaaS Connect", src: "/partners/saas-connect.webp" },
   { name: "TN-34", src: "/partners/tn-34.png" },
 ];
