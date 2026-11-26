@@ -12,18 +12,12 @@ export async function middleware(request) {
 
   // -------------------------------------------------------------
   // 1. STRICT MAIN DOMAIN (aarga.org) ACCESS RESTRICTION
-<<<<<<< HEAD
   // Prevent any /admin or /workspace portal access on main domain
   // Redirect to portal.aarga.org with appropriate CORS headers
-=======
-  // Prevent any /admin, /workspace, /interns or login access on main domain
-  // Redirect to main public landing (/) or to portal.aarga.org if requesting portal features
->>>>>>> 949a6bd32e64e675d969963250b774cb8a07b549
   // -------------------------------------------------------------
   if (isMainDomain) {
     if (
       pathname.startsWith("/admin") ||
-<<<<<<< HEAD
       pathname.startsWith("/workspace")
     ) {
       // Redirect portal attempts on main domain straight to portal.aarga.org
@@ -33,14 +27,6 @@ export async function middleware(request) {
       response.headers.set("Access-Control-Allow-Methods", "GET, HEAD, OPTIONS");
       response.headers.set("Access-Control-Allow-Headers", "*");
       return response;
-=======
-      pathname.startsWith("/workspace") ||
-      pathname.startsWith("/interns")
-    ) {
-      // Redirect portal attempts on main domain straight to portal.aarga.org
-      const portalUrl = new URL(pathname, "https://portal.aarga.org");
-      return NextResponse.redirect(portalUrl, 301);
->>>>>>> 949a6bd32e64e675d969963250b774cb8a07b549
     }
     return NextResponse.next();
   }

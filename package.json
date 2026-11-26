@@ -4,11 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-<<<<<<< HEAD
     "build": "next build --webpack",
-=======
-    "build": "next build",
->>>>>>> 949a6bd32e64e675d969963250b774cb8a07b549
     "opennext:build": "opennextjs-cloudflare build",
     "start": "next start",
     "lint": "next lint"
