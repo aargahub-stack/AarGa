@@ -2,6 +2,7 @@ import Link from "next/link";
 import MatrixHero from "@/components/MatrixHero";
 import DualMissionSection from "@/components/DualMissionSection";
 import EcosystemGrid from "@/components/EcosystemGrid";
+import BrandCarousel from "@/components/BrandCarousel";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -70,6 +71,8 @@ export default async function HomePage() {
           </p>
         </div>
       </MatrixHero>
+
+      <BrandCarousel />
 
       <DualMissionSection />
       <EcosystemGrid />

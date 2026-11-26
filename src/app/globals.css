@@ -105,3 +105,28 @@ textarea:focus-visible,
   transform: translateY(-4px);
   box-shadow: 0 16px 36px -8px rgba(12, 13, 14, 0.08);
 }
+
+/* Infinite Marquee Carousel for Brand / Partner strip */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 28s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+.mask-gradient {
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
